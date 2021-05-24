@@ -1,5 +1,6 @@
 package com.sistema.macroex.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -28,6 +29,14 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
+
+    private String nome;
+
+    private String doc;
+
+    private LocalDate dataNascimento;
+
+    private String telefone;
     
     private String email;
 
@@ -35,10 +44,10 @@ public class Usuario {
 
     private String username;
 
-    private Boolean enable;
+    private Boolean enable; // Usuário ativo
 
     @Enumerated(EnumType.STRING)
-    private Perfil perfil;
+    private Perfil perfil; // Perfil do usuário
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(joinColumns = @JoinColumn(name = "usuario_id"),
@@ -49,18 +58,7 @@ public class Usuario {
     @JoinColumn( name = "contrarotulo_id",referencedColumnName = "id")
     private ContraRotulo contrarotulo;
 
-    
-    public Usuario(String email, String password, boolean b, String username) {
 
-        this.email = email;
-        this.senha = password;
-        this.enable = b;
-        this.username = username;
-        
-    }
-
-    public Usuario() {
-    }
 
     @Override
     public int hashCode() {

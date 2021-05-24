@@ -11,5 +11,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 
     @Query("select u from Usuario u where u.email = ?1")
 	Usuario findByUsuarioByLogin(String login);
+
+    Usuario findByEmail(String name);
     
 }

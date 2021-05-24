@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+</html>
+
+<head>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        h11 {
+            color: red;
+        }
+        
+        #logo {
+            width: 50%;
+            height: 50%;
+        }
+        
+        .panel-heading {
+            font-size: 150%;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #17a2b8;
+            height: 100vh;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <form class="form-horizontal" method="POST" th:object="${usuario}" th:action="@{/cadastro/cadastroFornecedor}">
+
+        <fieldset>
+
+            <div class="panel panel-primary ">
+                <div class="panel-heading ">Cadastro de Cliente</div>
+
+                <div class="panel-body ">
+                    <div class="form-group ">
+                        <div class="col-md-11 control-label ">
+                            <p class="help-block ">
+                                <h11>*</h11> Campo Obrigatório </p>
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group ">
+                        <label class="col-md-2 control-label " for="Nome ">Nome <h11>*</h11></label>
+                        <div class="col-md-8 ">
+                            <input id="Nome " name="Nome " placeholder="Nome completo " class="form-control input-md " th:field="*{nome}">
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group ">
+                        <label class="col-md-2 control-label " for="Nome ">CPF<h11>*</h11></label>
+                        <div class="col-md-2 ">
+                            <input id="cpf " name="cpf " placeholder="Apenas números " class="form-control input-md " th:field="*{doc}">
+                        </div>
+
+                        <!--
+                        <label class="col-md-1 control-label " for="Nome ">Nascimento<h11>*</h11></label>
+                        <div class="col-md-2 ">
+                            <input id="dtnasc " name="dtnasc " placeholder="DD/MM/AAAA " class="form-control input-md " th:field="*{dataNascimento}">
+                        </div>
+                        -->
+                    </div>
+                </div>
+
+                <!-- Prepended text-->
+                <div class="form-group ">
+                    <label class="col-md-2 control-label " for="prependedtext ">Email <h11>*</h11></label>
+                    <div class="col-md-5 ">
+                        <div class="input-group ">
+                            <span class="input-group-addon "><i class="glyphicon glyphicon-envelope "></i></span>
+                            <input id="prependedtext " name="prependedtext " class="form-control " placeholder="email@email.com " th:field="*{email}">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Linha dos botões-->
+                <div class="form-group ">
+                    <input type="submit" name="submit" class="btn btn-info btn-md " value="submit" />
+                    <a href="/home"><span>Voltar para Home</span></a>
+                </div>
+                <div class="form-group ">
+
+                </div>
+            </div>
+        </fieldset>
+
+
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th> Nome </th>
+                <th> Email </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:if="${todos.empty}">
+                <td colspan="2"> Não há lista </td>
+            </tr>
+            <tr th:each="user : ${todos}">
+                <td><span th:text="${user.nome}"> Nome </span></td>
+                <td><span th:text="${user.email}"> Email </span></td>
+            </tr>
+        </tbody>
+    </table>
+
+
+</body>
+
+</html>

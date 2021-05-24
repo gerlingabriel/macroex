@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  tad:
+    image: postgres
+    container_name: microex
+    environment:
+      - POSTGRES_DB=microex
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - TZ=GMT
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - 5432:5432
+
+volumes:
+    postgres:

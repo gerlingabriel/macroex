@@ -33,10 +33,10 @@ public class SSUserDetailsService implements UserDetailsService {
     RoleRepository roleRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
         try {
-            Usuario user = usuarioRepository.findByUsuarioByLogin(username);
+            Usuario user = usuarioRepository.findByUsuarioByLogin(email);
             if(user==null){
                 throw new UsernameNotFoundException("Usuario não encontrado!");
             }
