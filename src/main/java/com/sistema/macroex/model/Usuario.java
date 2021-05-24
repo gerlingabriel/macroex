@@ -1,20 +1,31 @@
 package com.sistema.macroex.model;
 
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Entity
 public class Usuario {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
     
@@ -22,42 +33,33 @@ public class Usuario {
 
     private String senha;
 
+    private String username;
+
+    private Boolean enable;
+
+    @Enumerated(EnumType.STRING)
     private Perfil perfil;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+    private List<Role> roles;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn( name = "contrarotulo_id",referencedColumnName = "id")
     private ContraRotulo contrarotulo;
 
-    public Long getId() {
-        return id;
-    }
+    
+    public Usuario(String email, String password, boolean b, String username) {
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
         this.email = email;
+        this.senha = password;
+        this.enable = b;
+        this.username = username;
+        
     }
 
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
-    public Perfil getPerfim() {
-        return perfil;
-    }
-
-    public void setPerfim(Perfil perfil) {
-        this.perfil = perfil;
+    public Usuario() {
     }
 
     @Override
@@ -67,6 +69,7 @@ public class Usuario {
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
+
 
     @Override
     public boolean equals(Object obj) {
@@ -85,8 +88,6 @@ public class Usuario {
         return true;
     }
 
-
     
-
     
 }

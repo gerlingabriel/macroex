@@ -2,7 +2,7 @@ package com.sistema.macroex.model;
 
 public enum Perfil {
 
-    USUARIO, ADMINISTRADOR;
+    FORNECEDOR, ADMINISTRADOR;
 
     private String perfil;
 
