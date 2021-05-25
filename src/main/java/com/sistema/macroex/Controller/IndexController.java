@@ -1,7 +1,11 @@
 package com.sistema.macroex.Controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpSession;
 
+import com.sistema.macroex.model.Perfil;
 import com.sistema.macroex.model.Usuario;
 import com.sistema.macroex.repository.UsuarioRepository;
 
@@ -73,7 +77,36 @@ public class IndexController {
     }
 
     @RequestMapping("/fornecedor/fornecedor")
-    public String cadastroForncedor() {
+    public String cadastroForncedor(Model model) {
+
+        Usuario auxUsuario = new Usuario();
+
+        Perfil tipo = Perfil.FORNECEDOR;
+
+        List<Usuario> todos = repository.findAll().stream().filter(fornecedor -> fornecedor.getPerfil() == Perfil.FORNECEDOR).collect(Collectors.toList());
+
+        model.addAttribute("usuario", auxUsuario);
+        model.addAttribute("todos", todos);
+        model.addAttribute("fornecedor", tipo);
+
+        return "fornecedor/fornecedor";
+    }
+
+    @RequestMapping(value = "/fornecedor/fornecedor",method = RequestMethod.POST)
+    public String cadastroForncedorSlavo(@ModelAttribute Usuario usuario, Model model) {
+
+        repository.save(usuario);
+
+        Usuario auxUsuario = new Usuario();
+
+        Perfil tipo = Perfil.FORNECEDOR;
+
+        List<Usuario> todos = repository.findAll().stream().filter(fornecedor -> fornecedor.getPerfil() == Perfil.FORNECEDOR).collect(Collectors.toList());
+
+        model.addAttribute("usuario", auxUsuario);
+        model.addAttribute("todos", todos);
+        model.addAttribute("fornecedor", tipo);
+
         return "fornecedor/fornecedor";
     }
 
