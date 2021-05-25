@@ -22,7 +22,7 @@ public class ContraRotulo {
 
     private Status status;
 
-    private String descrição;
+    private String descricao;
 
     public Long getId() {
         return id;
@@ -56,12 +56,12 @@ public class ContraRotulo {
         this.status = status;
     }
 
-    public String getDescrição() {
-        return descrição;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setDescrição(String descrição) {
-        this.descrição = descrição;
+    public void setDescrição(String descricao) {
+        this.descricao = descricao;
     }
 
     

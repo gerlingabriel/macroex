@@ -20,18 +20,31 @@
 
     <a href="/logout">logout</a>
 
-    <h1>Hello !</h1>
-    <p>Bem vindo!
-        <span th:text="${session.usuario.username}"></span> </p>
+    <h1>Ola! <span th:text="${session.usuario.username}"></span>
+    </h1>
 
-    <a href="cadastro/cadastroFornecedor ">
-        <img alt="Cadastro de Funcionário" width="75px " th:src="@{icon/cadastro.png} "></a>
+    <table>
+        <tr style="margin-left: 5px;">
+            <td>
+                <a href="cadastro/cadastroFornecedor ">
+                    <img alt="Cadastro de Funcionário" width="75px " th:src="@{icon/cadastro.png} "></a>
+            </td>
+            <td>
+                <a href="fornecedor/cadastroContraRotulo " th:if="${session.usuario.perfil == session.usuario.perfil.ADMINISTRADOR }">
+                    <img alt=" Cadastro do Contra Rotulo " width="75px " th:src="@{icon/rotulo.png} "></a>
+            </td>
+            <td>
+                <a href="fornecedor/fornecedor " th:if="${session.usuario.perfil == session.usuario.perfil.ADMINISTRADOR }">
+                    <img alt=" Cadastro Funcionário " width="75px " th:src="@{icon/forncedor2.png} "></a>
+            </td>
+        </tr>
+        <tr>
+            <td>Cadastro de Usuário</td>
+            <td>Cadastro de Contra Rotulo</td>
+            <td>Cadastro de Fornecedor</td>
+        </tr>
 
-    <a href="fornecedor/cadastroContraRotulo " th:if="${session.usuario.perfil == session.usuario.perfil.ADMINISTRADOR }">
-        <img alt=" Cadastro do Contra Rotulo " width="75px " th:src="@{icon/rotulo.png} "></a>
-
-    <a href="fornecedor/fornecedor " th:if="${session.usuario.perfil == session.usuario.perfil.ADMINISTRADOR }">
-        <img alt=" Cadastro Funcionário " width="75px " th:src="@{icon/forncedor2.png} "></a>
+    </table>
 
 </body>
 

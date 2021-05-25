@@ -1,5 +1,7 @@
 package com.sistema.macroex.repository;
 
+import java.util.Collection;
+
 import com.sistema.macroex.model.Usuario;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +15,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 	Usuario findByUsuarioByLogin(String login);
 
     Usuario findByEmail(String name);
+
+    Collection<Usuario> findByNomeContainsIgnoreCase (String nome);
+
     
 }
