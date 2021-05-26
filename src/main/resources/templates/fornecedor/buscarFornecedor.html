@@ -18,22 +18,22 @@
         h11 {
             color: red;
         }
-        
+
         #logo {
             width: 50%;
             height: 50%;
         }
-        
+
         .panel-heading {
             font-size: 150%;
         }
-        
+
         .container {
             background-color: white;
             margin: 5% auto;
             padding: 4%;
         }
-        
+
         body {
             margin: 0;
             padding: 0;
@@ -48,13 +48,14 @@
     <h1>Busca por Fornecedor</h1>
 
     <div class="container">
-        <form method="POST" th:action="@{/buscar}" th:field="*{uruario}">
+        <form method="POST" th:action="@{/buscar}" th:field="*{usuario}">
 
             <div class="form-group ">
-                <label class="col-md-2 control-label " for="busca ">Busca por nome <h11>*</h11></label>
-                <div class="col-md-10 ">
+                <label class="col-md-3 control-label " for="busca ">Busca por nome <h11>*</h11></label>
+                <div class="col-md-9">
                     <input id="nome " name="nome" placeholder="Nome do Produto " class="form-control input-md ">
                 </div>
+                <br>
 
             </div>
             <br>
@@ -79,7 +80,7 @@
                 </tr>
                 <tr th:each="user:${todos} ">
                     <td width="30%">
-                        <a href="@{/confirmacao/{userid}(userid=${user})}"><img src="/icon/confirmacao.jpg" width="15px" alt="" style="margin-left: 22px;"></a>
+                        <a th:href="@{/confirmacao/{id}(id = ${user.id})}"><img src="/icon/confirmacao.jpg" width="15px" alt="" style="margin-left: 22px;"></a>
                     </td>
                     <td><span th:text="${user.nome} "> Nome </span></td>
                     <td><span th:text="${user.email} "> Email </span></td>

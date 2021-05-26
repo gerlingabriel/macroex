@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -56,12 +57,17 @@ public class IndexController {
         model.addAttribute("usuario", usuario);
         model.addAttribute("todos", repository.findAll());
 
-        return "cadastro/cadastroFornecedor";
+        return "cadastro/cadastroUsuario";
     }
 
+    //salvado cadastro novo
     @RequestMapping(value = "/cadastro/cadastroFornecedor", method = RequestMethod.POST)
     public String paginaCadastroSalvo(@ModelAttribute Usuario usuario, Model model) {
 
+        if (usuario.getPerfil() == null) {
+            usuario.setPerfil(Perfil.ADMINISTRADOR);            
+        }
+        
         repository.save(usuario);
 
         Usuario auxUsuario = new Usuario();
@@ -69,7 +75,7 @@ public class IndexController {
         model.addAttribute("usuario", auxUsuario);
         model.addAttribute("todos", repository.findAll());
 
-        return "cadastro/cadastroFornecedor";
+        return "cadastro/cadastroUsuario";
     }
 
     @RequestMapping("/fornecedor/cadastroContraRotulo")
@@ -94,6 +100,7 @@ public class IndexController {
 
         model.addAttribute("rotulo", auxRotulo);
         model.addAttribute("fornecedores", todos);
+        model.addAttribute("usuariof", new Usuario()); 
 
         return "fornecedor/cadastroContraRotulo";
     }
@@ -166,24 +173,48 @@ public class IndexController {
     }
 
     // Busca concluidae
-    @RequestMapping(value = "/confirmacao")
-    public String pesquisaEncotrada(@ModelAttribute Usuario uruario, Model model) {
+    @RequestMapping(value = "/confirmacao/{id}")
+    public String pesquisaEncotrada(@PathVariable ("id") Long id, Model model) {
 
-        String nome = uruario.getNome();
+        Usuario usu = repository.findById(id).get();
 
-        Usuario auxUsuario = new Usuario();
+        ContraRotulo auxRotulo = new ContraRotulo();
 
-        List<Usuario> todos = repository.findByNomeContainsIgnoreCase(nome)
-                            .stream()
-                            .filter(fornecedor -> fornecedor.getPerfil() == Perfil.FORNECEDOR)
-                            .collect(Collectors.toList());
-                 
+        List<Usuario> todos = repository.findAll().stream().filter(fornecedor -> fornecedor.getPerfil() == Perfil.FORNECEDOR).collect(Collectors.toList());
 
-        model.addAttribute("todos", todos);
-        model.addAttribute("usuario", auxUsuario);
+        model.addAttribute("rotulo", auxRotulo);
+        model.addAttribute("fornecedores", todos);
+        model.addAttribute("usuariof", usu);     
 
-        return "/fornecedor/buscarFornecedor";
+        return "fornecedor/cadastroContraRotulo";
         
     }
+
+    @RequestMapping(value = "cadastrousuario/deletar/{id}")
+    public String cadastroUsuarioDeletar(@PathVariable ("id") Long id, Model model) {
+
+        repository.deleteById(id);
+
+        Usuario usuario = new Usuario();
+
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("todos", repository.findAll());
+
+        return "cadastro/cadastroUsuario";
+        
+    }
+
+    @RequestMapping(value = "cadastrousuario/editar/{id}")
+    public String cadastroUsuarioEditar(@PathVariable ("id") Long id, Model model) {
+
+       Usuario usu = repository.findById(id).get();
+
+        model.addAttribute("usuario", usu);
+        model.addAttribute("todos", repository.findAll());
+
+        return "cadastro/cadastroUsuario";
+        
+    }
+
 
 }

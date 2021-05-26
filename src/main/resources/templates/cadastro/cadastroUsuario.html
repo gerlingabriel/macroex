@@ -28,11 +28,12 @@
         .panel-heading {
             font-size: 150%;
         }
+
         .container {
-            background-color:white;
+            background-color: white;
             margin: 5% auto;
             padding: 4%;
-            
+
         }
 
         body {
@@ -47,8 +48,12 @@
 
 <body>
 
-    <div class="container center" >
+    <div class="container center">
         <form class="form-horizontal" method="POST" th:object="${usuario}" th:action="@{/cadastro/cadastroFornecedor}">
+
+            <!-- campo para obter id, assim na hora de atulizar ele saberá diferenciar-->
+            <input type="hidden" id="id" name="id" th:field="*{id}">
+            <input type="hidden" id="id" name="id" th:field="*{perfil}">
 
             <!-- Text input-->
             <div class="form-group ">
@@ -61,8 +66,12 @@
             <!-- Text input-->
             <div class="form-group ">
                 <label class="col-md-2 control-label " for="Nome ">CPF<h11>*</h11></label>
-                <div class="col-md-2 ">
+                <div class="col-md-3 ">
                     <input id="cpf " name="cpf " placeholder="Apenas números " class="form-control input-md " th:field="*{doc}">
+                </div>
+                <label class="col-md-2 control-label " for="senha ">Senha<h11>*</h11></label>
+                <div class="col-md-3 ">
+                    <input id="senha " name="senha " placeholder="No máximo 10 elementos " class="form-control input-md " th:field="*{senha}">
                 </div>
             </div>
             <!-- cadadstro de aniverário
@@ -95,24 +104,30 @@
 
     <!-- Tabela de dados -->
     <div align="center">
-    <table class="table table-hover" style="width: 85%;background-color: white;">
-        <thead>
-            <tr>
-                <th scope="col"> Nome </th>
-                <th scope="col"> Email </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:if="${todos.empty}">
-                <td colspan="2"> Não há lista </td>
-            </tr>
-            <tr th:each="user:${todos}">
-                <td><span th:text="${user.nome}"> Nome </span></td>
-                <td><span th:text="${user.email}"> Email </span></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+        <table class="table table-hover" style="width: 85%;background-color: white;">
+            <thead>
+                <tr>
+                    <th scope="col"> Nome </th>
+                    <th scope="col"> Email </th>
+                    <th scope="col"> Perfil </th>
+                    <th scope="col" style="text-align:center"> Editar </th>
+                    <th scope="col" style="text-align:center"> Deletar </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${todos.empty}">
+                    <td colspan="2"> Não há lista </td>
+                </tr>
+                <tr th:each="user:${todos}">
+                    <td><span th:text="${user.nome}"> Nome </span></td>
+                    <td><span th:text="${user.email}"> Email </span></td>
+                    <td><span th:text="${user.perfil}"> Email </span></td>
+                    <td align="center"><a th:href="@{/cadastrousuario/editar/{id}(id = ${user.id})}"><img src="/icon/editar.png" width="15px" alt="Editar"></a></td>
+                    <td align="center"><a th:href="@{/cadastrousuario/deletar/{id}(id = ${user.id})}"><img src="/icon/deletar.png" width="15px" alt="Editar"></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
 
 </body>
