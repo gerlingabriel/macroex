@@ -1,8 +1,5 @@
 package com.sistema.macroex.Controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import javax.servlet.http.HttpSession;
 
 import com.sistema.macroex.model.ContraRotulo;
@@ -11,6 +8,11 @@ import com.sistema.macroex.model.Usuario;
 import com.sistema.macroex.repository.UsuarioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,13 +51,14 @@ public class IndexController {
         return "home";
     }
 
+    //Pagina cadstro
     @RequestMapping(value = "/cadastro/cadastroFornecedor", method = RequestMethod.GET)
     public String paginaCadastro(Model model) {
 
         Usuario usuario = new Usuario();
 
         model.addAttribute("usuario", usuario);
-        model.addAttribute("todos", repository.findAll());
+        model.addAttribute("todos", repository.findAll(PageRequest.of(0, 5, Sort.by("id"))));
 
         return "cadastro/cadastroUsuario";
     }
@@ -70,23 +73,30 @@ public class IndexController {
         
         repository.save(usuario);
 
-        Usuario auxUsuario = new Usuario();
-
-        model.addAttribute("usuario", auxUsuario);
-        model.addAttribute("todos", repository.findAll());
+        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("todos", repository.findAll(PageRequest.of(0, 5, Sort.by("id"))));
 
         return "cadastro/cadastroUsuario";
     }
 
+    // Paginação das tabelas
+    @RequestMapping(value = "/paginacao")
+    public String pagiancao(Model model, @PageableDefault(size=5) Pageable pageable){
+
+        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("todos", repository.findAll(pageable));
+
+
+
+        return "cadastro/cadastroUsuario";
+
+    } //FIM **************************************************************************************
+
+    // CADASTRADNDO ROTUTO **********************************************************************
     @RequestMapping("/fornecedor/cadastroContraRotulo")
     public String cadastroContraRotulo(Model model) {
 
-        ContraRotulo rotulo = new ContraRotulo();
-
-        List<Usuario> todos = repository.findAll().stream().filter(fornecedor -> fornecedor.getPerfil() == Perfil.FORNECEDOR).collect(Collectors.toList());
-
-        model.addAttribute("rotulo", rotulo);
-        model.addAttribute("fornecedores", todos);
+        model.addAttribute("rotulo", new ContraRotulo());
 
         return "fornecedor/cadastroContraRotulo";
     }
@@ -94,27 +104,24 @@ public class IndexController {
     @RequestMapping(value = "/fornecedor/cadastroContraRotulo", method = RequestMethod.POST)
     public String cadastroContraRotuloSalvo(@ModelAttribute ContraRotulo rotulo, @ModelAttribute Usuario fornecedores, Model model) {
 
-        ContraRotulo auxRotulo = new ContraRotulo();
+        // AINDA COLOCAR METODOS PARA CADASTRAR ROTULO
 
-        List<Usuario> todos = repository.findAll().stream().filter(fornecedor -> fornecedor.getPerfil() == Perfil.FORNECEDOR).collect(Collectors.toList());
-
-        model.addAttribute("rotulo", auxRotulo);
-        model.addAttribute("fornecedores", todos);
+        model.addAttribute("rotulo", new ContraRotulo());
         model.addAttribute("usuariof", new Usuario()); 
 
         return "fornecedor/cadastroContraRotulo";
-    }
+    } //FIM *************************************************************************************************************************
 
+    // CADSTRANDO FORNECEDOR *****************************************************************
     @RequestMapping("/fornecedor/fornecedor")
-    public String cadastroForncedor(Model model) {
-
-        Usuario auxUsuario = new Usuario();
+    public String cadastroForncedor(Model model, @PageableDefault(size=5) Pageable pageable) {
 
         Perfil tipo = Perfil.FORNECEDOR;
 
-        List<Usuario> todos = repository.findAll().stream().filter(fornecedor -> fornecedor.getPerfil() == Perfil.FORNECEDOR).collect(Collectors.toList());
+        Page<Usuario> todos = repository.findByPerfil(tipo,pageable);
+       
 
-        model.addAttribute("usuario", auxUsuario);
+        model.addAttribute("usuario", new Usuario());
         model.addAttribute("todos", todos);
         model.addAttribute("fornecedor", tipo);
 
@@ -122,53 +129,71 @@ public class IndexController {
     }
 
     @RequestMapping(value = "/fornecedor/fornecedor",method = RequestMethod.POST)
-    public String cadastroForncedorSalvo(@ModelAttribute Usuario usuario, Model model) {
+    public String cadastroForncedorSalvo(@ModelAttribute Usuario usuario, Model model, @PageableDefault(size=5) Pageable pageable) {
 
         repository.save(usuario);
 
-        Usuario auxUsuario = new Usuario();
-
         Perfil tipo = Perfil.FORNECEDOR;
-        List<Usuario> todos = repository.findAll().stream().filter(fornecedor -> fornecedor.getPerfil() == Perfil.FORNECEDOR).collect(Collectors.toList());
+        Page<Usuario> todos = repository.findByPerfil(tipo,pageable);
 
-        model.addAttribute("usuario", auxUsuario);
+        model.addAttribute("usuario", new Usuario());
         model.addAttribute("todos", todos);
         model.addAttribute("fornecedor", tipo);
 
         return "fornecedor/fornecedor";
+    } //FIM **********************************************************************************************************
+
+    // requisição que chama busca por fornecedores (entrar na página)
+    @RequestMapping(value = "/fornecedor/buscarFornecedor")
+    public String procurar(@ModelAttribute Usuario usuario, Model model) {
+ 
+        Perfil tipo = Perfil.FORNECEDOR;
+        String nome ="";
+
+        if (usuario.getNome() != null ){
+            nome = usuario.getNome();
+        }
+
+        Page<Usuario> todos = repository.findByNomeContainsIgnoreCaseAndPerfil(nome, tipo, PageRequest.of(0, 5, Sort.by("id")));
+        
+        model.addAttribute("todos", todos);
+        model.addAttribute("usuario", new Usuario());
+
+        return "fornecedor/buscarFornecedor";
+        
     }
 
-    @RequestMapping(value = "/fornecedor/buscarFornecedor")
-    public String procurar(Model model) {
+    // Paginação das tabelas - buscar FORNCEDOR (páginacao)
+    @RequestMapping(value = "/paginacao/fornecedor")
+    public String pagiancaoFornecedor(@PageableDefault(size=5) Pageable pageable, @ModelAttribute Usuario usuario, Model model){
 
-        Usuario auxUsuario = new Usuario();
+        Perfil tipo = Perfil.FORNECEDOR;
+        String nome ="";
 
-        List<Usuario> todos = repository.findAll().stream().filter(fornecedor -> fornecedor.getPerfil() == Perfil.FORNECEDOR).collect(Collectors.toList());
-        model.addAttribute("todos", todos);
-        model.addAttribute("usuario", auxUsuario);
+        if (usuario.getNome() != null ){
+            nome = usuario.getNome();
+        } 
 
-        return "/fornecedor/buscarFornecedor";
-        
+        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("todos", repository.findByNomeContainsIgnoreCaseAndPerfil(nome, tipo, pageable));
+        model.addAttribute("rotulo", new ContraRotulo());
+
+       return "fornecedor/buscarFornecedor";
+
     }
 
     // Filtrar a pesquisa pelo nome
     @RequestMapping(value = "/buscar")
-    public String pesquisar(@ModelAttribute Usuario uruario, Model model) {
+    public String pesquisar(@ModelAttribute Usuario usuario, Model model, @PageableDefault(size=5) Pageable pageable) {
 
-        String nome = uruario.getNome();
+        String nome = usuario.getNome();
 
-        Usuario auxUsuario = new Usuario();
-
-        List<Usuario> todos = repository.findByNomeContainsIgnoreCase(nome)
-                            .stream()
-                            .filter(fornecedor -> fornecedor.getPerfil() == Perfil.FORNECEDOR)
-                            .collect(Collectors.toList());
-                 
+        Perfil tipo = Perfil.FORNECEDOR;
+        Page<Usuario> todos = repository.findByNomeContainsIgnoreCaseAndPerfil(nome, tipo, pageable);                 
 
         model.addAttribute("todos", todos);
-        model.addAttribute("usuario", auxUsuario);
-
-        return "/fornecedor/buscarFornecedor";
+        model.addAttribute("usuario", new Usuario());
+        return "fornecedor/buscarFornecedor";
         
     }
 
@@ -178,17 +203,12 @@ public class IndexController {
 
         Usuario usu = repository.findById(id).get();
 
-        ContraRotulo auxRotulo = new ContraRotulo();
-
-        List<Usuario> todos = repository.findAll().stream().filter(fornecedor -> fornecedor.getPerfil() == Perfil.FORNECEDOR).collect(Collectors.toList());
-
-        model.addAttribute("rotulo", auxRotulo);
-        model.addAttribute("fornecedores", todos);
+        model.addAttribute("rotulo", new ContraRotulo());
         model.addAttribute("usuariof", usu);     
 
         return "fornecedor/cadastroContraRotulo";
         
-    }
+    } // ************************************************************************************************************************************
 
     @RequestMapping(value = "cadastrousuario/deletar/{id}")
     public String cadastroUsuarioDeletar(@PathVariable ("id") Long id, Model model) {
@@ -198,7 +218,7 @@ public class IndexController {
         Usuario usuario = new Usuario();
 
         model.addAttribute("usuario", usuario);
-        model.addAttribute("todos", repository.findAll());
+        model.addAttribute("todos", repository.findAll(PageRequest.of(0, 5, Sort.by("id"))));
 
         return "cadastro/cadastroUsuario";
         
@@ -210,7 +230,7 @@ public class IndexController {
        Usuario usu = repository.findById(id).get();
 
         model.addAttribute("usuario", usu);
-        model.addAttribute("todos", repository.findAll());
+        model.addAttribute("todos", repository.findAll(PageRequest.of(0, 5, Sort.by("id"))));
 
         return "cadastro/cadastroUsuario";
         

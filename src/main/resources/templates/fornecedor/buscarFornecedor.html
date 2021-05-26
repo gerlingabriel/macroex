@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
@@ -18,22 +18,22 @@
         h11 {
             color: red;
         }
-
+        
         #logo {
             width: 50%;
             height: 50%;
         }
-
+        
         .panel-heading {
             font-size: 150%;
         }
-
+        
         .container {
             background-color: white;
             margin: 5% auto;
             padding: 4%;
         }
-
+        
         body {
             margin: 0;
             padding: 0;
@@ -48,18 +48,20 @@
     <h1>Busca por Fornecedor</h1>
 
     <div class="container">
-        <form method="POST" th:action="@{/buscar}" th:field="*{usuario}">
+        <form method="POST" th:action="@{/buscar}" th:object="${usuario}">
 
-            <div class="form-group ">
+            <input type="hidden" th:field="*{id}">
+
+            <div class=" form-group ">
                 <label class="col-md-3 control-label " for="busca ">Busca por nome <h11>*</h11></label>
-                <div class="col-md-9">
-                    <input id="nome " name="nome" placeholder="Nome do Produto " class="form-control input-md ">
+                <div class="col-md-9 ">
+                    <input id="nome " name="nome " placeholder="Nome do Produto " class="form-control input-md " th:field="*{nome} ">
                 </div>
                 <br>
 
             </div>
             <br>
-            <input type="submit" name="submit" value="submit" class="btn btn-info btn-md ">
+            <input type="submit " name="submit " value="submit " class="btn btn-info btn-md ">
             <a href="/home "><span>Voltar para Home</span></a>
         </form>
     </div>
@@ -75,18 +77,34 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:if="${todos.empty} ">
+                <tr th:if="${todos.empty}">
                     <td colspan="2 "> Não há lista </td>
                 </tr>
-                <tr th:each="user:${todos} ">
-                    <td width="30%">
-                        <a th:href="@{/confirmacao/{id}(id = ${user.id})}"><img src="/icon/confirmacao.jpg" width="15px" alt="" style="margin-left: 22px;"></a>
+                <tr th:each="usur:${todos}">
+                    <td width="30% ">
+                        <a th:href="@{/confirmacao/{id}(id=${usur.id})} "><img src="/icon/confirmacao.jpg " width="15px " alt=" " style="margin-left: 22px; "></a>
                     </td>
-                    <td><span th:text="${user.nome} "> Nome </span></td>
-                    <td><span th:text="${user.email} "> Email </span></td>
+                    <td><span th:text="${usur.nome} "> Nome </span></td>
+                    <td><span th:text="${usur.email} "> Email </span></td>
                 </tr>
             </tbody>
         </table>
+
+        <!-- Paginação-->
+        <div style="margin-top: 5px; background-color: white; width: 25%;">
+            <!-- Anterior-->
+            <span th:if="${todos.hasPrevious()}">
+                <a th:href="@{/paginacao(page=${todos.number-1}, size=${todos.size})}">Anterior</a>
+            </span>
+            <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)}">
+                <a th:href="@{/paginacao/fornecedor(page=${i}, size=${todos.size})}">[[ ${i} + 1 ]]</a>
+            </th:block>
+            <!-- Próximo-->
+            <span th:if="${todos.hasNext()}">
+                <a th:href="@{/paginacao/fornecedor(page=${todos.number+1}, size=${todos.size})}">Próximo</a>
+            </span>
+        </div>
+
     </div>
 </body>
 
