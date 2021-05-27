@@ -4,7 +4,9 @@ import javax.servlet.http.HttpSession;
 
 import com.sistema.macroex.model.ContraRotulo;
 import com.sistema.macroex.model.Perfil;
+import com.sistema.macroex.model.Status;
 import com.sistema.macroex.model.Usuario;
+import com.sistema.macroex.repository.RotuloRepository;
 import com.sistema.macroex.repository.UsuarioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class IndexController {
 
     @Autowired
     private UsuarioRepository repository;
+
+    @Autowired
+    private RotuloRepository rotuloRepository;
 
     @RequestMapping("/login")
     public String login() {
@@ -94,23 +99,86 @@ public class IndexController {
 
     // CADASTRADNDO ROTUTO **********************************************************************
     @RequestMapping("/fornecedor/cadastroContraRotulo")
-    public String cadastroContraRotulo(Model model) {
+    public String cadastroContraRotulo(Model model, @PageableDefault(size=5) Pageable pageable) {
 
-        model.addAttribute("rotulo", new ContraRotulo());
+        Page<ContraRotulo> todos = rotuloRepository.findAll(pageable);
 
+        model.addAttribute("usuariof", new Usuario());
+        model.addAttribute("todos", todos);
+        
         return "fornecedor/cadastroContraRotulo";
     }
 
+    // salvando
     @RequestMapping(value = "/fornecedor/cadastroContraRotulo", method = RequestMethod.POST)
-    public String cadastroContraRotuloSalvo(@ModelAttribute ContraRotulo rotulo, @ModelAttribute Usuario fornecedores, Model model) {
+    public String cadastroContraRotuloSalvo(@ModelAttribute Usuario usuariof, Model model, @PageableDefault(size=5) Pageable pageable) {
 
-        // AINDA COLOCAR METODOS PARA CADASTRAR ROTULO
+        ContraRotulo rotulo = new ContraRotulo();
+        // SALVAR O CONTRA ROTULO PARA UM FORNCEDOR
+        
+        if (usuariof.getContrarotulo() != null) {
+            rotulo.setId(usuariof.getContrarotulo().getId());
+        }
+        rotulo.setStatus(Status.PENDENTE);
+        rotulo.setProduto(usuariof.getContrarotulo().getProduto());
+        rotulo.setTipo(usuariof.getContrarotulo().getTipo());
 
-        model.addAttribute("rotulo", new ContraRotulo());
-        model.addAttribute("usuariof", new Usuario()); 
+        Usuario auxUsuario = repository.findById(usuariof.getId()).get();
+
+        auxUsuario.setContrarotulo(rotulo);
+
+        repository.save(auxUsuario);
+        
+        //rotuloRepository.save(rotulo);
+
+        Page<ContraRotulo> todos = rotuloRepository.findAll(pageable);
+
+        model.addAttribute("todos", todos);
+        model.addAttribute("usuariof", new Usuario());
 
         return "fornecedor/cadastroContraRotulo";
-    } //FIM *************************************************************************************************************************
+
+    } 
+    
+    @RequestMapping("/paginacao/rotulo")
+    public String cadastroContraRotuloPaginacao(@ModelAttribute Usuario usuariof, Model model, @PageableDefault(size=5) Pageable pageable) {
+
+        Page<ContraRotulo> todos = rotuloRepository.findAll(pageable);
+
+        model.addAttribute("usuariof", usuariof);
+        model.addAttribute("todos", todos);
+
+        return "fornecedor/cadastroContraRotulo";
+
+    }
+    @RequestMapping(value = "rotulo/deletar/{id}")
+    public String paginacaoRotuloEditar(@PathVariable ("id") Long id, Model model) {
+
+        rotuloRepository.deleteById(id);
+
+        Usuario usuario = new Usuario();
+
+        model.addAttribute("usuariof", usuario);
+        model.addAttribute("todos", rotuloRepository.findAll(PageRequest.of(0, 5, Sort.by("id"))));
+
+        return "fornecedor/cadastroContraRotulo";
+        
+    }
+
+    @RequestMapping(value = "rotulo/editar/{id}")
+    public String paginacaoRotuloDeletar(@PathVariable ("id") Long id, Model model) {
+
+        ContraRotulo rotulo = rotuloRepository.findById(id).get();
+        
+        Usuario usuario = repository.findById(rotulo.getIdUsuario().getId()).get();
+
+        model.addAttribute("todos", rotuloRepository.findAll(PageRequest.of(0, 5, Sort.by("id"))));
+        model.addAttribute("usuariof", usuario);
+
+        return "fornecedor/cadastroContraRotulo";
+        
+    }    
+    //FIM *************************************************************************************************************************
 
     // CADSTRANDO FORNECEDOR *****************************************************************
     @RequestMapping("/fornecedor/fornecedor")
@@ -141,6 +209,21 @@ public class IndexController {
         model.addAttribute("fornecedor", tipo);
 
         return "fornecedor/fornecedor";
+
+    }
+
+    @RequestMapping(value = "/paginacao/cadastrof")
+    public String cadastroForncedorPaginacao(@ModelAttribute Usuario usuario, Model model, @PageableDefault(size=5) Pageable pageable) {
+
+        Perfil tipo = Perfil.FORNECEDOR;
+        Page<Usuario> todos = repository.findByPerfil(tipo,pageable);
+
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("todos", todos);
+        model.addAttribute("fornecedor", tipo);
+
+        return "fornecedor/fornecedor";
+
     } //FIM **********************************************************************************************************
 
     // requisição que chama busca por fornecedores (entrar na página)
@@ -148,7 +231,7 @@ public class IndexController {
     public String procurar(@ModelAttribute Usuario usuario, Model model) {
  
         Perfil tipo = Perfil.FORNECEDOR;
-        String nome ="";
+        String nome = "";
 
         if (usuario.getNome() != null ){
             nome = usuario.getNome();
@@ -157,7 +240,7 @@ public class IndexController {
         Page<Usuario> todos = repository.findByNomeContainsIgnoreCaseAndPerfil(nome, tipo, PageRequest.of(0, 5, Sort.by("id")));
         
         model.addAttribute("todos", todos);
-        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("usuariof", usuario);
 
         return "fornecedor/buscarFornecedor";
         
@@ -174,7 +257,7 @@ public class IndexController {
             nome = usuario.getNome();
         } 
 
-        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("usuariof", new Usuario());
         model.addAttribute("todos", repository.findByNomeContainsIgnoreCaseAndPerfil(nome, tipo, pageable));
         model.addAttribute("rotulo", new ContraRotulo());
 
@@ -197,18 +280,19 @@ public class IndexController {
         
     }
 
-    // Busca concluidae
+    // Busca concluida MARCAR COMO ACHADO O FORNECEDOR *************************************************************************
     @RequestMapping(value = "/confirmacao/{id}")
-    public String pesquisaEncotrada(@PathVariable ("id") Long id, Model model) {
+    public String pesquisaEncotrada(@PathVariable ("id") Long id, Model model, @PageableDefault(size=5) Pageable pageable) {
 
-        Usuario usu = repository.findById(id).get();
+        Usuario usuariof = repository.findById(id).get();
+        Page<ContraRotulo> todos = rotuloRepository.findAll(pageable);
 
-        model.addAttribute("rotulo", new ContraRotulo());
-        model.addAttribute("usuariof", usu);     
+        model.addAttribute("usuariof", usuariof);
+        model.addAttribute("todos", todos);
 
         return "fornecedor/cadastroContraRotulo";
         
-    } // ************************************************************************************************************************************
+    } //FIM *****************************************************************************************************************************
 
     @RequestMapping(value = "cadastrousuario/deletar/{id}")
     public String cadastroUsuarioDeletar(@PathVariable ("id") Long id, Model model) {

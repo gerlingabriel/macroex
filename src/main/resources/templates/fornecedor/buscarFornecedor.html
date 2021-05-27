@@ -61,7 +61,7 @@
 
             </div>
             <br>
-            <input type="submit " name="submit " value="submit " class="btn btn-info btn-md ">
+            <input type="submit" name="submit" value="submit" class="btn btn-info btn-md ">
             <a href="/home "><span>Voltar para Home</span></a>
         </form>
     </div>
@@ -94,7 +94,7 @@
         <div style="margin-top: 5px; background-color: white; width: 25%;">
             <!-- Anterior-->
             <span th:if="${todos.hasPrevious()}">
-                <a th:href="@{/paginacao(page=${todos.number-1}, size=${todos.size})}">Anterior</a>
+                <a th:href="@{/paginacao/fornecedor(page=${todos.number-1}, size=${todos.size})}">Anterior</a>
             </span>
             <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)}">
                 <a th:href="@{/paginacao/fornecedor(page=${i}, size=${todos.size})}">[[ ${i} + 1 ]]</a>

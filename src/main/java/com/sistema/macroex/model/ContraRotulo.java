@@ -9,7 +9,7 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class ContraRotulo {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -22,7 +22,7 @@ public class ContraRotulo {
 
     private Status status;
 
-    private String descricao;
+    private String produto;
 
     public Long getId() {
         return id;
@@ -56,14 +56,20 @@ public class ContraRotulo {
         this.status = status;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getProduto() {
+        return produto;
     }
 
-    public void setDescrição(String descricao) {
-        this.descricao = descricao;
+    public void setProduto(String produto) {
+        this.produto = produto;
     }
 
-    
-    
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
 }

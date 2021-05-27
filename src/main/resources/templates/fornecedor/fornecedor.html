@@ -46,9 +46,10 @@
 </head>
 
 <body>
+    <h1 style="margin-bottom: 0px; align-items: center;">Cadastro de Fornecedor</h1>
+    <div class="container center" style="margin-top: 10px;">
 
-    <div class="container center">
-        <form class="form-horizontal" method="POST" th:object="${usuario}" th:action="@{/fornecedor/fornecedor}">
+        <form class=" form-horizontal" method="POST" th:object="${usuario} " th:action="@{/fornecedor/fornecedor}">
 
             <!-- Text input-->
             <div class="form-group ">
@@ -73,7 +74,7 @@
             <!-- cadadstro de aniverário
                         <label class="col-md-1 control-label " for="Nome ">Nascimento<h11>*</h11></label>
                         <div class="col-md-2 ">
-                            <input id="dtnasc " name="dtnasc " placeholder="DD/MM/AAAA " class="form-control input-md " th:field="*{dataNascimento}">
+                            <input id="dtnasc " name="dtnasc " placeholder="DD/MM/AAAA " class="form-control input-md " th:field="*{dataNascimento} ">
                         </div>
                         -->
 
@@ -93,8 +94,8 @@
                 <label class="col-md-2 control-label " for="prependedtext ">Perfil <h11>*</h11></label>
                 <div class="col-md-5 ">
                     <div class="input-group ">
-                        <select class="form-select" th:field="*{perfil}" id="perfil" name="perfil" readonly>
-                            <option th:each="teste : ${T(com.sistema.macroex.model.Perfil).FORNECEDOR}" th:value="${teste}" th:text="${teste}" selected>
+                        <select class="form-select " th:field="*{perfil} " id="perfil" name="perfil " readonly>
+                            <option th:each="p : ${T(com.sistema.macroex.model.Perfil).FORNECEDOR} " th:value="${p} " th:text="${p} " selected>
                             </option>
                         </select>
                     </div>
@@ -104,7 +105,7 @@
             <!-- Linha dos botões-->
             <div class="form-group ">
                 <input type="submit" name="submit" class="btn btn-info btn-md " value="submit" />
-                <a href="/home"><span>Voltar para Home</span></a>
+                <a href="/home "><span>Voltar para Home</span></a>
             </div>
 
 
@@ -113,23 +114,40 @@
 
     <!-- Tabela de dados -->
     <div align="center">
-        <table class="table table-hover" style="width: 85%;background-color: white;">
+        <table class="table table-hover " style="width: 85%;background-color: white; ">
             <thead>
                 <tr>
-                    <th scope="col"> Nome </th>
-                    <th scope="col"> Email </th>
+                    <th scope="col "> Nome </th>
+                    <th scope="col "> Email </th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:if="${todos.empty}">
-                    <td colspan="2"> Não há lista </td>
+                <tr th:if="${todos.empty} ">
+                    <td colspan="2 "> Não há lista </td>
                 </tr>
-                <tr th:each="user:${todos}">
-                    <td><span th:text="${user.nome}"> Nome </span></td>
-                    <td><span th:text="${user.email}"> Email </span></td>
+                <tr th:each="user:${todos} ">
+                    <td><span th:text="${user.nome} "> Nome </span></td>
+                    <td><span th:text="${user.email} "> Email </span></td>
                 </tr>
             </tbody>
         </table>
+
+        <!-- Paginação-->
+        <div style="margin-top: 10px; background-color: white; width: 25%; ">
+            <!-- Anterior-->
+            <span th:if="${todos.hasPrevious()} ">
+                <a th:href="@{/paginacao/cadastrof(page=${todos.number-1}, size=${todos.size})} ">Anterior</a>
+            </span>
+            <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)} ">
+                <a th:href="@{/paginacao/cadastrof(page=${i}, size=${todos.size})} ">[[ ${i} + 1 ]]
+                </a>
+            </th:block>
+            <!-- Próximo-->
+            <span th:if="${todos.hasNext()} ">
+                <a th:href="@{/paginacao/cadastrof(page=${todos.number+1}, size=${todos.size})} ">Próximo</a>
+            </span>
+        </div>
+
     </div>
 
 

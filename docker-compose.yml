@@ -9,6 +9,8 @@ services:
             MYSQL_DATABASE: microex     
         ports: 
             - "3306:3306"
+        security_opt:
+                - seccomp:unconfined
         volumes: 
             - microex:/var/lib/mysql
 
