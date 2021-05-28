@@ -6,9 +6,11 @@
 
 <head>
 
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+
+
     <!------ Include the above in your HEAD tag ---------->
 
     <meta charset="UTF-8">
@@ -34,118 +36,162 @@
             margin: 5% auto;
             padding: 4%;
         }
-        
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #17a2b8;
-            height: 100vh;
-        }
     </style>
 
 </head>
 
 <body>
 
-    <div class="container center">
-        <form class="form-horizontal" method="POST" th:object="${usuario}" th:action="@{/cadastro/cadastroFornecedor}">
+    <div class="row">
+        <div class="col">
+            <!--barra horizontal-->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
-            <!-- campo para obter id, assim na hora de atulizar ele saberá diferenciar-->
-            <input type="hidden" id="id" name="id" th:field="*{id}">
-            <input type="hidden" id="id" name="id" th:field="*{perfil}">
-
-            <!-- Text input-->
-            <div class="form-group ">
-                <label class="col-md-2 control-label " for="Nome ">Nome <h11>*</h11></label>
-                <div class="col-md-8 ">
-                    <input id="Nome " name="Nome " placeholder="Nome completo " class="form-control input-md " th:field="*{nome}">
+                <div class="container-fluid d-flex">
+                    <a class="navbar-brand" href="/logout">Logout</a>
                 </div>
+                <div class="container-fluid d-flex">
+                    <a class="navbar-brand" href="/home">Home</a>
+                </div>
+
+                <div class="container-fluid d-flex">
+                    <a href="#" style="color:white;">Usuário <span th:text="${session.usuario.nome}"></span></a>
+                </div>
+            </nav>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col">
+
+            <!-- barra lateral-->
+            <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark " style="width: 250px;height: 100%;margin-left: opx; ">
+                <a href="/ " class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none ">
+                    <svg class="bi me-2 " width="40 " height="32 "><use xlink:href="#bootstrap "/></svg>
+                    <span class="fs-4 ">Microex</span>
+                </a>
+                <hr>
+                <ul class="nav nav-pills flex-column mb-auto ">
+                    <li class="nav-item " th:if="${session.usuario.perfil==session.usuario.perfil.ADMINISTRADOR } " style="margin-bottom: 10px;">
+                        <a href="cadastro/cadastroFornecedor" aria-current="page ">
+                    CADASTRO USUARIO
+                </a>
+                    </li>
+                    <li class="nav-item " th:if="${session.usuario.perfil==session.usuario.perfil.ADMINISTRADOR } " style="margin-bottom: 10px;">
+                        <a href="fornecedor/cadastroContraRotulo " aria-current="page ">
+                   CADASTRA CONTRA ROTULO
+                </a>
+                    </li>
+                    <li class="nav-item " th:if="${session.usuario.perfil==session.usuario.perfil.ADMINISTRADOR } " style="margin-bottom: 10px;">
+                        <a href="# " aria-current="page ">
+                    NOTIFICAÇÃO
+                </a>
+                    </li>
+                </ul>
+
             </div>
+        </div>
 
-            <!-- Text input-->
-            <div class="form-group ">
-                <label class="col-md-2 control-label " for="Nome ">CPF<h11>*</h11></label>
-                <div class="col-md-3 ">
-                    <input id="cpf " name="cpf " placeholder="Apenas números " class="form-control input-md " th:field="*{doc}">
+        <div class="col-md-7">
+            <form class="form-horizontal" method="POST" th:object="${usuario}" th:action="@{/cadastro/cadastroFornecedor}">
+
+                <!-- campo para obter id, assim na hora de atulizar ele saberá diferenciar-->
+                <input type="hidden" id="id" name="id" th:field="*{id}">
+                <input type="hidden" id="id" name="id" th:field="*{perfil}">
+
+                <!-- Text input-->
+                <div class="form-group ">
+                    <label class="col-md-2 control-label " for="Nome ">Nome <h11>*</h11></label>
+                    <div class="col-md-8 ">
+                        <input id="Nome " name="Nome " placeholder="Nome completo " class="form-control input-md " th:field="*{nome}">
+                    </div>
                 </div>
-                <label class="col-md-2 control-label " for="senha ">Senha<h11>*</h11></label>
-                <div class="col-md-3 ">
-                    <input id="senha " name="senha " placeholder="No máximo 10 elementos " class="form-control input-md " th:field="*{senha}">
+
+                <!-- Text input-->
+                <div class="form-group ">
+                    <label class="col-md-2 control-label " for="Nome ">CPF<h11>*</h11></label>
+                    <div class="col-md-3 ">
+                        <input id="cpf " name="cpf " placeholder="Apenas números " class="form-control input-md " th:field="*{doc}">
+                    </div>
+                    <label class="col-md-2 control-label " for="senha ">Senha<h11>*</h11></label>
+                    <div class="col-md-3 ">
+                        <input id="senha " name="senha " placeholder="No máximo 10 elementos " class="form-control input-md " th:field="*{senha}">
+                    </div>
                 </div>
-            </div>
-            <!-- cadadstro de aniverário
+                <!-- cadadstro de aniverário
                         <label class="col-md-1 control-label " for="Nome ">Nascimento<h11>*</h11></label>
                         <div class="col-md-2 ">
                             <input id="dtnasc " name="dtnasc " placeholder="DD/MM/AAAA " class="form-control input-md " th:field="*{dataNascimento}">
                         </div>
                         -->
 
-            <!-- Prepended text-->
-            <div class="form-group ">
-                <label class="col-md-2 control-label " for="prependedtext ">Email <h11>*</h11></label>
-                <div class="col-md-5 ">
-                    <div class="input-group ">
-                        <span class="input-group-addon "><i class="glyphicon glyphicon-envelope "></i></span>
-                        <input id="prependedtext " name="prependedtext " class="form-control " placeholder="email@email.com " th:field="*{email}">
+                <!-- Prepended text-->
+                <div class="form-group ">
+                    <label class="col-md-2 control-label " for="prependedtext ">Email <h11>*</h11></label>
+                    <div class="col-md-5 ">
+                        <div class="input-group ">
+                            <span class="input-group-addon "><i class="glyphicon glyphicon-envelope "></i></span>
+                            <input id="prependedtext " name="prependedtext " class="form-control " placeholder="email@email.com " th:field="*{email}">
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Linha dos botões-->
-            <div class="form-group ">
-                <input type="submit" name="submit" class="btn btn-info btn-md " value="submit" />
-                <a href="/home"><span>Voltar para Home</span></a>
-            </div>
+                <!-- Linha dos botões-->
+                <div class="form-group ">
+                    <input type="submit" name="submit" class="btn btn-info btn-md " value="submit" />
+                    <a href="/home"><span>Voltar para Home</span></a>
+                </div>
 
 
-        </form>
-    </div>
+            </form>
 
-    <!-- Tabela de dados -->
-    <div align="center">
-        <table class="table table-hover" style="width: 85%;background-color: white;">
-            <thead>
-                <tr>
-                    <th scope="col"> Nome </th>
-                    <th scope="col"> Email </th>
-                    <th scope="col"> Perfil </th>
-                    <th scope="col" style="text-align:center"> Editar </th>
-                    <th scope="col" style="text-align:center"> Deletar </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:if="${todos.empty}">
-                    <td colspan="2"> Não há lista </td>
-                </tr>
-                <tr th:each="user:${todos}">
-                    <td><span th:text="${user.nome}"> Nome </span></td>
-                    <td><span th:text="${user.email}"> Email </span></td>
-                    <td><span th:text="${user.perfil}"> Email </span></td>
-                    <td align="center">
-                        <a th:href="@{/cadastrousuario/editar/{id}(id = ${user.id})}"><img src="/icon/editar.png" width="15px" alt="Editar"></a>
-                    </td>
-                    <td align="center">
-                        <a th:href="@{/cadastrousuario/deletar/{id}(id = ${user.id})}"><img src="/icon/deletar.png" width="15px" alt="Editar"></a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+            <!-- Tabela de dados -->
+            <table class="table table-hover" style="width: 85%;background-color: white;">
+                <thead>
+                    <tr>
+                        <th scope="col"> Nome </th>
+                        <th scope="col"> Email </th>
+                        <th scope="col"> Perfil </th>
+                        <th scope="col" style="text-align:center"> Editar </th>
+                        <th scope="col" style="text-align:center"> Deletar </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:if="${todos.empty}">
+                        <td colspan="2"> Não há lista </td>
+                    </tr>
+                    <tr th:each="user:${todos}">
+                        <td><span th:text="${user.nome}"> Nome </span></td>
+                        <td><span th:text="${user.email}"> Email </span></td>
+                        <td><span th:text="${user.perfil}"> Email </span></td>
+                        <td align="center">
+                            <a th:href="@{/cadastrousuario/editar/{id}(id = ${user.id})}"><img src="/icon/editar.png" width="15px" alt="Editar"></a>
+                        </td>
+                        <td align="center">
+                            <a th:href="@{/cadastrousuario/deletar/{id}(id = ${user.id})}"><img src="/icon/deletar.png" width="15px" alt="Editar"></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-        <!-- Paginação-->
-        <div style="margin-top: 10px; background-color: white; width: 25%;">
-            <!-- Anterior-->
-            <span th:if="${todos.hasPrevious()}">
+            <!-- Paginação-->
+            <div style="margin-top: 10px; background-color: white; width: 25%;">
+                <!-- Anterior-->
+                <span th:if="${todos.hasPrevious()}">
                 <a th:href="@{/paginacao(page=${todos.number-1}, size=${todos.size})}">Anterior</a>
             </span>
-            <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)}">
-                <a th:href="@{/paginacao(page=${i}, size=${todos.size})}">[[ ${i} + 1 ]]
+                <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)}">
+                    <a th:href="@{/paginacao(page=${i}, size=${todos.size})}">[[ ${i} + 1 ]]
                 </a>
-            </th:block>
-            <!-- Próximo-->
-            <span th:if="${todos.hasNext()}">
+                </th:block>
+                <!-- Próximo-->
+                <span th:if="${todos.hasNext()}">
                 <a th:href="@{/paginacao(page=${todos.number+1}, size=${todos.size})}">Próximo</a>
             </span>
+            </div>
         </div>
+        <!-- fim do col-8-->
 
 
     </div>

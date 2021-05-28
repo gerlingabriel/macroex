@@ -38,7 +38,6 @@ public class IndexController {
     @RequestMapping("/login")
     public String login() {
         return "login";
-
         
     }
 
@@ -169,9 +168,11 @@ public class IndexController {
         rotuloRepository.deleteById(id);
 
         Usuario usuario = new Usuario();
+        ContraRotulo rotulo = new ContraRotulo();
 
         model.addAttribute("usuariof", usuario);
         model.addAttribute("todos", rotuloRepository.findAll(PageRequest.of(0, 5, Sort.by("id"))));
+        model.addAttribute("rotulo", rotulo);
 
         return "fornecedor/cadastroContraRotulo";
         
@@ -180,12 +181,13 @@ public class IndexController {
     @RequestMapping(value = "rotulo/editar/{id}")
     public String paginacaoRotuloDeletar(@PathVariable ("id") Long id, Model model) {
 
-        //ContraRotulo rotulo = rotuloRepository.findById(id).get();
-        
-        //Usuario usuario = repository.findById(rotulo.getIdUsuario().getId()).get();
+       ContraRotulo rotulo = rotuloRepository.findById(id).get();
 
-        model.addAttribute("todos", rotuloRepository.findAll(PageRequest.of(0, 5, Sort.by("id"))));
-        //model.addAttribute("usuariof", usuario);
+       Usuario usuariof = repository.findById(rotulo.getUsuario().getId()).get();
+
+       model.addAttribute("todos", rotuloRepository.findAll(PageRequest.of(0, 5, Sort.by("id"))));
+       model.addAttribute("rotulo", rotulo);
+       model.addAttribute("usuariof", usuariof);
 
         return "fornecedor/cadastroContraRotulo";
         
@@ -226,7 +228,7 @@ public class IndexController {
 
         return "fornecedor/cadastroContraRotulo";
         
-    }//FIM *****************************************************************************************************************************
+    }//FIM ************************************************************************************************************************
     //FIM *************************************************************************************************************************
 
     // CADSTRANDO FORNECEDOR *****************************************************************
