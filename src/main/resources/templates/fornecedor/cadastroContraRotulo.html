@@ -47,7 +47,7 @@
     <h1>Cadastro de Contra Rotulo</h1>
 
     <div class="container">
-        <form method="POST" th:action="@{/fornecedor/cadastroContraRotulo}" th:object="${usuariof}">
+        <form method="POST" th:action="@{/fornecedor/cadastroContraRotulo}" th:object="${rotulo}">
 
             <input type="hidden" id="id" name="id" th:field="*{id}">
 
@@ -55,7 +55,7 @@
             <div class="form-group " th:if="${usuariof.nome != null}">
                 <label class="col-md-3 control-label " for="produto ">Produto <h11>*</h11></label>
                 <div class="col-md-9 ">
-                    <input id="produto " name="produto " placeholder="Nome do Produto" class="form-control input-md " th:field="*{contrarotulo.produto} ">
+                    <input id="produto " name="produto " placeholder="Nome do Produto" class="form-control input-md " th:field="*{produto} ">
                 </div>
             </div>
 
@@ -63,14 +63,18 @@
             <div class="form-group " th:if="${usuariof.nome != null}">
                 <label class="col-md-3 control-label " for="Tipo ">Tipo <h11>*</h11></label>
                 <div class="col-md-9 ">
-                    <input id="tipo " name="tipo " placeholder="Tipo do produto " class="form-control input-md " th:field="*{contrarotulo.tipo} ">
+                    <input id="tipo " name="tipo " placeholder="Tipo do produto " class="form-control input-md " th:field="*{tipo} ">
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="col-md-3 control-label " for="fornecedor ">Buscar o Fornecedor <h11>*</h11></label>
-                <div class="col-md-7 ">
-                    <input name="nome " placeholder="Nome do Fornecedor " class="form-control input-md " th:field="*{nome}" readonly>
+                <div class="col-md-7 " th:if="${usuariof.nome != null}">
+                    <input type="hidden" name="usuario "  class="form-control input-md " th:field="*{usuario}">
+                    <input name="nome "  class="form-control input-md " th:field="*{usuario.nome}" readonly>
+                </div>
+                <div class="col-md-7 " th:unless="${usuariof.nome != null}">
+                    <input name="nome " placeholder="Nome do Fornecedor "  class="form-control input-md " readonly>
                 </div>
                 <a href=" /fornecedor/buscarFornecedor ">Buscar</a>
 

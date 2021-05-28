@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class ContraRotulo {
@@ -17,7 +17,7 @@ public class ContraRotulo {
 
     private String tipo;
 
-    @OneToOne(mappedBy = "contrarotulo")
+    @ManyToOne
     private Usuario usuario;
 
     private Status status;
@@ -38,14 +38,6 @@ public class ContraRotulo {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
-    }
-
-    public Usuario getIdUsuario() {
-        return usuario;
-    }
-
-    public void setIdUsuario(Usuario usuario) {
-        this.usuario = usuario;
     }
 
     public Status getStatus() {
@@ -71,5 +63,6 @@ public class ContraRotulo {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+    
 
 }

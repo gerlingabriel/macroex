@@ -20,8 +20,56 @@
 
     <a href="/logout">logout</a>
 
-    <h1>Ola! <span th:text="${session.usuario.nome}"></span>
-    </h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <h1>Ola! <span th:text="${session.usuario.nome}"></span>
+                </h1>
+            </div>
+
+
+            <div class="col-sm">
+                <!-- Tabela de dados -->
+                <div align="center">
+                    <table class="table table-hover " style="width: 45%;background-color: white; margin-left: 45px; ">
+                        <thead>
+                            <tr>
+                                <th scope="col "> Nome </th>
+                                <th scope="col "> Status </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${todos.empty} ">
+                                <td colspan="2 "> Não há lista </td>
+                            </tr>
+                            <tr th:each="user:${todos} ">
+                                <td><span th:text="${user.produto} "> Nome </span></td>
+                                <td><span th:text="${user.status} "> Email </span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <!-- Paginação
+            <div th:if="${!todos.empty}" style="margin-top: 10px; background-color: white; width: 25%; ">
+                <!-- Anterior
+                <span th:if="${todos.hasPrevious()} ">
+                    <a th:href="@{/paginacao/rotulo(page=${todos.number-1}, size=${todos.size})} ">Anterior</a>
+                </span>
+                <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)} ">
+                    <a th:href="@{/paginacao/rotulo(page=${i}, size=${todos.size})} ">[[ ${i} + 1 ]]
+                    </a>
+                </th:block>
+                <!-- Próximo
+                <span th:if="${todos.hasNext()} ">
+                    <a th:href="@{/paginacao/rotulo(page=${todos.number+1}, size=${todos.size})} ">Próximo</a>
+                </span>
+            </div> -->
+
+            </div> <!-- Fim da tabela -->
+        </div> <!-- Fim da div linha (para ter OLa e Tabela na memsa linha)-->
+    </div>
 
     <table>
         <tr style="margin-left: 5px;">

@@ -15,7 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Usuario {
@@ -49,9 +49,8 @@ public class Usuario {
             inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private List<Role> roles;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn( name = "contrarotulo_id",referencedColumnName = "id")
-    private ContraRotulo contrarotulo;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<ContraRotulo> contrarotulo;
 
 
 
@@ -192,12 +191,12 @@ public class Usuario {
     }
 
 
-    public ContraRotulo getContrarotulo() {
+    public List<ContraRotulo> getContrarotulo() {
         return contrarotulo;
     }
 
 
-    public void setContrarotulo(ContraRotulo contrarotulo) {
+    public void setContrarotulo(List<ContraRotulo> contrarotulo) {
         this.contrarotulo = contrarotulo;
     }
 
