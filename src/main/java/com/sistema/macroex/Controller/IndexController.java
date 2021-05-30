@@ -49,7 +49,7 @@ public class IndexController {
     public String home(HttpSession session, Model model) {
 
         Usuario usuario = repository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        session.setAttribute("usuario", usuario);
+        session.setAttribute("user", usuario);
 
         List<ContraRotulo> todos = new ArrayList<>();
 

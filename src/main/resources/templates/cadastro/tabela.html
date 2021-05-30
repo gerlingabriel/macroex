@@ -1,0 +1,44 @@
+ <!-- Tabela de dados -->
+ <table class="table table-hover table-bordered" align="center" style="width: 90%;">
+    <thead>
+        <tr>
+            <th scope="col"> Nome </th>
+            <th scope="col"> Email </th>
+            <th scope="col"> Perfil </th>
+            <th scope="col" style="text-align:center"> Editar </th>
+            <th scope="col" style="text-align:center"> Deletar </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:if="${todos.empty}">
+            <td colspan="2"> Não há lista </td>
+        </tr>
+        <tr th:each="user:${todos}">
+            <td><span th:text="${user.nome}"> Nome </span></td>
+            <td><span th:text="${user.email}"> Email </span></td>
+            <td><span th:text="${user.perfil}"> Email </span></td>
+            <td align="center">
+                <a th:href="@{/cadastrousuario/editar/{id}(id = ${user.id})}"><img src="/icon/editar.png" width="15px" alt="Editar"></a>
+            </td>
+            <td align="center">
+                <a th:href="@{/cadastrousuario/deletar/{id}(id = ${user.id})}"><img src="/icon/deletar.png" width="15px" alt="Editar"></a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Paginação-->
+<div style="margin-top: 10px; background-color: white; width: 25%;" align="center">
+    <!-- Anterior-->
+    <span th:if="${todos.hasPrevious()}">
+        <a th:href="@{/paginacao(page=${todos.number-1}, size=${todos.size})}">Anterior</a>
+    </span>
+    <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)}">
+        <a th:href="@{/paginacao(page=${i}, size=${todos.size})}">[[ ${i} + 1 ]]
+        </a>
+    </th:block>
+    <!-- Próximo-->
+    <span th:if="${todos.hasNext()}">
+        <a th:href="@{/paginacao(page=${todos.number+1}, size=${todos.size})}">Próximo</a>
+    </span>
+</div>

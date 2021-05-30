@@ -1,97 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-<head>
-    <title>Página Home</title>
-
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
-
-
-    <style>
-        a:link {
-            text-decoration: none;
-        }
-    </style>
-
-</head>
+<!-- Cabeçalho -->
+<th:block th:replace="/layout/fragments/head :: head1"></th:block>
 
 <body>
 
-    <!--barra horizontal-->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="wrapper">
 
-        <div class="container-fluid d-flex">
-            <a class="navbar-brand" href="/logout">Logout</a>
+        <!-- Barra lateral-->
+        <th:block th:replace="/layout/fragments/sidebar :: barralateral"></th:block>
+
+        <div id="content">
+            <!-- Barra Superior -->
+            <th:block th:replace="/layout/fragments/top :: barrainicial"></th:block>
+
+            <!-- Texto Principal -->
+            <th:block layout:fragment="content" style="margin-left: 0;"></th:block>
+
         </div>
 
-        <div class="container-fluid d-flex">
-            <a href="#" style="color:white;">Usuário <span th:text="${session.usuario.nome}"></span></a>
-        </div>
-    </nav>
 
-    <!-- barra lateral-->
-    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark " style="width: 250px;height: 100%; ">
-        <a href="/ " class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none ">
-            <svg class="bi me-2 " width="40 " height="32 "><use xlink:href="#bootstrap "/></svg>
-            <span class="fs-4 ">Microex</span>
-        </a>
-        <hr>
-        <ul class="nav nav-pills flex-column mb-auto ">
-            <li class="nav-item " th:if="${session.usuario.perfil==session.usuario.perfil.ADMINISTRADOR } " style="margin-bottom: 10px;">
-                <a href="cadastro/cadastroFornecedor" aria-current="page ">
-                    CADASTRO USUARIO
-                </a>
-            </li>
-            <li class="nav-item " th:if="${session.usuario.perfil==session.usuario.perfil.ADMINISTRADOR } " style="margin-bottom: 10px;">
-                <a href="fornecedor/cadastroContraRotulo " aria-current="page ">
-                   CADASTRA CONTRA ROTULO
-                </a>
-            </li>
-            <li class="nav-item " th:if="${session.usuario.perfil==session.usuario.perfil.ADMINISTRADOR } " style="margin-bottom: 10px;">
-                <a href="# " aria-current="page ">
-                    NOTIFICAÇÃO
-                </a>
-            </li>
-        </ul>
+        <!-- Fundo Comum -->
+        <th:block th:replace="/layout/fragments/footer :: rodape"></th:block>
+
 
     </div>
 
 
+    <!-- Script comum -->
+    <th:block th:replace="/layout/fragments/script :: scripts"></th:block>
 </body>
-
-
-<!--
-    <a href=" /logout ">logout</a>
-
-
-    <table>
-        <tr style="margin-left: 5px; ">
-            <td th:if="${session.usuario.perfil==session.usuario.perfil.ADMINISTRADOR } ">
-                <a href="cadastro/cadastroFornecedor ">
-                    <img alt="Cadastro de Funcionário " width="75px " th:src="@{icon/cadastro.png} "></a>
-            </td>
-            <td th:if="${session.usuario.perfil==s ession.usuario.perfil.ADMINISTRADOR } ">
-                <a href="fornecedor/cadastroContraRotulo ">
-                    <img alt=" Cadastro do Contra Rotulo " width="75px " th:src="@{icon/rotulo.png} "></a>
-            </td>
-            <td th:if="${session.usuario.perfil==s ession.usuario.perfil.ADMINISTRADOR } ">
-                <a href="fornecedor/fornecedor ">
-                    <img alt=" Cadastro Funcionário " width="75px " th:src="@{icon/forncedor2.png} "></a>
-            </td>
-        </tr>
-        <tr>
-            <td th:if="${session.usuario.perfil==s ession.usuario.perfil.ADMINISTRADOR } ">Cadastro de Usuário</td>
-            <td th:if="${session.usuario.perfil==s ession.usuario.perfil.ADMINISTRADOR } ">Cadastro de Contra Rotulo</td>
-            <td th:if="${session.usuario.perfil==s ession.usuario.perfil.ADMINISTRADOR } ">Cadastro de Fornecedor</td>
-        </tr>
-
-    </table>
-    -->
 
 </html>
