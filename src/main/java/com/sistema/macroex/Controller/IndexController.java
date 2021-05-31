@@ -66,46 +66,7 @@ public class IndexController {
         return "home";
     }
 
-    //Pagina cadstro
-    @RequestMapping(value = "/cadastro/cadastroFornecedor", method = RequestMethod.GET)
-    public String paginaCadastro(Model model) {
-
-        Usuario usuario = new Usuario();
-
-        model.addAttribute("usuario", usuario);
-        model.addAttribute("todos", repository.findAll(PageRequest.of(0, 5, Sort.by("id"))));
-
-        return "cadastro/cadastroUsuario";
-    }
-
-    //salvado cadastro novo
-    @RequestMapping(value = "/cadastro/cadastroFornecedor", method = RequestMethod.POST)
-    public String paginaCadastroSalvo(@ModelAttribute Usuario usuario, Model model) {
-
-        if (usuario.getPerfil() == null) {
-            usuario.setPerfil(Perfil.ADMINISTRADOR);            
-        }
-        
-        repository.save(usuario);
-
-        model.addAttribute("usuario", new Usuario());
-        model.addAttribute("todos", repository.findAll(PageRequest.of(0, 5, Sort.by("id"))));
-
-        return "cadastro/cadastroUsuario";
-    }
-
-    // Paginação das tabelas
-    @RequestMapping(value = "/paginacao")
-    public String pagiancao(Model model, @PageableDefault(size=5) Pageable pageable){
-
-        model.addAttribute("usuario", new Usuario());
-        model.addAttribute("todos", repository.findAll(pageable));
-
-
-
-        return "cadastro/cadastroUsuario";
-
-    } //FIM *******************************************************************************************
+   
 
     // CADASTRADNDO ROTUTO *****************************************************************************
     @RequestMapping("/fornecedor/cadastroContraRotulo")
@@ -290,48 +251,5 @@ public class IndexController {
        return "fornecedor/buscarFornecedor";
 
     }
-
-    // Filtrar a pesquisa pelo nome
-    @RequestMapping(value = "/buscar")
-    public String pesquisar(@ModelAttribute Usuario usuario, Model model, @PageableDefault(size=5) Pageable pageable) {
-
-        String nome = usuario.getNome();
-
-        Perfil tipo = Perfil.FORNECEDOR;
-        Page<Usuario> todos = repository.findByNomeContainsIgnoreCaseAndPerfil(nome, tipo, pageable);                 
-
-        model.addAttribute("todos", todos);
-        model.addAttribute("usuario", new Usuario());
-        return "fornecedor/buscarFornecedor";
-        
-    }
-
-
-    @RequestMapping(value = "cadastrousuario/deletar/{id}")
-    public String cadastroUsuarioDeletar(@PathVariable ("id") Long id, Model model) {
-
-        repository.deleteById(id);
-
-        Usuario usuario = new Usuario();
-
-        model.addAttribute("usuario", usuario);
-        model.addAttribute("todos", repository.findAll(PageRequest.of(0, 5, Sort.by("id"))));
-
-        return "cadastro/cadastroUsuario";
-        
-    }
-
-    @RequestMapping(value = "cadastrousuario/editar/{id}")
-    public String cadastroUsuarioEditar(@PathVariable ("id") Long id, Model model) {
-
-       Usuario usu = repository.findById(id).get();
-
-        model.addAttribute("usuario", usu);
-        model.addAttribute("todos", repository.findAll(PageRequest.of(0, 5, Sort.by("id"))));
-
-        return "cadastro/cadastroUsuario";
-        
-    }
-
 
 }

@@ -1,44 +1,78 @@
- <!-- Tabela de dados -->
- <table class="table table-hover table-bordered" align="center" style="width: 90%;">
-    <thead>
-        <tr>
-            <th scope="col"> Nome </th>
-            <th scope="col"> Email </th>
-            <th scope="col"> Perfil </th>
-            <th scope="col" style="text-align:center"> Editar </th>
-            <th scope="col" style="text-align:center"> Deletar </th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:if="${todos.empty}">
-            <td colspan="2"> Não há lista </td>
-        </tr>
-        <tr th:each="user:${todos}">
-            <td><span th:text="${user.nome}"> Nome </span></td>
-            <td><span th:text="${user.email}"> Email </span></td>
-            <td><span th:text="${user.perfil}"> Email </span></td>
-            <td align="center">
-                <a th:href="@{/cadastrousuario/editar/{id}(id = ${user.id})}"><img src="/icon/editar.png" width="15px" alt="Editar"></a>
-            </td>
-            <td align="center">
-                <a th:href="@{/cadastrousuario/deletar/{id}(id = ${user.id})}"><img src="/icon/deletar.png" width="15px" alt="Editar"></a>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<!DOCTYPE html>
 
-<!-- Paginação-->
-<div style="margin-top: 10px; background-color: white; width: 25%;" align="center">
-    <!-- Anterior-->
-    <span th:if="${todos.hasPrevious()}">
-        <a th:href="@{/paginacao(page=${todos.number-1}, size=${todos.size})}">Anterior</a>
-    </span>
-    <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)}">
-        <a th:href="@{/paginacao(page=${i}, size=${todos.size})}">[[ ${i} + 1 ]]
-        </a>
-    </th:block>
-    <!-- Próximo-->
-    <span th:if="${todos.hasNext()}">
-        <a th:href="@{/paginacao(page=${todos.number+1}, size=${todos.size})}">Próximo</a>
-    </span>
-</div>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{home}">
+
+
+<th:block layout:fragment="content">
+
+    <h2>Busca por Fornecedor</h2>
+
+    <div class="container">
+        <form method="GET" th:action="@{/cadastro/buscar}" th:object="${usuario}">
+
+            <div class=" form-group row">
+                <label class="col-md-1 control-label " for="nome ">Nome:</label>
+                <div class="col-md-6">
+                    <input id="nome " name="nome" placeholder="Nome do Produto" class="form-control input-md" th:field="*{nome}">
+                </div>
+                <button type="submit" class="btn btn-info btn-md " style="margin-right: 25px; ">Procurar</button>
+                <a href="/home " class="btn btn-info btn-md "><span>Voltar para Home</span></a>
+                <br>
+
+            </div>
+        </form>
+    </div>
+
+    <div align="center">
+        <!-- Tabela de dados -->
+        <table class="table table-hover table-bordered " style="width: 90%; ">
+            <thead>
+                <tr>
+                    <th scope="col "> Nome </th>
+                    <th scope="col "> Email </th>
+                    <th scope="col "> Perfil </th>
+                    <th scope="col " style="text-align:center "> Editar </th>
+                    <th scope="col " style="text-align:center;width: 50px; "> Inativar/Ativar </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${todos.empty} ">
+                    <td colspan="2 "> Não há lista </td>
+                </tr>
+                <tr th:each="user:${todos} ">
+                    <td><span th:text="${user.nome} "> Nome </span></td>
+                    <td><span th:text="${user.email} "> Email </span></td>
+                    <td><span th:text="${user.perfil} "> Email </span></td>
+                    <td align="center ">
+                        <a th:href="@{/cadastro/editar/{id}(id= ${user.id})} "><img src="/icon/editar.png " width="15px " alt="Editar "></a>
+                    </td>
+                    <td align="center " th:if="${user.enable == true} ">
+                        <a th:href="@{/cadastro/deletar/{id}(id= ${user.id})} "><img src="/icon/yes.png " width="15px " alt="Editar "></a>
+                    </td>
+                    <td align="center " th:if="${user.enable != true} ">
+                        <a th:href="@{/cadastro/deletar/{id}(id= ${user.id})} "><img src="/icon/no.png " width="15px " alt="Editar "></a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Paginação-->
+        <div style="margin-top: 10px; background-color: white; width: 25%; ">
+            <!-- Anterior-->
+            <span th:if="${todos.hasPrevious()} "><a th:href="@{/cadastro/paginacao(page=${todos.number-1}, size=${todos.size})} ">Anterior</a></span>
+
+            <!-- Paginaçõies -->
+            <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)} "><a th:href="@{/cadastro/paginacao(page=${i}, size=${todos.size})} ">[[ ${i} + 1 ]]</a></th:block>
+
+            <!-- Próximo-->
+            <span th:if="${todos.hasNext()} "><a th:href="@{/cadastro/paginacao(page=${todos.number+1}, size=${todos.size})} ">Próximo</a></span>
+        </div>
+
+
+    </div>
+    <!-- Fim da div para alinhar -->
+
+</th:block>
+
+</html>

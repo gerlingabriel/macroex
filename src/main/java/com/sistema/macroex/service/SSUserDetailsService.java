@@ -37,7 +37,7 @@ public class SSUserDetailsService implements UserDetailsService {
 
         try {
             Usuario user = usuarioRepository.findByUsuarioByLogin(email);
-            if(user==null){
+            if(user==null || !user.getEnable()){
                 throw new UsernameNotFoundException("Usuario não encontrado!");
             }
 

@@ -1,75 +1,113 @@
 <!DOCTYPE html>
 
-
-<html   xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{home}">
-
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{home}">
 
 <th:block layout:fragment="content">
 
-    <div class="container" style="margin-top: 10px;">
-        <form class="form-horizontal" method="POST" th:object="${usuario}" th:action="@{/cadastro/cadastroFornecedor}">
+    <div class="container" style="margin-top: 10px;"></div>
+    <form class="form-horizontal" method="POST" th:object="${usuario}" th:action="@{/cadastro}">
 
-            <!-- campo para obter id, assim na hora de atulizar ele saberá diferenciar-->
-            <input type="hidden" id="id" name="id" th:field="*{id}">
-            <input type="hidden" id="id" name="id" th:field="*{perfil}">
+        <!-- campo para obter id, assim na hora de atulizar ele saberá diferenciar-->
+        <input type="hidden" id="id" name="id" th:field="*{id}">
 
-            <!-- Text input-->
-            <div class="form-group row">
-                <label class="col-md-1 control-label" for="Nome">Nome</label>
-                <div class="col-md-11 ">
-                    <input id="Nome " name="Nome " placeholder="Nome completo " class="form-control input-md" th:field="*{nome}">
-                </div>
+        <!-- Caixa para Escoolha perfil-->
+        <div class="form-group row">
+            <label class="col-md-1 control-label " for="perfil">Perfil</label>
+            <div style="margin-left: 16px;">
+                <select class="form-control" aria-label=".form-select-lg example " th:field="*{perfil}" id="perfil" name="perfil">
+                        <option value="">Selecionar</option>
+                        <option th:each="p : ${T(com.sistema.macroex.model.Perfil).values()} "th:value="${p} " th:text="${p}" th:with="teste=${p}"></option>
+                    </select>
+
             </div>
+        </div>
 
-
-
-            <!-- Text input-->
-            <div class="form-group row">
-                <label class="col-md-1 control-label " for="Nome ">CPF</label>
-                <div class="col-md-5 ">
-                    <input id="cpf " name="cpf " placeholder="Apenas números " class="form-control input-md " th:field="*{doc}">
-                </div>
-                <label class="col-md-1 control-label " for="senha ">Senha</label>
-                <div class="col-md-5 ">
-                    <input id="senha " name="senha " placeholder="No máximo 10 elementos " class="form-control input-md " th:field="*{senha}">
-                </div>
+        <!-- Text input-->
+        <div class=" form-group row " th:if="${usuario.perfil == T(com.sistema.macroex.model.Perfil).ADMINISTRADOR}">
+            <label class="col-md-1 control-label " for="Nome ">Nome</label>
+            <div class="col-md-11 ">
+                <input id="Nome " name="Nome " placeholder="Nome completo " class="form-control input-md " th:field="*{nome} ">
             </div>
+        </div>
+
+        <!-- Text input-->
+        <div class="form-group row " th:if="${usuario.perfil == T(com.sistema.macroex.model.Perfil).FORNECEDOR}">
+            <label class=" col-md-1 control-label " for="Nome ">Razão</label>
+            <div class="col-md-11 ">
+                <input id="Nome " name="Nome " placeholder="Nome completo " class="form-control input-md " th:field="*{nome} ">
+            </div>
+        </div>
 
 
-            <!-- cadadstro de aniverário
+
+        <!-- Text input DO CPF-->
+        <div class="form-group row " th:if="${usuario.perfil == T(com.sistema.macroex.model.Perfil).ADMINISTRADOR}">
+            <label class="col-md-1 control-label " for="Nome ">CPF</label>
+            <div class="col-md-5 ">
+                <input id="cpf " name="cpf " placeholder="Apenas números " class="form-control input-md " th:field="*{doc} ">
+            </div>
+            <label class="col-md-1 control-label " for="senha ">Senha</label>
+            <div class="col-md-5 ">
+                <input id="senha " name="senha " placeholder="No máximo 10 elementos " class="form-control input-md " th:field="*{senha} ">
+            </div>
+        </div>
+
+        <!-- Text input DO CNPF -->
+        <div class="form-group row " th:if="${usuario.perfil == T(com.sistema.macroex.model.Perfil).FORNECEDOR}">
+            <label class="col-md-1 control-label " for="Nome ">CNPJ</label>
+            <div class="col-md-5 ">
+                <input id="cpf " name="cpf " placeholder="Apenas números " class="form-control input-md " th:field="*{doc} ">
+            </div>
+            <label class="col-md-1 control-label " for="senha ">Senha</label>
+            <div class="col-md-5 ">
+                <input id="senha " name="senha " placeholder="No máximo 10 elementos " class="form-control input-md " th:field="*{senha} ">
+            </div>
+        </div>
+
+
+
+        <!-- cadadstro de aniverário
                     <label class="col-md-1 control-label " for="Nome ">Nascimento<h11>*</h11></label>
                     <div class="col-md-2 ">
-                        <input id="dtnasc " name="dtnasc " placeholder="DD/MM/AAAA " class="form-control input-md " th:field="*{dataNascimento}">
+                        <input id="dtnasc " name="dtnasc " placeholder="DD/MM/AAAA " class="form-control input-md " th:field="*{dataNascimento} ">
                     </div>
                     -->
 
-            <!-- Prepended text-->
-            <div class="form-group row">
-                <label class="col-md-1 control-label " for="prependedtext ">Email</label>
-                <div class="col-md-5 ">
-                    <div class="input-group ">
-                        <span class="input-group-addon "><i class="glyphicon glyphicon-envelope "></i></span>
-                        <input id="prependedtext " name="prependedtext " class="form-control " placeholder="email@email.com " th:field="*{email}">
-                    </div>
+        <!-- Prepended text-->
+        <div class="form-group row " th:if="${usuario.perfil != null}">
+            <label class="col-md-1 control-label " for="prependedtext ">Email</label>
+            <div class="col-md-5 ">
+                <div class="input-group ">
+                    <span class="input-group-addon "><i class="glyphicon glyphicon-envelope "></i></span>
+                    <input id="prependedtext " name="prependedtext " class="form-control " placeholder="email@email.com " th:field="*{email} ">
                 </div>
             </div>
+        </div>
 
 
-            <!-- Linha dos botões-->
-            <div class="form-group row">
-                <input type="submit" name="submit" class="btn btn-info btn-md " value="submit" style="margin-right: 25px;" />
-                <a href="/home"><span>Voltar para Home</span></a>
-            </div>
+        <!-- Linha dos botões para salvar-->
+        <div class="form-group row " th:if="${usuario.perfil != null}">
+            <button type="submit " name="submit " class="btn btn-info btn-md" style="margin-right: 25px;width: 135px; ">Enviar</button>
+            <a th:href="@{/cadastro/novo}" class="btn btn-info btn-md" style="margin-right: 25px;width: 135px; ">Novo</a>
+            <a href="/home "><span>Voltar para Home</span></a>
+        </div>
 
-        </form>
+        <!-- Linha dos botões para buscar-->
+        <div class="form-group row " th:if="${usuario.perfil == null}">
+            <button type="submit " name="submit " class="btn btn-warning" style="margin-right: 25px;width: 135px; ">Buscar</button>
+            <a href="/home "><span>Voltar para Home</span></a>
 
-<br>
-<br>
-       
-    </div><!-- container -->
+        </div>
+
+    </form>
+
+    <br>
+    <br>
+
+    </div>
+    <!-- container -->
 
 
 </th:block>
 
 </html>
-

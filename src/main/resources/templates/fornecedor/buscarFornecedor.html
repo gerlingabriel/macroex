@@ -1,50 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rotulo</title>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{home}">
+<th:block layout:fragment="content">
 
-
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-    <!------ Include the above in your HEAD tag ---------->
-
-
-    <style>
-        h11 {
-            color: red;
-        }
-        
-        #logo {
-            width: 50%;
-            height: 50%;
-        }
-        
-        .panel-heading {
-            font-size: 150%;
-        }
-        
-        .container {
-            background-color: white;
-            margin: 5% auto;
-            padding: 4%;
-        }
-        
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #17a2b8;
-            height: 100vh;
-        }
-    </style>
-
-</head>
-
-<body>
     <h1>Busca por Fornecedor</h1>
 
     <div class="container">
@@ -106,8 +64,7 @@
         </div>
 
     </div>
-</body>
 
-</html>
+</th:block>
 
 </html>

@@ -15,21 +15,18 @@
             <!-- Barra Superior -->
             <th:block th:replace="/layout/fragments/top :: barrainicial"></th:block>
 
-            <!-- Texto Principal -->
-            <th:block layout:fragment="content" style="margin-left: 0;"></th:block>
+            <!-- Campo Principal -->
+            <th:block layout:fragment="content"></th:block>
 
         </div>
 
-
         <!-- Fundo Comum -->
-        <th:block th:replace="/layout/fragments/footer :: rodape"></th:block>
-
+        <th:block th:replace="/layout/fragments/footer :: rodape "></th:block>
 
     </div>
 
-
     <!-- Script comum -->
-    <th:block th:replace="/layout/fragments/script :: scripts"></th:block>
+    <th:block th:replace="/layout/fragments/script :: scripts "></th:block>
 </body>
 
 </html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{home}">
+<th:block layout:fragment="content">
+
+    <h2>Cadastro de Contra Rotulo</h2>
+
+    <div class="container">
+        <form method="POST" th:action="@{/rotulo}" th:object="${rotulo}">
+
+            <input type="hidden" id="id" name="id" th:field="*{id}">
+
+            <!--DESCRICAO-->
+            <div class="form-group " th:if="${usuariof.nome != null}">
+                <label class="col-md-3 control-label " for="produto ">Produto <h11>*</h11></label>
+                <div class="col-md-9 ">
+                    <input id="produto " name="produto " placeholder="Nome do Produto" class="form-control input-md " th:field="*{produto} ">
+                </div>
+            </div>
+
+            <!--TIPO-->
+            <div class="form-group " th:if="${usuariof.nome != null}">
+                <label class="col-md-3 control-label " for="Tipo ">Tipo <h11>*</h11></label>
+                <div class="col-md-9 ">
+                    <input id="tipo " name="tipo " placeholder="Tipo do produto " class="form-control input-md " th:field="*{tipo} ">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label " for="fornecedor ">Buscar o Fornecedor <h11>*</h11></label>
+                <!-- Caso já tenhabuscado o fornecedor -->
+                <div class="col-md-7 " th:if="${usuariof.nome != null}">
+                    <input type="hidden" name="usuario " class="form-control input-md " th:field="*{usuario}">
+                    <input name="nome " class="form-control input-md " th:field="*{usuario.nome}" readonly>
+                </div>
+                <!-- Se não terá que buscar o forncedor -->
+                <div class="col-md-7 " th:unless="${usuariof.nome != null}">
+                    <input name="nome " placeholder="Nome do Fornecedor " class="form-control input-md " readonly>
+                </div>
+                <a href="/rotulo/buscarFornecedor">Buscar</a>
+
+            </div>
+
+            <br>
+            <br>
+            <div class=" form-group ">
+                <div class="col-md-8 ">
+                    <input class=" btn btn-info btn-md " type="submit" value="submit" name="submit" />
+                    <a href="/home "><span>Voltar para Home</span></a>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+
+
+
+
+
+</th:block>
+
+</html>

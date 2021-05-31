@@ -1,4 +1,3 @@
-
 <!--
     <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" th:fragment="barralateral">
         <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
@@ -55,62 +54,54 @@
       </div>
 -->
 
-      <!-- Sidebar  -->
-      <nav id="sidebar" th:fragment="barralateral">
-        <div class="sidebar-header">
-            <h3>Bootstrap Sidebar</h3>
-        </div>
+<!-- Sidebar  -->
+<nav id="sidebar" th:fragment="barralateral">
+    <div class="sidebar-header">
+        <h3>Bootstrap Sidebar</h3>
+    </div>
 
-        <ul class="list-unstyled components">
-            <p>Dummy Heading</p>
-            <li class="active">
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
-                <ul class="collapse list-unstyled" id="homeSubmenu">
-                    <li>
-                        <a href="#">Home 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Home 2</a>
-                    </li>
-                    <li>
-                        <a href="#">Home 3</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">About</a>
-            </li>
-            <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
-                <ul class="collapse list-unstyled" id="pageSubmenu">
-                    <li>
-                        <a href="#">Page 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Page 2</a>
-                    </li>
-                    <li>
-                        <a href="#">Page 3</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Portfolio</a>
-            </li>
-            <li>
-                <a href="#">Contact</a>
-            </li>
-        </ul>
+    <ul class="list-unstyled components">
+        <p>Macroex</p>
 
-        <ul class="list-unstyled CTAs">
-            <li>
-                <a href="https://bootstrapious.com/tutorial/files/sidebar.zip" class="download">Download source</a>
-            </li>
-            <li>
-                <a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a>
-            </li>
-        </ul>
-    </nav>
+        <li>
+            <a href="/home">Home</a>
+            <!-- aqui quando coloco th:href dá um erro nas camadas abaixo -->
+        </li>
+        <li>
+            <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Cadastro</a>
+            <ul class="collapse list-unstyled" id="pageSubmenu">
+                <li>
+                    <a th:href="@{/cadastro}">Novo cadstro</a>
+                </li>
+                <li>
+                    <a th:href="@{/cadastro/tabela}">Tabela de Usuários</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="#pageSubmenuD" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Rotulo</a>
+            <ul class="collapse list-unstyled" id="pageSubmenuD">
+                <li>
+                    <a th:href="@{/rotulo}">Novo cadstro</a>
+                </li>
+                <li>
+                    <a>nadas</a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="# ">Contact</a>
+        </li>
+    </ul>
 
-
-
+    <!-- Ideia para criar botção de link
+    <ul class="list-unstyled CTAs ">
+        <li>
+            <a href="https://bootstrapious.com/tutorial/files/sidebar.zip " class="download ">Download source</a>
+        </li>
+        <li>
+            <a href="https://bootstrapious.com/p/bootstrap-sidebar " class="article ">Back to article</a>
+        </li>
+    </ul>
+    -->
+</nav>
