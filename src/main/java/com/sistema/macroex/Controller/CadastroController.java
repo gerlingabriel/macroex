@@ -37,7 +37,6 @@ public class CadastroController {
         usuario = new Usuario();
 
         model.addAttribute("usuario", usuario);
-        model.addAttribute("todos", repository.findAll(PageRequest.of(0, 5, Sort.by("id"))));
 
         return "cadastro/cadastro";
     }
@@ -71,8 +70,7 @@ public class CadastroController {
         Usuario user = user();
         session.setAttribute("user", user);
 
-        Usuario usuario = new Usuario();
-        model.addAttribute("usuario", usuario);
+        model.addAttribute("usuario", new Usuario());
 
         return "cadastro/cadastro";
     }

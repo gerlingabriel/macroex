@@ -1,10 +1,10 @@
 package com.sistema.macroex.model;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -34,10 +34,8 @@ public class Usuario {
 
     private String doc;
 
-    private LocalDate dataNascimento;
-
     private String telefone;
-    
+
     private String email;
 
     private String senha;
@@ -50,14 +48,14 @@ public class Usuario {
     private Perfil perfil; // Perfil do usuário
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(joinColumns = @JoinColumn(name = "usuario_id"),
-            inverseJoinColumns = @JoinColumn(name = "roles_id"))
+    @JoinTable(joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private List<Role> roles;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<ContraRotulo> contrarotulo;
 
-
+    @Embedded
+    private Endereco endereco;
 
     @Override
     public int hashCode() {
@@ -66,7 +64,6 @@ public class Usuario {
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
-
 
     @Override
     public boolean equals(Object obj) {
@@ -84,6 +81,5 @@ public class Usuario {
             return false;
         return true;
     }
-    
-    
+
 }
