@@ -16,6 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -30,14 +32,19 @@ public class Usuario {
     @Column(name = "id")
     private Long id;
 
+    @Size(max = 50,message = "Número máximo de caracteres")
     private String nome;
 
+    @Size(max = 20)
     private String doc;
 
+    @Size(max = 10, message = "No máximo 10 número")
     private String telefone;
 
+    @Email(message = "Email em formato errado")
     private String email;
 
+    @Size(max = 10)
     private String senha;
 
     private String username;

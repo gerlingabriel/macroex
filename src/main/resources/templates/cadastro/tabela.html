@@ -58,15 +58,15 @@
         </table>
 
         <!-- Paginação-->
-        <div style="margin-top: 10px; background-color: white; width: 25%; ">
+        <div style="margin-top: 10px; background-color: white; width: 25%; " th:if="${!todos.empty}">
             <!-- Anterior-->
-            <span th:if="${todos.hasPrevious()} "><a th:href="@{/cadastro/paginacao(page=${todos.number-1}, size=${todos.size})} ">Anterior</a></span>
+            <span th:if="${todos.hasPrevious()} "><a th:href="@{/cadastro/paginacao(page=${todos.number-1}, size=${todos.size}, nome =${usuario.nome})} ">Anterior</a></span>
 
             <!-- Paginaçõies -->
-            <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)} "><a th:href="@{/cadastro/paginacao(page=${i}, size=${todos.size})} ">[[ ${i} + 1 ]]</a></th:block>
+            <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)} "><a th:href="@{/cadastro/paginacao/(page=${i}, size=${todos.size}, nome =${usuario.nome})} ">[[ ${i} + 1 ]]</a></th:block>
 
             <!-- Próximo-->
-            <span th:if="${todos.hasNext()} "><a th:href="@{/cadastro/paginacao(page=${todos.number+1}, size=${todos.size})} ">Próximo</a></span>
+            <span th:if="${todos.hasNext()} "><a th:href="@{/cadastro/paginacao(page=${todos.number+1}, size=${todos.size}, nome =${usuario.nome})} ">Próximo</a></span>
         </div>
 
 

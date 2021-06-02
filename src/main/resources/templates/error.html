@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<!-- Cabeçalho -->
+<th:block th:replace="/layout/fragments/head :: head1"></th:block>
+
+<body>
+
+    <div class="wrapper">
+
+        <!-- Barra lateral-->
+        <th:block th:replace="/layout/fragments/sidebar :: barralateral"></th:block>
+
+        <div id="content">
+            <!-- Barra Superior -->
+            <th:block th:replace="/layout/fragments/top :: barrainicial"></th:block>
+
+            <!-- Campo Principal -->
+            <th:block layout:fragment="content"></th:block>
+            <h3>404 Not Found</h3>
+            <h1 th:text="${errorCode}">404</h1>
+            <p th:utext="${errorMessage}">Error java.lang.NullPointerException</p>
+
+        </div>
+
+        <!-- Fundo Comum -->
+        <th:block th:replace="/layout/fragments/footer :: rodape "></th:block>
+
+    </div>
+
+    <!-- Script comum -->
+    <th:block th:replace="/layout/fragments/script :: scripts "></th:block>
+</body>
+
+</html>

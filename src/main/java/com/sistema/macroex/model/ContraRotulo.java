@@ -24,6 +24,18 @@ public class ContraRotulo {
 
     private String tipo;
 
+    private String titulo;
+
+    private String subTitulo;
+
+    private String safra;
+
+    private Paises pais;
+
+    private String ingrediantes;
+
+    private String produtor;
+
     @ManyToOne
     private Usuario usuario;
 

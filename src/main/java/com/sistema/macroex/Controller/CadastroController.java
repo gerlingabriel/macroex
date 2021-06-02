@@ -1,7 +1,9 @@
 package com.sistema.macroex.Controller;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
+import com.sistema.macroex.handleException.ExceptionNegotion;
 import com.sistema.macroex.model.Usuario;
 import com.sistema.macroex.repository.UsuarioRepository;
 
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
 
 @Controller
@@ -43,7 +46,7 @@ public class CadastroController {
 
     // salvado cadastro novo
     @PostMapping
-    public String paginaCadastroSalvo(@ModelAttribute Usuario usuario, Model model, HttpSession session) {
+    public String paginaCadastroSalvo(@Valid @ModelAttribute Usuario usuario, Model model, HttpSession session) {
 
         if (usuario.getNome() == null) {
 
@@ -90,12 +93,16 @@ public class CadastroController {
 
     // Paginação das tabelas
     @RequestMapping(value = "/paginacao")
-    public String pagiancao(Model model, @PageableDefault(size = 5) Pageable pageable) {
+    public String pagiancao(Model model, @PageableDefault(size = 5) Pageable pageable, @RequestParam("nome") String nome) {
 
-        Page<Usuario> todos = repository.findAll(pageable);
+        Page<Usuario> todos = repository.findByNomeContainsIgnoreCase(nome, pageable);
+
         model.addAttribute("todos", todos);
 
-        model.addAttribute("usuario", new Usuario());
+        Usuario usuario = new Usuario();
+        usuario.setNome(nome);
+
+        model.addAttribute("usuario", usuario);
 
         return "cadastro/tabela";
 
@@ -107,7 +114,7 @@ public class CadastroController {
         // Pegar o usuario com ID e inverter o enable dele
         // se é true vaificar false, se é false vai ficar true
         // por fim vai salvar a alteração
-        Usuario usuario = repository.findById(id).get();
+        Usuario usuario = repository.findById(id).orElseThrow(() -> new ExceptionNegotion("Item não encontrado"));
         if (usuario.getEnable()) {
             usuario.setEnable(false);
         } else {
@@ -127,7 +134,7 @@ public class CadastroController {
     @GetMapping(value = "/editar/{id}")
     public String tabelaEditar(@PathVariable("id") Long id, Model model) {
 
-        Usuario usu = repository.findById(id).get();
+        Usuario usu = repository.findById(id).orElseThrow(() -> new ExceptionNegotion("Item não encontrado"));
 
         model.addAttribute("usuario", usu);
 

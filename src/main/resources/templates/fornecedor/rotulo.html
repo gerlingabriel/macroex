@@ -10,24 +10,30 @@
 
             <input type="hidden" id="id" name="id" th:field="*{id}">
 
-            <!--DESCRICAO-->
-            <div class="form-group " th:if="${usuariof.nome != null}">
-                <label class="col-md-3 control-label " for="produto ">Produto <h11>*</h11></label>
-                <div class="col-md-9 ">
+            <!--DESCRICAO / TIPO-->
+            <div class="form-group row" th:if="${usuariof.nome != null}">
+                <label class="col-md-1 control-label " for="produto ">Produto</label>
+                <div class="col-md-5 ">
                     <input id="produto " name="produto " placeholder="Nome do Produto" class="form-control input-md " th:field="*{produto} ">
                 </div>
-            </div>
-
-            <!--TIPO-->
-            <div class="form-group " th:if="${usuariof.nome != null}">
-                <label class="col-md-3 control-label " for="Tipo ">Tipo <h11>*</h11></label>
-                <div class="col-md-9 ">
+                <label class="col-md-1 control-label " for="Tipo ">Tipo </label>
+                <div class="col-md-5 ">
                     <input id="tipo " name="tipo " placeholder="Tipo do produto " class="form-control input-md " th:field="*{tipo} ">
                 </div>
             </div>
 
-            <div class="form-group">
-                <label class="col-md-3 control-label " for="fornecedor ">Buscar o Fornecedor <h11>*</h11></label>
+
+            <div class="form-group " th:if="${usuariof.nome != null}">
+            </div>
+
+            <div class="form-group " th:if="${usuariof.nome != null}">
+            </div>
+
+            <div class="form-group " th:if="${usuariof.nome != null}">
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-2 control-label " for="fornecedor ">Buscar o Fornecedor</label>
                 <!-- Caso já tenhabuscado o fornecedor -->
                 <div class="col-md-7 " th:if="${usuariof.nome != null}">
                     <input type="hidden" name="usuario " class="form-control input-md " th:field="*{usuario}">
@@ -37,16 +43,14 @@
                 <div class="col-md-7 " th:unless="${usuariof.nome != null}">
                     <input name="nome " placeholder="Nome do Fornecedor " class="form-control input-md " readonly>
                 </div>
-                <a href="/rotulo/buscarFornecedor">Buscar</a>
+                <a class="btn btn-info btn-md " th:href="@{/rotulo/buscarFornecedor}" style="width: 100px;height: 40px;">Buscar</a>
 
             </div>
 
-            <br>
-            <br>
-            <div class=" form-group ">
+            <div class=" form-group " th:if="${usuariof.nome != null}">
                 <div class="col-md-8 ">
-                    <input class=" btn btn-info btn-md " type="submit" value="submit" name="submit" />
-                    <a href="/home "><span>Voltar para Home</span></a>
+                    <button class=" btn btn-info btn-md " type="submit"> Salvar</button>
+                    <a class="btn btn-info btn-md" href="/home "><span>Voltar para Home</span></a>
                 </div>
 
             </div>
