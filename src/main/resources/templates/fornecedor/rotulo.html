@@ -5,7 +5,7 @@
 
     <h2>Cadastro de Contra Rotulo</h2>
 
-    <div class="container">
+    <div>
         <form method="POST" th:action="@{/rotulo}" th:object="${rotulo}">
 
             <input type="hidden" id="id" name="id" th:field="*{id}">
@@ -22,18 +22,79 @@
                 </div>
             </div>
 
-
-            <div class="form-group " th:if="${usuariof.nome != null}">
+            <!-- titulo e subtitulo-->
+            <div class="form-group row" th:if="${usuariof.nome != null}">
+                <label class="col-md-1 control-label " for="titulo">Titulo</label>
+                <div class="col-md-5 ">
+                    <input id="titulo" name="titulo" placeholder="Nome do Produto" class="form-control input-md " th:field="*{titulo} ">
+                </div>
+                <label class="col-md-1 control-label " for="subTitulo ">SubTitulo</label>
+                <div class="col-md-5 ">
+                    <input id="subTitulo" name="subTitulo" placeholder="Nome do SubTitulo " class="form-control input-md " th:field="*{subTitulo} ">
+                </div>
             </div>
 
-            <div class="form-group " th:if="${usuariof.nome != null}">
+            <!-- LOTE E SAFRA -->
+            <div class="form-group row" th:if="${usuariof.nome != null}">
+                <label class="col-md-1 control-label " for="lote">Lote</label>
+                <div class="col-md-5 ">
+                    <input id="lote" name="lote" placeholder="Nome do Lote" class="form-control input-md " th:field="*{lote} ">
+                </div>
+                <label class="col-md-1 control-label " for="safra">Safra</label>
+                <div class="col-md-5 ">
+                    <input id="safra" name="safra" placeholder="Safra do produto " class="form-control input-md " th:field="*{safra} ">
+                </div>
             </div>
 
-            <div class="form-group " th:if="${usuariof.nome != null}">
+            <!-- pais e ingregientes -->
+            <div class="form-group row" th:if="${usuariof.nome != null}">
+                <label class="col-md-1 control-label " for="pais">Perfil</label>
+                <div class="col-md-5">
+                    <select class="form-control" aria-label=".form-select-lg example " th:field="*{pais}" id="perfil" name="perfil">
+                        <option value="">Selecionar</option>
+                        <option th:each="p : ${T(com.sistema.macroex.model.Paises).values()} "th:value="${p} " th:text="${p.getNome}"></option>
+                    </select>
+
+                </div>
+                <label class="col-md-1 control-label " for="safra" style="margin-top: 0px;">Conteudo LIquido</label>
+                <div class="col-md-5 ">
+                    <input id="liquido" name="liquido" placeholder="Safra do produto " class="form-control input-md " th:field="*{liquido} ">
+                </div>
             </div>
 
+            <!-- PRODUTOR E IMPORTADOR -->
+            <div class="form-group row" th:if="${usuariof.nome != null}">
+                <label class="col-md-1 control-label " for="produtor">Produtor</label>
+                <div class="col-md-5 ">
+                    <input id="produtor" name="produtor" placeholder="Nome do Lote" class="form-control input-md " th:field="*{produtor} ">
+                </div>
+                <label class="col-md-1 control-label " for="importador">Importador</label>
+                <div class="col-md-5 ">
+                    <input id="importador" name="importador" placeholder="Safra do produto " class="form-control input-md " th:field="*{importador} ">
+                </div>
+            </div>
+
+            <!-- graduação alcoolica -->
+            <div class="form-group row" th:if="${usuariof.nome != null}">
+                <label class="col-md-1 control-label " for="alcoolica">Alcoolica</label>
+                <div class="col-md-5 ">
+                    <input id="alcoolica" name="alcoolica" placeholder="Nome do Lote" class="form-control input-md " th:field="*{alcoolica} ">
+                </div>
+                <!-- falta um campo-->
+            </div>
+
+            <!-- TEXTO GRANDE PARA PRENCHIMENTO -->
+            <div class="form-group row" th:if="${usuariof.nome != null}">
+                <label class="col-md-2 control-label " for="ingrediantes" style="margin-top: 25px;">Ingredientes</label>
+                <div class="col-md-10">
+                    <textarea class="form-control" id="ingrediantes" rows="3" name="ingrediantes" th:field="*{ingrediantes}"></textarea>
+                </div>
+            </div>
+
+            <!--  DADOS DO FORNECEDOR -->
             <div class="form-group row">
-                <label class="col-md-2 control-label " for="fornecedor ">Buscar o Fornecedor</label>
+                <label class="col-md-3 control-label " for="fornecedor ">Buscar o Fornecedor</label>
+
                 <!-- Caso já tenhabuscado o fornecedor -->
                 <div class="col-md-7 " th:if="${usuariof.nome != null}">
                     <input type="hidden" name="usuario " class="form-control input-md " th:field="*{usuario}">
@@ -43,11 +104,15 @@
                 <div class="col-md-7 " th:unless="${usuariof.nome != null}">
                     <input name="nome " placeholder="Nome do Fornecedor " class="form-control input-md " readonly>
                 </div>
-                <a class="btn btn-info btn-md " th:href="@{/rotulo/buscarFornecedor}" style="width: 100px;height: 40px;">Buscar</a>
 
+                <!-- VOTÃO PARA BUSCAR FORNCEDOR-->
+                <div class="col-md-2 me-2">
+                    <a class="btn btn-info btn-md " th:href="@{/rotulo/buscarFornecedor}" style="width: 100px;height: 40px;">Buscar</a>
+                </div>
             </div>
 
-            <div class=" form-group " th:if="${usuariof.nome != null}">
+            <!-- FINAL DO FORM - BOTÃO -->
+            <div class=" form-group row" th:if="${usuariof.nome != null}">
                 <div class="col-md-8 ">
                     <button class=" btn btn-info btn-md " type="submit"> Salvar</button>
                     <a class="btn btn-info btn-md" href="/home "><span>Voltar para Home</span></a>

@@ -3,7 +3,7 @@ package com.sistema.macroex.model;
 
 public enum Status {
 
-    PENDENTE, FINALIZADO;
+    CADSTRADO, NOTIFICACAO, FINALIZADO;
 
     private String text;
 

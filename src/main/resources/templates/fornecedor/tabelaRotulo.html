@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{home}">
+
+
+<th:block layout:fragment="content">
+
+    <h2>Busca por Rotulos</h2>
+
+    <div class="container">
+        <form method="GET" th:action="@{/rotulo/buscar}" th:object="${usuariof}">
+
+            <div class=" form-group row">
+                <label class="col-md-1 control-label " for="nome ">Nome:</label>
+                <div class="col-md-6">
+                    <input id="nome " name="nome" placeholder="Nome do Produto" class="form-control input-md" th:field="*{nome}">
+                </div>
+                <button type="submit" class="btn btn-info btn-md " style="margin-right: 25px; ">Procurar</button>
+                <a href="/home " class="btn btn-info btn-md "><span>Voltar para Home</span></a>
+                <br>
+
+            </div>
+        </form>
+    </div>
+
+    <div align="center">
+        <!-- Tabela de dados -->
+        <table class="table table-hover table-bordered " style="width: 90%; ">
+            <thead>
+                <tr>
+                    <th scope="col "> Data Criação </th>
+                    <th scope="col " style="width: 40%;"> Nome </th>
+                    <th scope="col "> Status </th>
+                    <th scope="col " style="text-align:center "> Editar </th>
+                    <th scope="col" style="text-align:center; width: 10%;"> Notificação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if=" ${todos.empty} ">
+                    <td colspan="2 "> Não há lista </td>
+                </tr>
+                <tr th:each="rot:${todos} ">
+                    <td><span th:text="${#temporals.format(rot.dataCriacao, 'dd-MM-yyyy')} ">  </span></td>
+                    <td><span th:text="${rot.usuario.nome} ">  </span></td>
+                    <td><span th:text="${rot.status} ">  </span></td>
+                    <td align="center">
+                        <a th:href="@{/rotulo/editar/{id}(id=${rot.id})}"><img src="/icon/editar.png " width="15px " alt="Editar "></a>
+                    </td>
+                    <td align="center">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                            Notificar o Fornecedor
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <!-- Fim da div para alinhar -->
+
+    <th:block th:replace="_modals :: modal('exampleModal')">modal</th:block>
+
+    <script>
+        $('#exampleModal1').on('show.bs.modal', function() {
+            $.get("/modals/modal1", function(data) {
+                $('#exampleModal1').find('.modal-body').html(data);
+            })
+        });
+    </script>
+
+</th:block>
+
+</html>

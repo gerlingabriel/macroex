@@ -28,13 +28,20 @@ public class ContraRotulo {
 
     private String subTitulo;
 
+    private String lote;
+
     private String safra;
 
     private Paises pais;
 
+    @Column(columnDefinition="TEXT")
     private String ingrediantes;
 
     private String produtor;
+
+    private String importador;
+
+    private String alcoolica;
 
     @ManyToOne
     private Usuario usuario;
@@ -44,6 +51,8 @@ public class ContraRotulo {
     private String produto;
 
     private LocalDate dataCriacao;
+
+    private String liquido;
 
     @Override
     public int hashCode() {

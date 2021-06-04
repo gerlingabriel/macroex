@@ -38,7 +38,7 @@ public class Usuario {
     @Size(max = 20)
     private String doc;
 
-    @Size(max = 10, message = "No máximo 10 número")
+    @Size(max = 13, message = "No máximo 10 número")
     private String telefone;
 
     @Email(message = "Email em formato errado")
