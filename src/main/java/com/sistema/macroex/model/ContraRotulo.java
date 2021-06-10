@@ -37,14 +37,13 @@ public class ContraRotulo {
     @Column(columnDefinition="TEXT")
     private String ingrediantes;
 
-    private String produtor;
-
-    private String importador;
-
     private String alcoolica;
 
     @ManyToOne
     private Usuario usuario;
+
+    @ManyToOne
+    private Usuario adm;
 
     private Status status;
 

@@ -8,24 +8,16 @@
 
     <h2>Busca por Rotulos</h2>
 
-    <!-- Mensagem salvo ***** -->
-    <div class="container " th:if="${salvo !=null} " style="margin-top: 15px;margin-bottom: 15px; " id="msg">
-        <div class="col " align="center ">
-            <h2 style="font-weight: bold;color:#185432; "><span th:text="${salvo} "></span></h2>
-        </div>
-    </div>
-
     <div class="container">
-        <form method="GET" th:action="@{/rotulo/buscar}" th:object="${rotulo}">
+        <form method="GET" th:action="@{#}" th:object="${rotulo}">
 
             <div class=" form-group row">
                 <label class="col-md-1 control-label " for="nome ">Nome:</label>
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <input id="nome " name="nome" placeholder="Nome do Produto" class="form-control input-md" th:field="*{titulo}">
                 </div>
-                <button type="submit" class="btn btn-info btn-md " style="margin-right: 21px; ">Procurar</button>
-                <a href="/home " class="btn btn-info btn-md " style="margin-right: 21px;"><span>Voltar para Home</span></a>
-                <a th:href=" @{/rotulo} " class="btn btn-info btn-md " th:if="@{usuario.perfil == T(com.sistema.macroex.model.Perfil).ADMINISTRADOR}"><span>Criar Rotulo</span></a>
+                <button type="submit" class="btn btn-info btn-md " style="margin-right: 25px; ">Procurar</button>
+                <a href="/home " class="btn btn-info btn-md "><span>Voltar para Home</span></a>
                 <br>
             </div>
         </form>
@@ -38,7 +30,7 @@
                 <tr>
                     <th scope="col "> Data Criação </th>
                     <th scope="col "> Nome </th>
-                    <th scope="col " style="width: 40%; ">Titulo do prod.</th>
+                    <th scope="col" style="width: 40%;">Titulo do prod.</th>
                     <th scope=" col "> Status </th>
                     <th scope="col " style="text-align:center "> Editar </th>
                     <th scope="col " style="text-align:center; width: 10%; "> Notificação</th>
@@ -57,39 +49,38 @@
                         <a th:href="@{/rotulo/editar/{id}(id=${rot.id})} "><img src="/icon/editar.png " width="15px " alt="Editar "></a>
                     </td>
                     <!-- Se já estivernotificado não irá aparecer o botão para notificar -->
-                    <td align="center " th:if="${rot.status==T(com.sistema.macroex.model.Status).CADASTRADO} ">
+                    <td align="center " th:if="${rot.status ==T(com.sistema.macroex.model.Status).CADASTRADO} ">
                         <a th:href="@{/rotulo/notificar/{id}(id=${rot.id})} "><img src="/icon/notificar.png " width="15px " alt="Notificar "></a>
                     </td>
-                    <td align="center " th:if="${rot.status!=T(com.sistema.macroex.model.Status).CADASTRADO} ">
-                        <span th:if="${rot.status==T(com.sistema.macroex.model.Status).NOTIFICACAO} ">NOTIFICADO</span>
-                        <span th:if="${rot.status==T(com.sistema.macroex.model.Status).FINALIZADO} ">FINALIZADO</span>
+                    <td align="center " th:if="${rot.status!=T(com.sistema.macroex.model.Status).CADASTRADO}">
+                        <span th:if="${rot.status==T(com.sistema.macroex.model.Status).NOTIFICACAO}">NOTIFICADO</span>
+                        <span th:if="${rot.status==T(com.sistema.macroex.model.Status).FINALIZADO}">FINALIZADO</span>
                     </td>
                 </tr>
             </tbody>
         </table>
 
         <!-- Paginação-->
-        <div style="margin-top: 10px; background-color: white; width: 25%; " th:if="${!todos.empty} ">
+        <div style="margin-top: 10px; background-color: white; width: 25%; " th:if="${!todos.empty}">
+
             <!-- Anterior-->
-            <span th:if="${todos.hasPrevious()} "><a th:href="@{/rotulo/paginacao(page=${todos.number-1}, size=${todos.size}, nome=${rotulo.titulo})} ">Anterior</a></span>
+            <span th:if="${todos.hasPrevious()}">
+        <a th:href="@{/rotulo/paginacao/fornecedor(page=${todos.number-1}, size=${todos.size}, nome=${rotulo.titulo})} ">Anterior</a></span>
 
             <!-- Paginaçõies -->
-            <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)} "><a th:href="@{/rotulo/paginacao/(page=${i}, size=${todos.size}, nome=${rotulo.titulo})} ">[[ ${i} + 1 ]]</a></th:block>
+            <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)} ">
+                <a th:href="@{/rotulo/paginacao/fornecedor(page=${i}, size=${todos.size}, nome=${rotulo.titulo})} ">[[ ${i} + 1 ]]</a></th:block>
 
             <!-- Próximo-->
-            <span th:if="${todos.hasNext()} "><a th:href="@{/rotulo/paginacao(page=${todos.number+1}, size=${todos.size}, nome=${rotulo.titulo})} ">Próximo</a></span>
+            <span th:if="${todos.hasNext()} ">
+        <a th:href="@{/rotulo/paginacao/fornecedor(page=${todos.number+1}, size=${todos.size}, nome=${rotulo.titulo})} ">Próximo</a></span>
+
         </div>
+
+
 
     </div>
     <!-- Fim da div para alinhar -->
-
-    <script>
-        $().ready(function() {
-            setTimeout(function() {
-                $('#msg').hide(); // "msg " é o id do elemento que seja manipular.
-            }, 2500); // O valor é representado em milisegundos.
-        });
-    </script>
 
 
 </th:block>

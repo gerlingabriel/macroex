@@ -19,11 +19,17 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Usuario {
 
@@ -44,7 +50,6 @@ public class Usuario {
     @Email(message = "Email em formato errado")
     private String email;
 
-    @Size(max = 10)
     private String senha;
 
     private String username;
@@ -60,6 +65,9 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<ContraRotulo> contrarotulo;
+
+    @OneToMany(mappedBy = "adm", cascade = CascadeType.ALL)
+    private List<ContraRotulo> criar;
 
     @Embedded
     private Endereco endereco;

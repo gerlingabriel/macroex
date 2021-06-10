@@ -17,9 +17,19 @@
 
             <!-- Campo Principal -->
             <th:block layout:fragment="content"></th:block>
-            <h3>404 Not Found</h3>
-            <h1 th:text="${errorCode}">404</h1>
-            <p th:utext="${errorMessage}">Error java.lang.NullPointerException</p>
+
+            <h3>Vixiiii, deu ruim ein ... Favor voltar para página Home</h3>
+            <br>
+            <span th:text="${status}" style="font-size: large;font-weight: bold;"></span>
+            <span th:text="${error}"></span>
+            <br>
+            <span>Date: </span>
+            <span th:text=" ${timestamp} "></span>
+            <br>
+            <br>
+            <span th:text="${message}" style="font-size: large;font-weight: bold;"></span>
+            <br>
+            <span th:text="${exception}"></span>
 
         </div>
 

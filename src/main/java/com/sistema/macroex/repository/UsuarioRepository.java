@@ -23,7 +23,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 
     Page<Usuario> findByNomeContainsIgnoreCase (String nome, Pageable pageable);
 
-    Page<Usuario> findByPerfil (Perfil tipo, Pageable pageable);
+    Page<Usuario> findByPerfil (Perfil perfil, Pageable pageable);
 
     Page<Usuario> findByNomeContainsIgnoreCaseAndPerfil(String nome, Perfil tipo, Pageable pageable);
 

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{home}">
+<th:block layout:fragment="content">
+
+    <h2>Notificar Fornecedor</h2>
+
+    <div class="container">
+        <p>Deseja notificar o fornecedor <span th:text="${usuariof.nome}"></span> sobre o produto abaixo:</p>
+        <br>
+        <div align="center">
+            <!-- Tabela de dados -->
+            <table class="table table-hover table-bordered " style="width: 90%; ">
+                <thead>
+                    <tr>
+                        <th scope="col "> Data Criação </th>
+                        <th scope="col " style="width: 40%;"> Nome </th>
+                        <th scope="col "> Status </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="rot:${rotulo} ">
+                        <td><span th:text="${#temporals.format(rot.dataCriacao, 'dd-MM-yyyy')} ">  </span></td>
+                        <td><span th:text="${rot.usuario.nome} ">  </span></td>
+                        <td><span th:text="${rot.status} ">  </span></td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+            <a class="btn btn-info btn-md" th:href="@{/rotulo/alterarstatus/{id}(id=${rotulo.id})}" style="margin-right: 50px;">Enviar</a>
+            <a href="/home">Voltar para home</a>
+            <br>
+            <br>
+            <div th:if="${rotulo.status == T(com.sistema.macroex.model.Status).NOTIFICACAO}">
+                <p style="font-weight: blod;color:	#32CD32;">Contra Rotulo enviado para o preenchimento.</p>
+            </div>
+
+        </div>
+    </div>
+
+
+</th:block>
+
+</html>

@@ -7,7 +7,7 @@
     <h1>Busca por Fornecedor</h1>
 
     <div class="container">
-        <form method="POST" th:action="@{/buscar}" th:object="${usuariof}">
+        <form method="POST" th:action="@{/rotulo/buscar}" th:object="${usuariof}">
 
             <input type="hidden" th:field="*{id}">
 
@@ -18,7 +18,7 @@
                 </div>
             </div>
 
-            <input type="submit" name="submit" value="submit" class="btn btn-info btn-md ">
+            <button type="submit" class="btn btn-info btn-md " style="margin-right: 15px;">Procurar</button>
             <a href="/home "><span>Voltar para Home</span></a>
         </form>
     </div>
@@ -53,16 +53,16 @@
 
             <!-- Anterior-->
             <span th:if="${todos.hasPrevious()}">
-                <a th:href="@{/paginacao/fornecedor(page=${todos.number-1}, size=${todos.size})}">Anterior</a>
+                <a th:href="@{/rotulo/paginacao(page=${todos.number-1}, size=${todos.size}, nome=${usuariof.nome})}">Anterior</a>
             </span>
 
             <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)}">
-                <a th:href="@{/paginacao/fornecedor(page=${i}, size=${todos.size})}">[[ ${i} + 1 ]]</a>
+                <a th:href="@{/rotulo/paginacao(page=${i}, size=${todos.size}, nome=${usuariof.nome})}">[[ ${i} + 1 ]]</a>
             </th:block>
 
             <!-- Próximo-->
             <span th:if="${todos.hasNext()}">
-                <a th:href="@{/paginacao/fornecedor(page=${todos.number+1}, size=${todos.size})}">Próximo</a>
+                <a th:href="@{/rotulo/paginacao(page=${todos.number+1}, size=${todos.size}, nome=${usuariof.nome})}">Próximo</a>
             </span>
 
         </div>

@@ -13,7 +13,6 @@ import com.sistema.macroex.repository.UsuarioRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -37,11 +36,10 @@ public class SSUserDetailsService implements UserDetailsService {
 
         try {
             Usuario user = usuarioRepository.findByUsuarioByLogin(email);
+            /** Além de veirificar se existe usuario vai também verificar se está ativo */
             if(user==null || !user.getEnable()){
                 throw new UsernameNotFoundException("Usuario não encontrado!");
             }
-
-            user.setSenha(new BCryptPasswordEncoder().encode(user.getSenha()));
 
             return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getSenha(), getAuthories(user));
         }
@@ -55,7 +53,6 @@ public class SSUserDetailsService implements UserDetailsService {
 
     // método para substituir a implementação da classe usuario das atribuir ROLES
     private Set<GrantedAuthority> getAuthories(Usuario user){
-
 
         Set<GrantedAuthority> authorities = new HashSet<>();
         for (Role role: user.getRoles()){

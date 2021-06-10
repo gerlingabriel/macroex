@@ -8,15 +8,25 @@
 
     <h2>Busca por Usuários</h2>
 
+    <!-- Mensagem para confirmar-->
+    <div class="container " th:if="${salvo !=null} " style="margin-top: 20px;margin-bottom: 20px; " id="msg">
+        <div class="col " align="center ">
+            <h2 style="font-weight: bold;color:#185432; "><span th:text="${salvo} "></span></h2>
+        </div>
+    </div>
+
+
     <div class="container">
         <form method="GET" th:action="@{/cadastro/buscar}" th:object="${usuario}">
 
             <div class=" form-group row">
                 <label class="col-md-1 control-label " for="nome ">Nome:</label>
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <input id="nome " name="nome" placeholder="Nome do Produto" class="form-control input-md" th:field="*{nome}">
+                    <input type="hidden" id="perfil" name="perfil" th:field="*{perfil}">
                 </div>
-                <button type="submit" class="btn btn-info btn-md " style="margin-right: 25px; ">Procurar</button>
+                <button type="submit" class="btn btn-info btn-md " style="margin-right: 25px;margin-left: 10px; ">Procurar</button>
+                <a th:href="@{/cadastro/{perfil}(perfil= ${usuario.perfil})} " class="btn btn-info btn-md " style="margin-right: 25px; ">Novo <span th:text="${usuario.perfil}"></span></a>
                 <a href="/home " class="btn btn-info btn-md "><span>Voltar para Home</span></a>
                 <br>
 
@@ -60,18 +70,26 @@
         <!-- Paginação-->
         <div style="margin-top: 10px; background-color: white; width: 25%; " th:if="${!todos.empty}">
             <!-- Anterior-->
-            <span th:if="${todos.hasPrevious()} "><a th:href="@{/cadastro/paginacao(page=${todos.number-1}, size=${todos.size}, nome =${usuario.nome})} ">Anterior</a></span>
+            <span th:if="${todos.hasPrevious()} "><a th:href="@{/cadastro/paginacao(page=${todos.number-1}, size=${todos.size}, nome =${usuario.nome}, perfil = ${usuario.perfil})} ">Anterior</a></span>
 
             <!-- Paginaçõies -->
-            <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)} "><a th:href="@{/cadastro/paginacao/(page=${i}, size=${todos.size}, nome =${usuario.nome})} ">[[ ${i} + 1 ]]</a></th:block>
+            <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)} "><a th:href="@{/cadastro/paginacao/(page=${i}, size=${todos.size}, nome =${usuario.nome}, perfil = ${usuario.perfil})} ">[[ ${i} + 1 ]]</a></th:block>
 
             <!-- Próximo-->
-            <span th:if="${todos.hasNext()} "><a th:href="@{/cadastro/paginacao(page=${todos.number+1}, size=${todos.size}, nome =${usuario.nome})} ">Próximo</a></span>
+            <span th:if="${todos.hasNext()} "><a th:href="@{/cadastro/paginacao(page=${todos.number+1}, size=${todos.size}, nome =${usuario.nome}, perfil = ${usuario.perfil})} ">Próximo</a></span>
         </div>
 
 
     </div>
     <!-- Fim da div para alinhar -->
+
+    <script>
+        $().ready(function() {
+            setTimeout(function() {
+                $('#msg').hide(); // "msg " é o id do elemento que seja manipular.
+            }, 2500); // O valor é representado em milisegundos.
+        });
+    </script>
 
 </th:block>
 

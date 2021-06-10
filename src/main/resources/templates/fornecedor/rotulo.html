@@ -6,7 +6,8 @@
     <h2>Cadastro de Contra Rotulo</h2>
 
     <div>
-        <form method="POST" th:action="@{/rotulo}" th:object="${rotulo}">
+
+        <form method="POST" th:action="@{/rotulo}" th:object="${rotulo}" class="form-horizontal " th:classappend="${session.user.perfil !=  T(com.sistema.macroex.model.Perfil).ADMINISTRADOR} ? needs-validation : '' ">
 
             <input type="hidden" id="id" name="id" th:field="*{id}">
 
@@ -14,11 +15,11 @@
             <div class="form-group row" th:if="${usuariof.nome != null}">
                 <label class="col-md-1 control-label " for="produto ">Produto</label>
                 <div class="col-md-5 ">
-                    <input id="produto " name="produto " placeholder="Nome do Produto" class="form-control input-md " th:field="*{produto} ">
+                    <input id="produto " name="produto " placeholder="Nome do Produto" class="form-control input-md " th:field="*{produto} " th:required="${adm}">
                 </div>
                 <label class="col-md-1 control-label " for="Tipo ">Tipo </label>
                 <div class="col-md-5 ">
-                    <input id="tipo " name="tipo " placeholder="Tipo do produto " class="form-control input-md " th:field="*{tipo} ">
+                    <input id="tipo " name="tipo " placeholder="Tipo do produto " class="form-control input-md " th:field="*{tipo} " th:required="${adm}">
                 </div>
             </div>
 
@@ -26,11 +27,11 @@
             <div class="form-group row" th:if="${usuariof.nome != null}">
                 <label class="col-md-1 control-label " for="titulo">Titulo</label>
                 <div class="col-md-5 ">
-                    <input id="titulo" name="titulo" placeholder="Nome do Produto" class="form-control input-md " th:field="*{titulo} ">
+                    <input id="titulo" name="titulo" placeholder="Nome do Produto" class="form-control input-md " th:field="*{titulo} " th:required="${adm}">
                 </div>
                 <label class="col-md-1 control-label " for="subTitulo ">SubTitulo</label>
                 <div class="col-md-5 ">
-                    <input id="subTitulo" name="subTitulo" placeholder="Nome do SubTitulo " class="form-control input-md " th:field="*{subTitulo} ">
+                    <input id="subTitulo" name="subTitulo" placeholder="Nome do SubTitulo " class="form-control input-md " th:field="*{subTitulo} " th:required="${adm}">
                 </div>
             </div>
 
@@ -38,19 +39,19 @@
             <div class="form-group row" th:if="${usuariof.nome != null}">
                 <label class="col-md-1 control-label " for="lote">Lote</label>
                 <div class="col-md-5 ">
-                    <input id="lote" name="lote" placeholder="Nome do Lote" class="form-control input-md " th:field="*{lote} ">
+                    <input id="lote" name="lote" placeholder="Nome do Lote" class="form-control input-md " th:field="*{lote} " th:required="${adm}">
                 </div>
                 <label class="col-md-1 control-label " for="safra">Safra</label>
                 <div class="col-md-5 ">
-                    <input id="safra" name="safra" placeholder="Safra do produto " class="form-control input-md " th:field="*{safra} ">
+                    <input id="safra" name="safra" placeholder="Safra do produto " class="form-control input-md " th:field="*{safra} " th:required="${adm}">
                 </div>
             </div>
 
             <!-- pais e ingregientes -->
             <div class="form-group row" th:if="${usuariof.nome != null}">
-                <label class="col-md-1 control-label " for="pais">Perfil</label>
+                <label class="col-md-1 control-label " for="pais">País</label>
                 <div class="col-md-5">
-                    <select class="form-control" aria-label=".form-select-lg example " th:field="*{pais}" id="perfil" name="perfil">
+                    <select class="form-control" aria-label=".form-select-lg example " th:field="*{pais}" id="pais" name="pais">
                         <option value="">Selecionar</option>
                         <option th:each="p : ${T(com.sistema.macroex.model.Paises).values()} "th:value="${p} " th:text="${p.getNome}"></option>
                     </select>
@@ -58,19 +59,7 @@
                 </div>
                 <label class="col-md-1 control-label " for="safra" style="margin-top: 0px;">Conteudo LIquido</label>
                 <div class="col-md-5 ">
-                    <input id="liquido" name="liquido" placeholder="Safra do produto " class="form-control input-md " th:field="*{liquido} ">
-                </div>
-            </div>
-
-            <!-- PRODUTOR E IMPORTADOR -->
-            <div class="form-group row" th:if="${usuariof.nome != null}">
-                <label class="col-md-1 control-label " for="produtor">Produtor</label>
-                <div class="col-md-5 ">
-                    <input id="produtor" name="produtor" placeholder="Nome do Lote" class="form-control input-md " th:field="*{produtor} ">
-                </div>
-                <label class="col-md-1 control-label " for="importador">Importador</label>
-                <div class="col-md-5 ">
-                    <input id="importador" name="importador" placeholder="Safra do produto " class="form-control input-md " th:field="*{importador} ">
+                    <input id="liquido" name="liquido" placeholder="Safra do produto " class="form-control input-md " th:field="*{liquido} " th:required="${adm}">
                 </div>
             </div>
 
@@ -78,7 +67,7 @@
             <div class="form-group row" th:if="${usuariof.nome != null}">
                 <label class="col-md-1 control-label " for="alcoolica">Alcoolica</label>
                 <div class="col-md-5 ">
-                    <input id="alcoolica" name="alcoolica" placeholder="Nome do Lote" class="form-control input-md " th:field="*{alcoolica} ">
+                    <input id="alcoolica" name="alcoolica" placeholder="Nome do Lote" class="form-control input-md " th:field="*{alcoolica} " data-inputmask=" 'mask': '99,99%'" autocomplete="off" th:required="${adm}">
                 </div>
                 <!-- falta um campo-->
             </div>
@@ -87,7 +76,7 @@
             <div class="form-group row" th:if="${usuariof.nome != null}">
                 <label class="col-md-2 control-label " for="ingrediantes" style="margin-top: 25px;">Ingredientes</label>
                 <div class="col-md-10">
-                    <textarea class="form-control" id="ingrediantes" rows="3" name="ingrediantes" th:field="*{ingrediantes}"></textarea>
+                    <textarea class="form-control" id="ingrediantes" rows="3" name="ingrediantes" th:field="*{ingrediantes}" th:required="${adm}"></textarea>
                 </div>
             </div>
 
@@ -115,7 +104,7 @@
             <div class=" form-group row" th:if="${usuariof.nome != null}">
                 <div class="col-md-8 ">
                     <button class=" btn btn-info btn-md " type="submit"> Salvar</button>
-                    <a class="btn btn-info btn-md" href="/home "><span>Voltar para Home</span></a>
+                    <a class="btn btn-info btn-md" th:href="@{/rotulo/tabelaRotulo}"><span>Voltar</span></a>
                 </div>
 
             </div>
@@ -123,8 +112,10 @@
     </div>
 
 
-
-
+    <!-- Script para funcionar as mascaras -->
+    <script>
+        $(":input").inputmask();
+    </script>
 
 
 </th:block>
