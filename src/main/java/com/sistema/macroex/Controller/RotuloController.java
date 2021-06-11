@@ -100,6 +100,12 @@ public class RotuloController {
         // Colocar o dia da criação e da edição
         rotulo.setDataCriacao(LocalDate.now());
 
+        if (rotulo.getId() != null) {
+            model.addAttribute("salvo", "Contra Rotulo editado com sucesso!");
+        } else {
+            model.addAttribute("salvo", "Contra Rotulo salvo com sucesso!");
+        }
+
         // Pegar o Usuario desse rotulo
         Usuario auxUsuario = repository.findById(rotulo.getUsuario().getId()).get();
 
@@ -118,10 +124,9 @@ public class RotuloController {
 
         // rotuloRepository.save(rotulo);
 
-        model.addAttribute("usuariof", new Usuario());
+        model.addAttribute("todos", rotuloRepository.findAll(PageRequest.of(0, 5, Sort.by("id"))));
         model.addAttribute("rotulo", new ContraRotulo());
-        model.addAttribute("salvo", "Contra Rotulo salvo com sucesso!");
-
+       
         return "fornecedor/tabelaRotulo";
     }
 
@@ -215,11 +220,15 @@ public class RotuloController {
     }
 
     // Paginação das tabelas Rotulo sem FILTRO do forcenedor
+    //Essa pagição será usado pela paginção do Rotulo e
+    //Pagição para cadastrar um fornecdor no rotulo novo
     @GetMapping(value = "/paginacao")
     public String pagiancaoForncedor(Model model, @PageableDefault(size = 5) Pageable pageable,
-            @RequestParam("nome") String nome) {
+            @RequestParam("nome") String nome,
+            @RequestParam("param") String tipo) {
 
         Page<Usuario> todos = null;
+        Page<ContraRotulo> todosRotulos = null;
 
         // se não for ADM então é paginação de Rotulo do Fornecedor
         var user = user();
@@ -239,20 +248,48 @@ public class RotuloController {
 
         }
 
-        todos = repository.findByNomeContainsIgnoreCaseAndPerfil(nome, Perfil.FORNECEDOR, pageable);
-        model.addAttribute("todos", todos);
+        /** Se a pagiação for na pesquisa de fornecedor para ADD rotulo */
+        if (tipo.equals("usuario")) {
 
-        // Se for pagginção com nome o nome deve permanecer
-        var usuariof = new Usuario();
+            if (nome.isEmpty()) {
 
-        if (!nome.isEmpty()) {
-            usuariof.setNome(nome);
+                todos = repository.findByPerfil(Perfil.FORNECEDOR, pageable);
+                model.addAttribute("usuariof", new Usuario());
+                model.addAttribute("todos", todos);
+                return "fornecedor/buscarFornecedor";
+                
+            } else {
+
+                todos = repository.findByNomeContainsIgnoreCaseAndPerfil(nome, Perfil.FORNECEDOR, pageable);
+                var usuariof = new Usuario();
+                usuariof.setNome(nome);
+                model.addAttribute("usuariof", usuariof);
+                model.addAttribute("todos", todos);
+                return "fornecedor/buscarFornecedor";
+                
+            }
+
+            
+        } else { // se não é usuario então e paginao de rotulo
+            
+            if (nome.isEmpty()) {
+
+                todosRotulos = rotuloRepository.findAll(pageable);
+                model.addAttribute("rotulo", new ContraRotulo());
+                model.addAttribute("todos", todosRotulos);
+                return "fornecedor/tabelaRotulo";
+                
+            } else {
+
+                todosRotulos = rotuloRepository.findByTituloContainsIgnoreCase(nome, pageable);
+                var rotulo = new ContraRotulo();
+                rotulo.setTitulo(nome);
+                model.addAttribute("rotulo", rotulo);
+                model.addAttribute("todos", todosRotulos);
+                return "fornecedor/tabelaRotulo";
+            }
         }
-
-        model.addAttribute("usuariof", usuariof);
-
-        return "fornecedor/tabelaRotulo";
-
+     
     }
 
     // Paginação das tabelas Rotulo sem FILTRO do forcenedor
@@ -278,7 +315,27 @@ public class RotuloController {
     public String pesquisar(@ModelAttribute ContraRotulo rotulo, Model model,
             @PageableDefault(size = 5) Pageable pageable) {
 
-        Page<ContraRotulo> todos = rotuloRepository.findByTituloContainsIgnoreCase(rotulo.getTitulo(), pageable);
+        //Verificar se Usuario logado é um ADM ou Fornecedor
+        var user = user();
+
+        Page<ContraRotulo> todos = null;
+
+        //Se for um forncedor deverá ter acesso somente aos Rotulo cadastrados
+        if (user.getPerfil() != Perfil.ADMINISTRADOR) {
+
+            todos = rotuloRepository.findByUsuarioAndTituloContainsIgnoreCase(user, rotulo.getTipo(), pageable);
+            model.addAttribute("rotulo", rotulo);
+            model.addAttribute("todos", todos);
+            return "fornecedor/tabelaRotulo";
+        }
+
+        /**Verificar se nome estiver vazio puxar todos */
+        if (rotulo.getTitulo().isEmpty()) {
+            todos = rotuloRepository.findAll(pageable);
+        } else {
+            todos = rotuloRepository.findByTituloContainsIgnoreCase(rotulo.getTitulo(), pageable);
+        }
+        
 
         model.addAttribute("rotulo", rotulo);
         model.addAttribute("todos", todos);

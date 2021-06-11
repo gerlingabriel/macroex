@@ -53,16 +53,16 @@
 
             <!-- Anterior-->
             <span th:if="${todos.hasPrevious()}">
-                <a th:href="@{/rotulo/paginacao(page=${todos.number-1}, size=${todos.size}, nome=${usuariof.nome})}">Anterior</a>
+                <a th:href="@{/rotulo/paginacao(page=${todos.number-1}, size=${todos.size}, nome=${usuariof.nome}, param=usuario)}">Anterior</a>
             </span>
 
             <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)}">
-                <a th:href="@{/rotulo/paginacao(page=${i}, size=${todos.size}, nome=${usuariof.nome})}">[[ ${i} + 1 ]]</a>
+                <a th:href="@{/rotulo/paginacao(page=${i}, size=${todos.size}, nome=${usuariof.nome}, param=usuario)}">[[ ${i} + 1 ]]</a>
             </th:block>
 
             <!-- Próximo-->
             <span th:if="${todos.hasNext()}">
-                <a th:href="@{/rotulo/paginacao(page=${todos.number+1}, size=${todos.size}, nome=${usuariof.nome})}">Próximo</a>
+                <a th:href="@{/rotulo/paginacao(page=${todos.number+1}, size=${todos.size}, nome=${usuariof.nome}, param=usuario)}">Próximo</a>
             </span>
 
         </div>

@@ -71,13 +71,13 @@
         <!-- Paginação-->
         <div style="margin-top: 10px; background-color: white; width: 25%; " th:if="${!todos.empty} ">
             <!-- Anterior-->
-            <span th:if="${todos.hasPrevious()} "><a th:href="@{/rotulo/paginacao(page=${todos.number-1}, size=${todos.size}, nome=${rotulo.titulo})} ">Anterior</a></span>
+            <span th:if="${todos.hasPrevious()} "><a th:href="@{/rotulo/paginacao(page=${todos.number-1}, size=${todos.size}, nome=${rotulo.titulo}, param=rotulo)} ">Anterior</a></span>
 
             <!-- Paginaçõies -->
-            <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)} "><a th:href="@{/rotulo/paginacao/(page=${i}, size=${todos.size}, nome=${rotulo.titulo})} ">[[ ${i} + 1 ]]</a></th:block>
+            <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)} "><a th:href="@{/rotulo/paginacao(page=${i}, size=${todos.size}, nome=${rotulo.titulo}, param=rotulo)} ">[[ ${i} + 1 ]]</a></th:block>
 
             <!-- Próximo-->
-            <span th:if="${todos.hasNext()} "><a th:href="@{/rotulo/paginacao(page=${todos.number+1}, size=${todos.size}, nome=${rotulo.titulo})} ">Próximo</a></span>
+            <span th:if="${todos.hasNext()} "><a th:href="@{/rotulo/paginacao(page=${todos.number+1}, size=${todos.size}, nome=${rotulo.titulo}, param=rotulo)} ">Próximo</a></span>
         </div>
 
     </div>

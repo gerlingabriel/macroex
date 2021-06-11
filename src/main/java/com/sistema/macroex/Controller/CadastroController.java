@@ -163,8 +163,10 @@ public class CadastroController {
         }
         repository.save(usuario);
 
-        model.addAttribute("todos", repository.findAll(PageRequest.of(0, 5, Sort.by("id"))));
-        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("todos", repository.findByPerfil(usuario.getPerfil(), PageRequest.of(0, 5, Sort.by("id"))));
+        var user = new Usuario();
+        user.setPerfil(usuario.getPerfil());
+        model.addAttribute("usuario", user);
 
         return "cadastro/tabela";
     }
