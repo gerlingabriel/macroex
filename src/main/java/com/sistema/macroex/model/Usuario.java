@@ -63,7 +63,7 @@ public class Usuario {
     @JoinTable(joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private List<Role> roles;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval =true)
     private List<ContraRotulo> contrarotulo;
 
     @OneToMany(mappedBy = "adm", cascade = CascadeType.ALL)

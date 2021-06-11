@@ -1,6 +1,7 @@
 package com.sistema.macroex.Controller;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
@@ -16,6 +17,7 @@ import com.sistema.macroex.service.JavaMailApp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -89,16 +91,20 @@ public class RotuloController {
         // Pegar o usuario logado
         var user = user();
 
-        /** Se o perfil dele for ADM então será somente para cadastrar */
-        if (user.getPerfil().equals(Perfil.ADMINISTRADOR)) {
+        /** Se o perfil dele nao for ADM então irá finalizar cadastro(notificação) */
+        if (isNotAdm(user)) {
+            rotulo.setStatus(Status.FINALIZADO);
+        } else { // Se não é o ADM cadastrando o item
             rotulo.setAdm(user);
             rotulo.setStatus(Status.CADASTRADO);
-        } else { // Se não for um perfil ADM significa que é um fornecedor
-            rotulo.setStatus(Status.FINALIZADO);
         }
 
-        // Colocar o dia da criação e da edição
-        rotulo.setDataCriacao(LocalDate.now());
+        // Colocar o dia da criação e da edição se estiver vazio
+        // Quando for editar irei novamente, mas quando for finalizar irei modificar a
+        // data
+        if (rotulo.getDataCriacao() == null || rotulo.getStatus().equals(Status.FINALIZADO)) {
+            rotulo.setDataCriacao(LocalDate.now());
+        }
 
         if (rotulo.getId() != null) {
             model.addAttribute("salvo", "Contra Rotulo editado com sucesso!");
@@ -106,27 +112,31 @@ public class RotuloController {
             model.addAttribute("salvo", "Contra Rotulo salvo com sucesso!");
         }
 
-        // Pegar o Usuario desse rotulo
-        Usuario auxUsuario = repository.findById(rotulo.getUsuario().getId()).get();
-
-        /**
-         * Salvando rotulo no Usuario Sistema saberá se é ADD ou UPDATE
-         */
-        auxUsuario.getContrarotulo().add(rotulo);
-
-        // Tratamento de exceção
         try {
             /** Salvando no Usuario vai té rotulo */
-            repository.save(auxUsuario);
+            rotuloRepository.save(rotulo);
+            // repository.save(auxUsuario);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        // rotuloRepository.save(rotulo);
+        /** Verificar para qual perfil irá ser encaminhado */
+        if (isNotAdm(user)) {
 
+            List<ContraRotulo> todosFiltrado = rotuloRepository.buscaPorUsuario(user).stream()
+                    .filter(c -> c.getStatus() != Status.CADASTRADO).collect(Collectors.toList());
+
+            Page<ContraRotulo> todosPaginados = new PageImpl<>(todosFiltrado, PageRequest.of(0, 5, Sort.by("id")),
+                    todosFiltrado.size());
+
+            model.addAttribute("todos", todosPaginados);
+            model.addAttribute("rotulo", new ContraRotulo());
+            return "fornecedor/tabelaRotulo";
+        }
+        /**se não for um FORNECEDOR */
         model.addAttribute("todos", rotuloRepository.findAll(PageRequest.of(0, 5, Sort.by("id"))));
         model.addAttribute("rotulo", new ContraRotulo());
-       
+
         return "fornecedor/tabelaRotulo";
     }
 
@@ -135,27 +145,28 @@ public class RotuloController {
 
         /** verificar quem está logado */
         Usuario usuario = user();
+        if (isNotAdm(usuario)) {
+            List<ContraRotulo> todosFiltrado = rotuloRepository.buscaPorUsuario(usuario).stream()
+                    .filter(rotulo -> rotulo.getStatus() != Status.CADASTRADO).collect(Collectors.toList());
 
-        buscarTodosRotulos(model, usuario);
+            Page<ContraRotulo> todosPaginados = new PageImpl<>(todosFiltrado, PageRequest.of(0, 5, Sort.by("id")),
+                    todosFiltrado.size());
+
+            model.addAttribute("todos", todosPaginados);
+        } else {
+            buscarTodosRotulos(model, usuario);
+        }
+
+        model.addAttribute("rotulo", new ContraRotulo());
+        
+        // Ver a lista
+        // rotuloRepository.buscaPorUsuario(usuario).stream()
+        // .filter(rotulo -> rotulo.getStatus() != Status.CADASTRADO).forEach((mostrar) -> {
+        //                         System.out.println(mostrar.getAdm().getEmail());
+        //                         System.out.println(mostrar.getUsuario().getEmail());
+        //                     });
 
         return "fornecedor/tabelaRotulo";
-    }
-
-    @GetMapping(value = "/tabelaRotuloFornecedor")
-    public String tabelaRotuloForncedor(Model model, HttpSession session) {
-
-        /** verificar quem está logado */
-        Usuario usuario = user();
-
-        var todos = rotuloRepository.findByUsuario(usuario, PageRequest.of(0, 5, Sort.by("id")));
-
-        var todosFiltrado = todos.stream().filter(rotulo -> rotulo.getStatus() != Status.CADASTRADO)
-                .collect(Collectors.toList());
-
-        model.addAttribute("todos", todosFiltrado);
-        model.addAttribute("rotulo", new ContraRotulo());
-
-        return "fornecedor/tabelaRotuloFornecedor";
     }
 
     @GetMapping(value = "/editar/{id}")
@@ -165,6 +176,10 @@ public class RotuloController {
 
         model.addAttribute("rotulo", rotulo);
         model.addAttribute("usuariof", rotulo.getUsuario());
+
+        if (isNotAdm(user())) {
+            model.addAttribute("notadm", true);
+        }
 
         return "fornecedor/rotulo";
 
@@ -191,6 +206,7 @@ public class RotuloController {
         rotulo.setStatus(Status.NOTIFICACAO);
 
         rotuloRepository.save(rotulo);
+        
         javaMailApp.enviaremail(rotulo.getUsuario().getEmail(), rotulo.getProduto());
 
         var usuario = user();
@@ -212,6 +228,7 @@ public class RotuloController {
 
         buscarTodosRotulos(model, usuario);
 
+        model.addAttribute("rotulo", new ContraRotulo());
         model.addAttribute("usuariof", rotulo.getUsuario());
         model.addAttribute("salvo", "Item enviado com sucesso");
 
@@ -220,12 +237,11 @@ public class RotuloController {
     }
 
     // Paginação das tabelas Rotulo sem FILTRO do forcenedor
-    //Essa pagição será usado pela paginção do Rotulo e
-    //Pagição para cadastrar um fornecdor no rotulo novo
+    // Essa pagição será usado pela paginção do Rotulo e
+    // Pagição para cadastrar um fornecdor no rotulo novo
     @GetMapping(value = "/paginacao")
     public String pagiancaoForncedor(Model model, @PageableDefault(size = 5) Pageable pageable,
-            @RequestParam("nome") String nome,
-            @RequestParam("param") String tipo) {
+            @RequestParam("nome") String nome, @RequestParam("param") String tipo) {
 
         Page<Usuario> todos = null;
         Page<ContraRotulo> todosRotulos = null;
@@ -234,20 +250,40 @@ public class RotuloController {
         var user = user();
         if (user.getPerfil() != Perfil.ADMINISTRADOR) {
 
-            //todos = repository.findByNomeContainsIgnoreCaseAndPerfil(nome, Perfil.FORNECEDOR, pageable)
+            /** IF -> sem nome - ELSE -> com nome na pesquisa */
+            if (nome.isEmpty()) {
+                /**
+                 * Fazer uma lista de ContraRotulo do usuario com status diferente do cadastrado
+                 * signifca que ele verá os notificado e os finalizados
+                 */
+                List<ContraRotulo> todosFiltrado = rotuloRepository.buscaPorUsuario(user).stream()
+                        .filter(rotulo -> rotulo.getStatus() != Status.CADASTRADO).collect(Collectors.toList());
 
-            // // setor noome da pesquisa
-            // var usuariof = new Usuario();
-            // if (!nome.isEmpty()) {
-            //     usuariof.setNome(nome);;
-            // }
+                /** Com a lista pronta agora é fazer paginação dessa lista */
+                todosRotulos = new PageImpl<>(todosFiltrado, pageable, todosFiltrado.size());
 
-            // model.addAttribute("todos", todos);
-            // model.addAttribute("usuariof", usuariof);
-            return "fornecedor/tabelaRotuloFornecedor";
+                model.addAttribute("todos", todosRotulos);
+                model.addAttribute("rotulo", new ContraRotulo());
+                return "fornecedor/tabelaRotulo";
 
-        }
+            } else {
 
+                List<ContraRotulo> todosFiltrado = rotuloRepository.buscaPorUsuarioETitulo(user, nome).stream()
+                        .filter(rotulo -> rotulo.getStatus() != Status.CADASTRADO).collect(Collectors.toList());
+
+                todosRotulos = new PageImpl<>(todosFiltrado, pageable, todosFiltrado.size());
+
+                model.addAttribute("todos", todosRotulos);
+                var rotulo = new ContraRotulo();
+                rotulo.setTipo(nome);
+                model.addAttribute("rotulo", rotulo);
+                return "fornecedor/tabelaRotulo";
+
+            }
+
+        } // fim da Condição do usuario FORNECEDOR
+
+        /** Aqui será a PAGINAÇÂO ADMINISTRADOR */
         /** Se a pagiação for na pesquisa de fornecedor para ADD rotulo */
         if (tipo.equals("usuario")) {
 
@@ -257,7 +293,7 @@ public class RotuloController {
                 model.addAttribute("usuariof", new Usuario());
                 model.addAttribute("todos", todos);
                 return "fornecedor/buscarFornecedor";
-                
+
             } else {
 
                 todos = repository.findByNomeContainsIgnoreCaseAndPerfil(nome, Perfil.FORNECEDOR, pageable);
@@ -266,19 +302,18 @@ public class RotuloController {
                 model.addAttribute("usuariof", usuariof);
                 model.addAttribute("todos", todos);
                 return "fornecedor/buscarFornecedor";
-                
+
             }
 
-            
         } else { // se não é usuario então e paginao de rotulo
-            
+
             if (nome.isEmpty()) {
 
                 todosRotulos = rotuloRepository.findAll(pageable);
                 model.addAttribute("rotulo", new ContraRotulo());
                 model.addAttribute("todos", todosRotulos);
                 return "fornecedor/tabelaRotulo";
-                
+
             } else {
 
                 todosRotulos = rotuloRepository.findByTituloContainsIgnoreCase(nome, pageable);
@@ -289,7 +324,7 @@ public class RotuloController {
                 return "fornecedor/tabelaRotulo";
             }
         }
-     
+
     }
 
     // Paginação das tabelas Rotulo sem FILTRO do forcenedor
@@ -311,36 +346,54 @@ public class RotuloController {
     }
 
     // Filtrar a pesquisa pelo nome e sempre no perfil FORNECEDOR
-    @GetMapping(value = "/buscar")
+    // Tem também fultrar na conta Fornecedor onde só ira aparecer itens a
+    // cadastrar(notificar) e os finalizados
+    @GetMapping(value = "/buscarRotulo")
     public String pesquisar(@ModelAttribute ContraRotulo rotulo, Model model,
             @PageableDefault(size = 5) Pageable pageable) {
 
-        //Verificar se Usuario logado é um ADM ou Fornecedor
+        // Verificar se Usuario logado é um ADM ou Fornecedor
         var user = user();
 
         Page<ContraRotulo> todos = null;
 
-        //Se for um forncedor deverá ter acesso somente aos Rotulo cadastrados
+        // Se for um forncedor deverá ter acesso somente aos Rotulo cadastrados
         if (user.getPerfil() != Perfil.ADMINISTRADOR) {
 
-            todos = rotuloRepository.findByUsuarioAndTituloContainsIgnoreCase(user, rotulo.getTipo(), pageable);
+            List<ContraRotulo> todosFiltrado = rotuloRepository.buscaPorUsuarioETitulo(user, rotulo.getTitulo())
+                    .stream().filter(c -> c.getStatus() != Status.CADASTRADO).collect(Collectors.toList());
+
+            Page<ContraRotulo> todosPaginados = new PageImpl<>(todosFiltrado, pageable, todosFiltrado.size());
+
             model.addAttribute("rotulo", rotulo);
-            model.addAttribute("todos", todos);
+            model.addAttribute("todos", todosPaginados);
             return "fornecedor/tabelaRotulo";
         }
 
-        /**Verificar se nome estiver vazio puxar todos */
+        /** Verificar se nome estiver vazio puxar todos */
         if (rotulo.getTitulo().isEmpty()) {
             todos = rotuloRepository.findAll(pageable);
         } else {
             todos = rotuloRepository.findByTituloContainsIgnoreCase(rotulo.getTitulo(), pageable);
         }
-        
 
         model.addAttribute("rotulo", rotulo);
         model.addAttribute("todos", todos);
-
         return "fornecedor/tabelaRotulo";
+    }
+
+    @PostMapping(value = "/buscarNomeFornecedor")
+    public String pesquisaPorNomeForncedor(@ModelAttribute Usuario usuariof, Model model,
+            @PageableDefault(size = 5) Pageable pageable) {
+
+        Page<Usuario> todos = repository.findByNomeContainsIgnoreCaseAndPerfil(usuariof.getNome(), Perfil.FORNECEDOR,
+                pageable);
+
+        model.addAttribute("usuariof", usuariof);
+        model.addAttribute("todos", todos);
+
+        return "fornecedor/buscarFornecedor";
+
     }
 
     // Paginação das tabelas
@@ -379,8 +432,6 @@ public class RotuloController {
     private void buscarTodosRotulos(Model model, Usuario usuario) {
         var todos = rotuloRepository.findAll(PageRequest.of(0, 5, Sort.by("id")));
         model.addAttribute("todos", todos);
-        model.addAttribute("rotulo", new ContraRotulo());
-        model.addAttribute("usuario", usuario);
     }
 
     /** Método para verificar se existe o rotulo */

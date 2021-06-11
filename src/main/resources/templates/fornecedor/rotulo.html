@@ -10,16 +10,17 @@
         <form method="POST" th:action="@{/rotulo}" th:object="${rotulo}" class="form-horizontal " th:classappend="${session.user.perfil !=  T(com.sistema.macroex.model.Perfil).ADMINISTRADOR} ? needs-validation : '' ">
 
             <input type="hidden" id="id" name="id" th:field="*{id}">
+            <input type="hidden" id="adm" name="adm" th:field="*{adm}">
 
             <!--DESCRICAO / TIPO-->
             <div class="form-group row" th:if="${usuariof.nome != null}">
                 <label class="col-md-1 control-label " for="produto ">Produto</label>
                 <div class="col-md-5 ">
-                    <input id="produto " name="produto " placeholder="Nome do Produto" class="form-control input-md " th:field="*{produto} " th:required="${adm}">
+                    <input id="produto " name="produto " placeholder="Nome do Produto" class="form-control input-md " th:field="*{produto} " th:required="${notadm}">
                 </div>
                 <label class="col-md-1 control-label " for="Tipo ">Tipo </label>
                 <div class="col-md-5 ">
-                    <input id="tipo " name="tipo " placeholder="Tipo do produto " class="form-control input-md " th:field="*{tipo} " th:required="${adm}">
+                    <input id="tipo " name="tipo " placeholder="Tipo do produto " class="form-control input-md " th:field="*{tipo} " th:required="${notadm}">
                 </div>
             </div>
 
@@ -27,11 +28,11 @@
             <div class="form-group row" th:if="${usuariof.nome != null}">
                 <label class="col-md-1 control-label " for="titulo">Titulo</label>
                 <div class="col-md-5 ">
-                    <input id="titulo" name="titulo" placeholder="Nome do Produto" class="form-control input-md " th:field="*{titulo} " th:required="${adm}">
+                    <input id="titulo" name="titulo" placeholder="Nome do Produto" class="form-control input-md " th:field="*{titulo} " th:required="${notadm}">
                 </div>
                 <label class="col-md-1 control-label " for="subTitulo ">SubTitulo</label>
                 <div class="col-md-5 ">
-                    <input id="subTitulo" name="subTitulo" placeholder="Nome do SubTitulo " class="form-control input-md " th:field="*{subTitulo} " th:required="${adm}">
+                    <input id="subTitulo" name="subTitulo" placeholder="Nome do SubTitulo " class="form-control input-md " th:field="*{subTitulo} " th:required="${notadm}">
                 </div>
             </div>
 
@@ -39,11 +40,11 @@
             <div class="form-group row" th:if="${usuariof.nome != null}">
                 <label class="col-md-1 control-label " for="lote">Lote</label>
                 <div class="col-md-5 ">
-                    <input id="lote" name="lote" placeholder="Nome do Lote" class="form-control input-md " th:field="*{lote} " th:required="${adm}">
+                    <input id="lote" name="lote" placeholder="Nome do Lote" class="form-control input-md " th:field="*{lote} " th:required="${notadm}">
                 </div>
                 <label class="col-md-1 control-label " for="safra">Safra</label>
                 <div class="col-md-5 ">
-                    <input id="safra" name="safra" placeholder="Safra do produto " class="form-control input-md " th:field="*{safra} " th:required="${adm}">
+                    <input id="safra" name="safra" placeholder="Safra do produto " class="form-control input-md " th:field="*{safra} " th:required="${notadm}">
                 </div>
             </div>
 
@@ -59,7 +60,7 @@
                 </div>
                 <label class="col-md-1 control-label " for="safra" style="margin-top: 0px;">Conteudo LIquido</label>
                 <div class="col-md-5 ">
-                    <input id="liquido" name="liquido" placeholder="Safra do produto " class="form-control input-md " th:field="*{liquido} " th:required="${adm}">
+                    <input id="liquido" name="liquido" placeholder="Safra do produto " class="form-control input-md " th:field="*{liquido} " th:required="${notadm}">
                 </div>
             </div>
 
@@ -67,7 +68,7 @@
             <div class="form-group row" th:if="${usuariof.nome != null}">
                 <label class="col-md-1 control-label " for="alcoolica">Alcoolica</label>
                 <div class="col-md-5 ">
-                    <input id="alcoolica" name="alcoolica" placeholder="Nome do Lote" class="form-control input-md " th:field="*{alcoolica} " data-inputmask=" 'mask': '99,99%'" autocomplete="off" th:required="${adm}">
+                    <input id="alcoolica" name="alcoolica" placeholder="Nome do Lote" class="form-control input-md " th:field="*{alcoolica} " data-inputmask=" 'mask': '99,99%'" autocomplete="off" th:required="${notadm}">
                 </div>
                 <!-- falta um campo-->
             </div>
@@ -76,7 +77,7 @@
             <div class="form-group row" th:if="${usuariof.nome != null}">
                 <label class="col-md-2 control-label " for="ingrediantes" style="margin-top: 25px;">Ingredientes</label>
                 <div class="col-md-10">
-                    <textarea class="form-control" id="ingrediantes" rows="3" name="ingrediantes" th:field="*{ingrediantes}" th:required="${adm}"></textarea>
+                    <textarea class="form-control" id="ingrediantes" rows="3" name="ingrediantes" th:field="*{ingrediantes}" th:required="${notadm}"></textarea>
                 </div>
             </div>
 

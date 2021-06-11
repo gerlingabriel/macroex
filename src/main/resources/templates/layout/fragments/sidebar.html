@@ -76,11 +76,8 @@
         <li th:if="${session.user.perfil ==  T(com.sistema.macroex.model.Perfil).ADMINISTRADOR}">
             <a th:href="@{/cadastro/tabela/{perfil}(perfil= ${T(com.sistema.macroex.model.Perfil).DISTRIBUIDOR})}">Distribuidor</a>
         </li>
-        <li th:if="${session.user.perfil ==  T(com.sistema.macroex.model.Perfil).ADMINISTRADOR}">
-            <a th:href="@{/rotulo/tabelaRotulo}">Rotulo</a>
-        </li>
-        <li th:if="${session.user.perfil ==  T(com.sistema.macroex.model.Perfil).FORNECEDOR}">
-            <a th:href="@{/rotulo/tabelaRotuloFornecedor}">Rotulo</a>
+        <li>
+            <a th:href="@{/rotulo/tabelaRotulo} ">Rotulo</a>
         </li>
         <li>
             <a href="# ">Contact</a>

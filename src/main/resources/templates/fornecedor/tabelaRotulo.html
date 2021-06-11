@@ -16,16 +16,16 @@
     </div>
 
     <div class="container">
-        <form method="GET" th:action="@{/rotulo/buscar}" th:object="${rotulo}">
-
+        <form method="GET" th:action="@{/rotulo/buscarRotulo}" th:object="${rotulo}">
+            <input type="hidden" id="id" name="id" th:field="*{id}">
             <div class=" form-group row">
                 <label class="col-md-1 control-label " for="nome ">Nome:</label>
                 <div class="col-md-5">
                     <input id="nome " name="nome" placeholder="Nome do Produto" class="form-control input-md" th:field="*{titulo}">
                 </div>
                 <button type="submit" class="btn btn-info btn-md " style="margin-right: 21px; ">Procurar</button>
-                <a href="/home " class="btn btn-info btn-md " style="margin-right: 21px;"><span>Voltar para Home</span></a>
-                <a th:href=" @{/rotulo} " class="btn btn-info btn-md " th:if="@{usuario.perfil == T(com.sistema.macroex.model.Perfil).ADMINISTRADOR}"><span>Criar Rotulo</span></a>
+                <a th:href=" @{/rotulo} " class="btn btn-info btn-md " th:if="${session.user.perfil ==  T(com.sistema.macroex.model.Perfil).ADMINISTRADOR}" style="margin-right: 21px;"><span>Criar Rotulo</span></a>
+                <a href="/home " class="btn btn-info btn-md "><span>Voltar para Home</span></a>
                 <br>
             </div>
         </form>

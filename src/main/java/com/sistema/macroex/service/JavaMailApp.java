@@ -40,11 +40,12 @@ public class JavaMailApp {
         props.put("mail.smtp.ssl.trust", "*"); /**Validação do Gmail */
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 
-        Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(emailProvedor, senhaprovedor);
             }
         });
+        /** troquei a session do getDefaulInstance por getInstance */
 
         /** Ativa Debug para sessão */
         session.setDebug(true);
