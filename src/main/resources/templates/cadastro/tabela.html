@@ -58,10 +58,10 @@
                         <a th:href="@{/cadastro/editar/{id}(id= ${user.id})} "><img src="/icon/editar.png " width="15px " alt="Editar "></a>
                     </td>
                     <td align="center " th:if="${user.enable == true} ">
-                        <a th:href="@{/cadastro/deletar/{id}(id= ${user.id})} "><img src="/icon/yes.png " width="15px " alt="Editar "></a>
+                        <a th:href="@{/cadastro/deletar/(id=${user.id}, page=${PageNumber}, size=${todos.size})} "><img src="/icon/yes.png " width="15px " alt="Editar "></a>
                     </td>
                     <td align="center " th:if="${user.enable != true} ">
-                        <a th:href="@{/cadastro/deletar/{id}(id= ${user.id})} "><img src="/icon/no.png " width="15px " alt="Editar "></a>
+                        <a th:href="@{/cadastro/deletar/(id=${user.id}, page=${PageNumber}, size=${todos.size})} "><img src="/icon/no.png " width="15px " alt="Editar "></a>
                     </td>
                 </tr>
             </tbody>
@@ -71,14 +71,11 @@
         <div style="margin-top: 10px; background-color: white; width: 25%; " th:if="${!todos.empty}">
             <!-- Anterior-->
             <span th:if="${todos.hasPrevious()} "><a th:href="@{/cadastro/paginacao(page=${todos.number-1}, size=${todos.size}, nome =${usuario.nome}, perfil = ${usuario.perfil})} ">Anterior</a></span>
-
             <!-- Paginaçõies -->
-            <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)} "><a th:href="@{/cadastro/paginacao/(page=${i}, size=${todos.size}, nome =${usuario.nome}, perfil = ${usuario.perfil})} ">[[ ${i} + 1 ]]</a></th:block>
-
+            <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)} "><a th:href="@{/cadastro/paginacao/(page=${i}, size=${todos.size}, nome =${usuario.nome}, perfil = ${usuario.perfil})} " th:switch="${PageNumber==i}">[[ ${i} + 1 ]]</a></th:block>
             <!-- Próximo-->
             <span th:if="${todos.hasNext()} "><a th:href="@{/cadastro/paginacao(page=${todos.number+1}, size=${todos.size}, nome =${usuario.nome}, perfil = ${usuario.perfil})} ">Próximo</a></span>
         </div>
-
 
     </div>
     <!-- Fim da div para alinhar -->

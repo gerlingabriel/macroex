@@ -59,11 +59,12 @@ public class Usuario {
     @Enumerated(EnumType.STRING)
     private Perfil perfil; // Perfil do usuário
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    /** Fetch eager é imporante para puxar roles e acessar  */
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "roles_id"))
     private List<Role> roles;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval =true)
+    @OneToMany(fetch=FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval =true)
     private List<ContraRotulo> contrarotulo;
 
     @OneToMany(mappedBy = "adm", cascade = CascadeType.ALL)
