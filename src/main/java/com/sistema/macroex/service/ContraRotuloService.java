@@ -103,16 +103,20 @@ public class ContraRotuloService {
         return new PageImpl<>(todosFiltrado, pageable, todosFiltrado.size());
     }
 
-    public Page<ContraRotulo> buscarPorTitulo(String nome, Pageable pageable){
-        return rotuloRepository.findByTituloContainsIgnoreCase(nome, pageable);
-    }
-
+    /** Fazer um filtro por USUARIO e nome do TITULO */
     public Page<ContraRotulo> buscarUsuarioFiltroTitulo (Usuario user, String nome, Pageable pageable){
         return  rotuloRepository.findByUsuarioAndTituloContainsIgnoreCase(user, nome, pageable);
     }
-
+    /** Fazer um filtro por todos ROTULOS por TITULO - ADM */
     public Page<ContraRotulo> busscarTodosRotulosFiltroNome(String nome, Pageable pageable){
         return rotuloRepository.findByTituloContainsIgnoreCase(nome, pageable);
+    }
+
+    /** Verificar se ADM está Editando
+     * Se Item estiver já Cadastrado então ADM só poderá editar
+     */
+    public Boolean verificarSeRotuloFoiCadastradp(ContraRotulo rotulo){
+        return rotulo.getStatus() == null;
     }
 
 }

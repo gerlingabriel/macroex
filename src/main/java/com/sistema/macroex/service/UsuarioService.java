@@ -39,16 +39,18 @@ public class UsuarioService {
     /** Métodod para salvar Usuario */
     public void salvarUsuario(Usuario usuario) {
 
-        if (usuario.getId() != null) {
+        if (usuario.getId() != null) { // Editar
             Usuario usuarioParaPegarContrarotulo = repository.findById(usuario.getId())
                     .orElseThrow(() -> new ExceptionNegotion("Item não encontrado"));
             usuario.setContrarotulo(usuarioParaPegarContrarotulo.getContrarotulo());
+        } else { // Criação de novo Usuario
+            usuario.setEnable(true);
         }
         /** Criptografar as senhas em perfis que não sejam distribuidor */
         if (!usuario.getPerfil().equals(Perfil.DISTRIBUIDOR)) {
             usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
         }
-        usuario.setEnable(true);
+        
 
         repository.save(usuario);
     }

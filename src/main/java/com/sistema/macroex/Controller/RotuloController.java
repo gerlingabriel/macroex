@@ -74,13 +74,18 @@ public class RotuloController {
         /** Se o perfil dele nao for ADM então irá finalizar cadastro(notificação) */
         if (contraRotuloService.isNotAdm(user)) {
             rotulo.setStatus(Status.FINALIZADO);
-        } else { // Se não é o ADM cadastrando o item
-            rotulo.setAdm(user);
-            rotulo.setStatus(Status.CADASTRADO);
-        }
-
-        if (contraRotuloService.colocarDataQuandoCriarAndFinalizar(rotulo)){
             rotulo.setDataCriacao(LocalDate.now());
+        } else { // Se não é o ADM cadastrando o item
+
+            // Verificar é criação
+            //se for será criado
+            //se não não mudará o Autor da Ccriação e nem data
+            if (contraRotuloService.verificarSeRotuloFoiCadastradp(rotulo)) {
+                rotulo.setAdm(user);
+                rotulo.setStatus(Status.CADASTRADO);
+                rotulo.setDataCriacao(LocalDate.now());
+            }
+           
         }
 
         if (rotulo.getId() != null) {
@@ -250,7 +255,7 @@ public class RotuloController {
                 var rotulo = new ContraRotulo();
                 rotulo.setTitulo(nome);
                 model.addAttribute("rotulo", rotulo);
-                model.addAttribute("todos", contraRotuloService.buscarPorTitulo(nome, pageable));
+                model.addAttribute("todos", contraRotuloService.busscarTodosRotulosFiltroNome(nome, pageable));
                 return "fornecedor/tabelaRotulo";
             }
         }
