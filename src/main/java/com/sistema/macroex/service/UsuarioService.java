@@ -46,6 +46,7 @@ public class UsuarioService {
         } else { // Criação de novo Usuario
             usuario.setEnable(true);
         }
+        
         /** Criptografar as senhas em perfis que não sejam distribuidor */
         if (!usuario.getPerfil().equals(Perfil.DISTRIBUIDOR)) {
             usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
@@ -81,6 +82,7 @@ public class UsuarioService {
 
     /** Alterar os Status */
     public void alterarEnable(Usuario usuario) {
+
         if (usuario.getEnable()) {
             usuario.setEnable(false);
         } else {

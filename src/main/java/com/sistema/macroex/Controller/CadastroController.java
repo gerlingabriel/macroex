@@ -31,7 +31,7 @@ import org.springframework.ui.Model;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class CadastroController {
 
-    private final UsuarioService usuarioService;
+    private UsuarioService usuarioService;
 
     /**
      * As três classes vão utilizar essa página, então setar sempre o perfil é
@@ -105,7 +105,7 @@ public class CadastroController {
 
     @GetMapping(value = "/deletar")
     public String tabelaInativar(@RequestParam("id") Long id, Model model, @PageableDefault(size = 5) Pageable pageable) {
-
+        
         Usuario usuario = usuarioService.verificarIdExiste(id); 
 
         usuarioService.alterarEnable(usuario);

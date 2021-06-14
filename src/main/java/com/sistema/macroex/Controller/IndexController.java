@@ -1,14 +1,15 @@
 package com.sistema.macroex.Controller;
 
+import java.time.LocalDate;
+
 import javax.servlet.http.HttpSession;
 
 import com.sistema.macroex.model.Usuario;
-import com.sistema.macroex.repository.UsuarioRepository;
+import com.sistema.macroex.service.ContraRotuloService;
 import com.sistema.macroex.service.JavaMailApp;
 import com.sistema.macroex.service.VerificarSeTemRotulo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,19 +17,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import lombok.AllArgsConstructor;
+
 
 @Controller
 @RequestMapping("/")
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class IndexController {
 
-    @Autowired
-    private UsuarioRepository repository;
-
-    @Autowired
     private JavaMailApp javaMailApp;
-
-    @Autowired
     private VerificarSeTemRotulo seTemRotulo;
+    private ContraRotuloService contraRotuloService;
 
     @GetMapping
     public String index() {
@@ -60,9 +59,9 @@ public class IndexController {
     @RequestMapping("/home")
     public String home(HttpSession session, Model model) {
 
-        Usuario usuario = repository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
-        session.setAttribute("user", usuario);
-        session.setAttribute("cadastrar", seTemRotulo.verificar(usuario));
+        session.setAttribute("user", contraRotuloService.user());
+        session.setAttribute("cadastrar", seTemRotulo.verificar(contraRotuloService.user()));
+        session.setAttribute("diaHoje", LocalDate.now());
         
         return "home";
     }

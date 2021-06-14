@@ -1,0 +1,120 @@
+<!--
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" th:fragment="barralateral">
+        <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+          <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
+          <span class="fs-4">Sidebar</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+          <li class="nav-item">
+            <a th:href="@{/home}" class="nav-link active" aria-current="page">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
+              Home
+            </a>
+          </li>
+          <li>
+            <a th:href="@{/cadastro}" class="nav-link text-white">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"/></svg>
+              Cadastro
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+              Orders
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"/></svg>
+              Products
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link text-white">
+              <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"/></svg>
+              Customers
+            </a>
+          </li>
+        </ul>
+        <hr>
+        <div class="dropdown">
+          <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+            <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+            <strong>mdo</strong>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-dark text-small shadow" aria-labelledby="dropdownUser1">
+            <li><a class="dropdown-item" href="#">New project...</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="#">Sign out</a></li>
+          </ul>
+        </div>
+      </div>
+-->
+
+<!-- Sidebar  -->
+<nav id="sidebar" th:fragment="barralateral">
+    <div class="sidebar-header">
+        <h3>Microex</h3>
+    </div>
+
+    <ul class="list-unstyled components">
+        <p align="center"><span th:utext="${#temporals.format(session.diaHoje, 'dd-MM-yyyy')}" style="align-items: center;font-weight: bold;font-size: 30px;"></span></p>
+
+        <li>
+            <a href="/home">Home</a>
+            <!-- aqui quando coloco th:href dá um erro nas camadas abaixo -->
+        </li>
+        <li th:if="${session.user.perfil ==  T(com.sistema.macroex.model.Perfil).ADMINISTRADOR}">
+            <a th:href="@{/cadastro/tabela/{perfil}(perfil= ${T(com.sistema.macroex.model.Perfil).ADMINISTRADOR})}">Adminsitrador</a>
+        </li>
+        <li th:if="${session.user.perfil ==  T(com.sistema.macroex.model.Perfil).ADMINISTRADOR}">
+            <a th:href="@{/cadastro/tabela/{perfil}(perfil= ${T(com.sistema.macroex.model.Perfil).FORNECEDOR})}">Fornecedor</a>
+        </li>
+        <li th:if="${session.user.perfil ==  T(com.sistema.macroex.model.Perfil).ADMINISTRADOR}">
+            <a th:href="@{/cadastro/tabela/{perfil}(perfil= ${T(com.sistema.macroex.model.Perfil).DISTRIBUIDOR})}">Distribuidor</a>
+        </li>
+        <li>
+            <a th:href="@{/rotulo/tabelaRotulo} ">Rotulo</a>
+        </li>
+        <li>
+            <a href="# ">Contact</a>
+        </li>
+    </ul>
+
+    <!-- Ideia para criar botção de link
+    <ul class="list-unstyled CTAs ">
+        <li>
+            <a href="https://bootstrapious.com/tutorial/files/sidebar.zip " class="download ">Download source</a>
+        </li>
+        <li>
+            <a href="https://bootstrapious.com/p/bootstrap-sidebar " class="article ">Back to article</a>
+        </li>
+    </ul>
+    -->
+    <!-- GUARDDAR PARA SABERCOMO GRIAR UM GRID NO SIBERBAR-->
+    <!-- <li th:if="${session.user.perfil==T (com.sistema.macroex.model.Perfil).ADMINISTRADOR} ">
+            <a href="#pageSubmenu " data-toggle="collapse " aria-expanded="false " class="dropdown-toggle ">Cadastro</a>
+            <ul class="collapse list-unstyled " id="pageSubmenu ">
+                <li>
+                    <a th:href="@{/cadastro} ">Novo cadstro</a>
+                </li>
+                <li>
+                    <a th:href="@{/cadastro/tabela} ">Tabela de Usuários</a>
+                </li>
+            </ul>
+        </li> -->
+    <!-- <li>
+            <a href="#pageSubmenuD " data-toggle="collapse " aria-expanded="false " class="dropdown-toggle ">Rotulo</a>
+            <ul class="collapse list-unstyled " id="pageSubmenuD ">
+                <li th:if="${session.user.perfil==T (com.sistema.macroex.model.Perfil).ADMINISTRADOR} ">
+                    <a th:href="@{/rotulo} ">Novo cadstro</a>
+                </li>
+                <li>
+                    <a th:href="@{/rotulo/tabelaRotulo} ">tabela do Contra Rotulo</a>
+                </li>
+            </ul>
+        </li> -->
+</nav>

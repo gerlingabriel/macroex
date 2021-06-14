@@ -65,7 +65,7 @@ public class RotuloController {
         return "fornecedor/rotulo";
     }
 
-    // salvando
+    /** salvando */
     @PostMapping
     public String cadastroContraRotuloSalvo(@ModelAttribute ContraRotulo rotulo, Model model) {
         // Pegar o usuario logado
