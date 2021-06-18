@@ -14,100 +14,104 @@
             <input type="hidden" id="status" name="status" th:field="*{status}">
             <input type="hidden" id="dataCriacao" name="dataCriacao" th:field="*{dataCriacao}">
 
-            <!--DESCRICAO / TIPO-->
-            <div class="form-group row" th:if="${usuariof.nome != null}">
-                <label class="col-md-1 control-label " for="produto ">Produto</label>
-                <div class="col-md-5 ">
-                    <input id="produto " name="produto " placeholder="Nome do Produto" class="form-control input-md " th:field="*{produto} " th:required="${notadm}">
+            <!--  DADOS DO FORNECEDOR -->
+            <div class="form-group row ">
+                <label class="col-3 col-md-2 col-lg-2 control-label " for="fornecedor">Fornecedor</label>
+                <div class="col-9 col-md-10 col-lg ">
+                    <select class="form-control " aria-label=".form-select-lg example " th:field="*{usuario}" id="fornecedor" name="fornecedor" required>
+                        <option value="">Selecionar</option>
+                        <option th:each="usu : ${usuariof} "th:value="${usu.id} " th:text="${usu.getNome} "></option>
+                    </select>
                 </div>
-                <label class="col-md-1 control-label " for="Tipo ">Tipo </label>
-                <div class="col-md-5 ">
-                    <input id="tipo " name="tipo " placeholder="Tipo do produto " class="form-control input-md " th:field="*{tipo} " th:required="${notadm}">
+            </div>
+
+            <!--  DADOS DO DISTRIBUIDOR -->
+            <div class="form-group row ">
+                <label class="col-3 col-md-2 col-lg-2 control-label " for="fornecedor">Distribuidor</label>
+                <div class="col-9 col-md-10 col-lg ">
+                    <select class="form-control " aria-label=".form-select-lg example " th:field="*{distribuidor}" id="fornecedor" name="fornecedor" required>
+                                    <option value="">Selecionar</option>
+                                    <option th:each="usu : ${usuariof} "th:value="${usu.id} " th:text="${usu.getNome} "></option>
+                                </select>
+                </div>
+            </div>
+
+            <!--DESCRICAO / TIPO-->
+            <div class="form-group row">
+                <label class="col-3 col-md-2 col-lg-2 control-label " for="produto ">Produto</label>
+                <div class="col-9 col-md-4 ">
+                    <input id="produto " name="produto " placeholder="Nome do Produto " class="form-control input-md " th:field="*{produto} " th:required="${notadm} ">
+                </div>
+                <label class="col-3 col-md-2 col-lg-2 control-label " for="Tipo ">Tipo </label>
+                <div class="col-9 col-md-4 ">
+                    <input id="tipo " name="tipo " placeholder="Tipo do produto " class="form-control input-md " th:field="*{tipo} " th:required="${notadm} ">
                 </div>
             </div>
 
             <!-- titulo e subtitulo-->
-            <div class="form-group row" th:if="${usuariof.nome != null}">
-                <label class="col-md-1 control-label " for="titulo">Titulo</label>
-                <div class="col-md-5 ">
-                    <input id="titulo" name="titulo" placeholder="Nome do Produto" class="form-control input-md " th:field="*{titulo} " th:required="${notadm}">
+            <div class="form-group row ">
+                <label class="col-3 col-md-2 col-lg-2 control-label " for="titulo ">Titulo</label>
+                <div class="col-9 col-md-4 ">
+                    <input id="titulo " name="titulo " placeholder="Nome do Produto " class="form-control input-md " th:field="*{titulo} " th:required="${notadm} ">
                 </div>
-                <label class="col-md-1 control-label " for="subTitulo ">SubTitulo</label>
-                <div class="col-md-5 ">
-                    <input id="subTitulo" name="subTitulo" placeholder="Nome do SubTitulo " class="form-control input-md " th:field="*{subTitulo} " th:required="${notadm}">
+                <label class="col-3 col-md-2 col-lg-2 control-label " for="subTitulo ">SubTitulo</label>
+                <div class="col-9 col-md-4 ">
+                    <input id="subTitulo " name="subTitulo " placeholder="Nome do SubTitulo " class="form-control input-md " th:field="*{subTitulo} " th:required="${notadm} ">
                 </div>
             </div>
 
             <!-- LOTE E SAFRA -->
-            <div class="form-group row" th:if="${usuariof.nome != null}">
-                <label class="col-md-1 control-label " for="lote">Lote</label>
-                <div class="col-md-5 ">
-                    <input id="lote" name="lote" placeholder="Nome do Lote" class="form-control input-md " th:field="*{lote} " th:required="${notadm}">
+            <div class="form-group row ">
+                <label class="col-3 col-md-2 col-lg-2 control-label " for="lote ">Lote</label>
+                <div class="col-9 col-md-4 ">
+                    <input id="lote " name="lote " placeholder="Nome do Lote " class="form-control input-md " th:field="*{lote} " th:required="${notadm} ">
                 </div>
-                <label class="col-md-1 control-label " for="safra">Safra</label>
-                <div class="col-md-5 ">
-                    <input id="safra" name="safra" placeholder="Safra do produto " class="form-control input-md " th:field="*{safra} " th:required="${notadm}">
+                <label class="col-3 col-md-2 col-lg-2 control-label " for="safra ">Safra</label>
+                <div class="col-9 col-md-4 ">
+                    <input id="safra " name="safra " placeholder="Safra do produto " class="form-control input-md " th:field="*{safra} " th:required="${notadm} ">
                 </div>
             </div>
 
             <!-- pais e ingregientes -->
-            <div class="form-group row" th:if="${usuariof.nome != null}">
-                <label class="col-md-1 control-label " for="pais">País</label>
-                <div class="col-md-5">
-                    <select class="form-control" aria-label=".form-select-lg example " th:field="*{pais}" id="pais" name="pais">
-                        <option value="">Selecionar</option>
-                        <option th:each="p : ${T(com.sistema.macroex.model.Paises).values()} "th:value="${p} " th:text="${p.getNome}"></option>
+            <div class="form-group row ">
+                <label class="col-3 col-md-2 control-label " for="pais ">País</label>
+                <div class="col-9 col-md-4 ">
+                    <select class="form-control " aria-label=".form-select-lg example " th:field="*{pais} " id="pais " name="pais ">
+                        <option value=" ">Selecionar</option>
+                        <option th:each="p : ${T(com.sistema.macroex.model.Paises).values()} "th:value="${p} " th:text="${p.getNome} "></option>
                     </select>
 
                 </div>
-                <label class="col-md-1 control-label " for="safra" style="margin-top: 0px;">Conteudo LIquido</label>
-                <div class="col-md-5 ">
-                    <input id="liquido" name="liquido" placeholder="Safra do produto " class="form-control input-md " th:field="*{liquido} " th:required="${notadm}">
+                <label class="col-3 col-md-2 control-label " for="safra " style="margin-top: 0px; ">Conteudo LIquido</label>
+                <div class="col-9 col-md-4 ">
+                    <input id="liquido " name="liquido " placeholder="Safra do produto " class="form-control input-md " th:field="*{liquido} " th:required="${notadm} ">
                 </div>
             </div>
 
             <!-- graduação alcoolica -->
-            <div class="form-group row" th:if="${usuariof.nome != null}">
-                <label class="col-md-1 control-label " for="alcoolica">Alcoolica</label>
-                <div class="col-md-5 ">
-                    <input id="alcoolica" name="alcoolica" placeholder="Nome do Lote" class="form-control input-md " th:field="*{alcoolica} " data-inputmask=" 'mask': '99,99%'" autocomplete="off" th:required="${notadm}">
+            <div class="form-group row ">
+                <label class="col-3 col-md-2 control-label " for="alcoolica ">Alcoolica</label>
+                <div class="col-9 col-md-4 ">
+                    <input id="alcoolica " name="alcoolica " placeholder="Nome do Lote " class="form-control input-md " th:field="*{alcoolica} " data-inputmask=" 'mask': '99,99%' " autocomplete="off " th:required="${notadm} ">
                 </div>
                 <!-- falta um campo-->
             </div>
 
             <!-- TEXTO GRANDE PARA PRENCHIMENTO -->
-            <div class="form-group row" th:if="${usuariof.nome != null}">
-                <label class="col-md-2 control-label " for="ingrediantes" style="margin-top: 25px;">Ingredientes</label>
-                <div class="col-md-10">
-                    <textarea class="form-control" id="ingrediantes" rows="3" name="ingrediantes" th:field="*{ingrediantes}" th:required="${notadm}"></textarea>
+            <!-- Não precisa mexer muito nesse campo para Moblie-->
+            <div class="form-group row ">
+                <label class="col-md-2 control-label " for="ingrediantes " style="margin-top: 25px; ">Ingredientes</label>
+                <div class="col-md-10 ">
+                    <textarea class="form-control " id="ingrediantes " rows="3 " name="ingrediantes " th:field="*{ingrediantes} " th:required="${notadm} "></textarea>
                 </div>
             </div>
 
-            <!--  DADOS DO FORNECEDOR -->
-            <div class="form-group row">
-                <label class="col-md-3 control-label " for="fornecedor ">Buscar o Fornecedor</label>
-
-                <!-- Caso já tenhabuscado o fornecedor -->
-                <div class="col-md-7 " th:if="${usuariof.nome != null}">
-                    <input type="hidden" name="usuario " class="form-control input-md " th:field="*{usuario}">
-                    <input name="nome " class="form-control input-md " th:field="*{usuario.nome}" readonly>
-                </div>
-                <!-- Se não terá que buscar o forncedor -->
-                <div class="col-md-7 " th:unless="${usuariof.nome != null}">
-                    <input name="nome " placeholder="Nome do Fornecedor " class="form-control input-md " readonly>
-                </div>
-
-                <!-- VOTÃO PARA BUSCAR FORNCEDOR-->
-                <div class="col-md-2 me-2">
-                    <a class="btn btn-info btn-md " th:href="@{/rotulo/buscarFornecedor}" style="width: 100px;height: 40px;">Buscar</a>
-                </div>
-            </div>
 
             <!-- FINAL DO FORM - BOTÃO -->
-            <div class=" form-group row" th:if="${usuariof.nome != null}">
+            <div class="form-group row ">
                 <div class="col-md-8 ">
-                    <button class=" btn btn-info btn-md " type="submit"> Salvar</button>
-                    <a class="btn btn-info btn-md" th:href="@{/rotulo/tabelaRotulo}"><span>Voltar</span></a>
+                    <button class="btn btn-info btn-md" type="submit"> Salvar</button>
+                    <a class="btn btn-info btn-md" th:href="@{/rotulo/tabelaRotulo} "><span>Voltar</span></a>
                 </div>
 
             </div>
@@ -117,7 +121,7 @@
 
     <!-- Script para funcionar as mascaras -->
     <script>
-        $(":input").inputmask();
+        $(":input ").inputmask();
     </script>
 
 

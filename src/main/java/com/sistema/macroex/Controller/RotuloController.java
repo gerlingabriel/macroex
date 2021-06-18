@@ -39,7 +39,7 @@ public class RotuloController {
     @GetMapping
     public String cadastroContraRotulo(Model model) {
 
-        model.addAttribute("usuariof", new Usuario());
+        model.addAttribute("usuariof", usuarioService.listaTodosFornecedoresSelecet());
         model.addAttribute("rotulo", new ContraRotulo());
         return "fornecedor/rotulo";
     }

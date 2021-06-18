@@ -1,11 +1,11 @@
 <!-- Sidebar -->
 <nav id="sidebar" th:fragment="barralateral">
     <div class="sidebar-header">
-        <h3>Microex</h3>
+        <h3>Macroex</h3>
     </div>
 
     <ul class="list-unstyled components">
-        <p align="center"><span th:utext="${#temporals.format(session.diaHoje, 'dd-MM-yyyy')}" style="align-items: center;font-weight: bold;font-size: 30px;"></span></p>
+        <p align="center"><span th:utext="${#temporals.format(session.diaHoje, 'dd/MM/yyyy')}" style="align-items: center;font-weight: bold;font-size: 30px;"></span></p>
 
         <li>
             <a href="/home">Home</a>

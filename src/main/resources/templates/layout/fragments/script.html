@@ -1,49 +1,46 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="scripts">
 
-<head>
-    <meta charset="UTF-8" />
-    <title>Title</title>
-</head>
+    <!-- ESSES TRÊS SCRIPT SÃO PARA FUNCIONAR A CAIXA RECUVISO DO MENU MOBLIE-->
+    <!-- jQuery CDN - Slim version (=without AJAX) -->
+    <!-- Essa rerefencia está no cabeçalho das páginas -->
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
 
-<body>
-    <div th:fragment="scripts">
-
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
-        <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-
-        <script>
-            $(document).ready(function() {
-                $("#sidebarCollapse").on("click", function() {
-                    $("#sidebar").toggleClass("active");
-                });
+    <!-- Script para esconder siderbar-->
+    <script>
+        $(document).ready(function() {
+            $("#sidebarCollapse").on("click", function() {
+                $("#sidebar").toggleClass("active");
             });
-        </script>
+        });
+    </script>
 
-        <script>
-            (function() {
-                'use strict'
 
-                // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                var forms = document.querySelectorAll('.needs-validation')
+    <script>
+        (function() {
+            'use strict'
 
-                // Loop over them and prevent submission
-                Array.prototype.slice.call(forms)
-                    .forEach(function(form) {
-                        form.addEventListener('submit', function(event) {
-                            if (!form.checkValidity()) {
-                                event.preventDefault()
-                                event.stopPropagation()
-                            }
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
 
-                            form.classList.add('was-validated')
-                        }, false)
-                    })
-            })()
-        </script>
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
 
-    </div>
-</body>
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+
+
+</div>
 
 </html>

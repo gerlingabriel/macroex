@@ -27,11 +27,3 @@ public class VerificarSeTemRotulo {
     }
 
 }
-
-//Buscar algum dentro de um lista
-    // List<Usuario> listaRotuloNotificado = repository.findAll()
-    //                             .stream()
-    //                             .filter(usu -> usu.getContrarotulo()
-    //                                                     .stream()
-    //                                                     .map(ContraRotulo::getStatus).anyMatch(status -> status.equals(Status.CADASTRADO)))
-    //                             .collect(Collectors.toList());

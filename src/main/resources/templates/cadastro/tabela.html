@@ -23,17 +23,18 @@
 
             <div class=" form-group row">
                 <label class=" col-2 col-md-1 col-lg-1 control-label" for="nome">Nome:</label>
-                <div class="col-10 col-md-5 col-lg 5">
-                    <input id="nome " name="nome" placeholder="Nome do Produto" class="form-control input-md" th:field="*{nome}">
+                <div class="col-10 col-md-11 col-lg-5">
+                    <input id="nome " name="nome" placeholder="Procurar por nome" class="form-control input-md" th:field="*{nome}">
                 </div>
                 <button type="submit" class="col-3 col-md-3 col-lg-2 btn btn-info btn-md " style="margin-right: 10px;margin-left: 6px; ">Procurar</button>
-                <a th:href="@{/cadastro/{perfil}(perfil= ${usuario.perfil})} " class=" col-8 col-md-3 col-lg-2 btn btn-info btn-md " style="margin-right: 10px; ">Novo <span th:text="${usuario.perfil}"></span></a>
-                <a href="/home "><span>Voltar para Home</span></a>
+                <a th:href="@{/cadastro/{perfil}(perfil= ${usuario.perfil})} " class="col-8 col-md-4 col-lg-3 btn btn-info btn-md" style="margin-right: 10px; ">
+                    Novo <span th:text="${usuario.perfil}"></span>
+                </a>
             </div>
         </form>
     </div>
     <br>
-    <div align="center">
+    <div align="center" class="table-responsive">
         <!-- Tabela de dados -->
         <table class="table table-hover table-bordered " style="width: 90%; ">
             <thead>
@@ -71,7 +72,7 @@
             <!-- Anterior-->
             <span th:if="${todos.hasPrevious()} "><a th:href="@{/cadastro/paginacao(page=${todos.number-1}, size=${todos.size}, nome=${usuario.nome}, perfil=${usuario.perfil})} ">Anterior</a></span>
             <!-- Paginaçõies -->
-            <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)} "><a th:href="@{/cadastro/paginacao/(page=${i}, size=${todos.size}, nome=${usuario.nome}, perfil=${usuario.perfil})} " th:switch="${PageNumber==i} ">[[ ${i} + 1 ]]</a></th:block>
+            <th:block th:each="i : ${#numbers.sequence(0, todos.totalPages -1)} "><a th:href="@{/cadastro/paginacao/(page=${i}, size=${todos.size}, nome=${usuario.nome}, perfil=${usuario.perfil})} " th:switch="${PageNumber==i} "> [[ ${i} + 1 ]] </a></th:block>
             <!-- Próximo-->
             <span th:if="${todos.hasNext()} "><a th:href="@{/cadastro/paginacao(page=${todos.number+1}, size=${todos.size}, nome=${usuario.nome}, perfil=${usuario.perfil})} ">Próximo</a></span>
         </div>

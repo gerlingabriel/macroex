@@ -83,12 +83,17 @@ public class UsuarioService {
     /** Alterar os Status */
     public void alterarEnable(Usuario usuario) {
 
-        if (usuario.getEnable()) {
+        if (usuario.getEnable() == null ||  usuario.getEnable()) {
             usuario.setEnable(false);
         } else {
             usuario.setEnable(true);
         }
         repository.save(usuario);
+    }
+
+    /** Selecionar todos os Forncedores para na tela  */
+    public List<Usuario> listaTodosFornecedoresSelecet() {
+        return repository.findByPerfil(Perfil.FORNECEDOR);
     }
 
 }

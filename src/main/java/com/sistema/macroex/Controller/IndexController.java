@@ -31,8 +31,7 @@ public class IndexController {
 
     @GetMapping
     public String index() {
-
-        return "index";
+        return "login";
     }
 
     @GetMapping("/login")
@@ -59,7 +58,8 @@ public class IndexController {
     @RequestMapping("/home")
     public String home(HttpSession session, Model model) {
 
-        session.setAttribute("user", contraRotuloService.user());
+        Usuario user = contraRotuloService.user();
+        session.setAttribute("user", user);
         session.setAttribute("cadastrar", seTemRotulo.verificar(contraRotuloService.user()));
         session.setAttribute("diaHoje", LocalDate.now());
         

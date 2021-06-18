@@ -1,6 +1,7 @@
 package com.sistema.macroex.repository;
 
 import java.util.Collection;
+import java.util.List;
 
 import com.sistema.macroex.model.Perfil;
 import com.sistema.macroex.model.Usuario;
@@ -26,6 +27,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
     Page<Usuario> findByPerfil (Perfil perfil, Pageable pageable);
 
     Page<Usuario> findByNomeContainsIgnoreCaseAndPerfil(String nome, Perfil tipo, Pageable pageable);
+
+    List<Usuario> findByPerfil(Perfil perfil);
 
     
 }

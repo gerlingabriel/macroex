@@ -4,6 +4,7 @@
 
 <th:block layout:fragment="content">
 
+
     <h2>Cadastro de Usuários</h2>
 
     <!-- Mensagem para Erro-->
@@ -13,16 +14,17 @@
 
 
     <div style="margin-top: 10px; " align="center ">
-        <form class="form-horizontal needs-validation " novalidate method="POST " th:object="${usuario} " th:action="@{/cadastro} ">
+        <form class="form-horizontal needs-validation" novalidate method="POST" th:object="${usuario}" th:action="@{/cadastro}">
 
             <!-- campo para obter id, assim na hora de atulizar ele saberá diferenciar-->
             <input type="hidden" id="id " name="id " th:field="*{id} ">
+            <input type="hidden" id="enable" name="enable" th:field="*{enable}">
 
             <!-- Caixa para Escoolha perfil-->
             <div class="form-group row ">
-                <label class="col-md-1 control-label " for="perfil ">Perfil</label>
+                <label class="col-2 col-md-1 control-label " for="perfil ">Perfil</label>
                 <div style="margin-left: 16px; ">
-                    <select class="col-xs-10 form-control" aria-label=".form-select-lg example " th:field="*{perfil} " id="perfil " name="perfil " readonly>    
+                    <select class="col form-control" aria-label="form-select-lg example " th:field="*{perfil} " id="perfil " name="perfil " readonly>    
                         <option th:each="p : ${T(com.sistema.macroex.model.Perfil).values()} " th:value="${p} " th:text="${p} " th:with="teste=${p} "  th:selected="selected " readonly></option>
                     </select>
 
@@ -31,17 +33,17 @@
 
             <!-- Text input NOME ou .. -->
             <div class=" form-group row " th:if="${usuario.perfil==T (com.sistema.macroex.model.Perfil).ADMINISTRADOR} ">
-                <label class="col-md-1 control-label " for="Nome ">Nome</label>
-                <div class="col-md-11 ">
-                    <input id="Nome " name="Nome " placeholder="Nome completo " class="form-control input-md " th:field="*{nome} " maxlength="50 " required>
+                <label class="col-2 col-md-1 control-label" for="Nome ">Nome</label>
+                <div class="col col-md-11 ">
+                    <input id="nome" name="nome" placeholder="Nome completo " class="form-control input-md " th:field="*{nome} " maxlength="50 " required>
                 </div>
             </div>
 
             <!-- Text input Razão Social -->
             <div class="form-group row " th:if="${usuario.perfil==T (com.sistema.macroex.model.Perfil).FORNECEDOR or usuario.perfil==T (com.sistema.macroex.model.Perfil).DISTRIBUIDOR} ">
-                <label class=" col-md-1 control-label " for="Nome ">Razão</label>
-                <div class="col-md-11 ">
-                    <input id="Nome " name="Nome " placeholder="Nome completo " class="form-control input-md " th:field="*{nome} " maxlength="50 " required>
+                <label class="col-2 col-md-1 control-label" for="Nome ">Razão</label>
+                <div class="col-10 col-md-11">
+                    <input id="nome" name="nome" placeholder="Nome completo " class="form-control input-md " th:field="*{nome} " maxlength="50 " required>
                 </div>
             </div>
 
@@ -49,84 +51,84 @@
 
             <!-- Text input DO CPF -->
             <div class="form-group row " th:if="${usuario.perfil==T (com.sistema.macroex.model.Perfil).ADMINISTRADOR} ">
-                <label class="col-md-1 control-label " for="Nome ">CPF</label>
-                <div class="col-md-3 ">
-                    <input type="text " id="cpf " name="cpf " placeholder="Apenas números " class="form-control input-md " th:field="*{doc} " data-inputmask=" 'mask': '999.999.999-99' " autocomplete="off " required>
+                <label class="col-2 col-md-1 control-label " for="Nome ">CPF</label>
+                <div class="col-10 col-md-3 ">
+                    <input id="cpf" name="cpf" placeholder="Apenas números " class="form-control input-md " th:field="*{doc}" data-inputmask=" 'mask': '999.999.999-99' " autocomplete="off " required>
                 </div>
-                <label class="col-md-1 control-label " for="senha ">Senha</label>
-                <div class="col-md-3 ">
-                    <input type="password " id="senha " name="senha " placeholder="No máximo 10 elementos " class="form-control input-md " th:field="*{senha} " maxlength="10 " size="10 " required>
+                <label class="col-2 col-md-1 control-label " for="senha ">Senha</label>
+                <div class="col-10 col-md-3 ">
+                    <input type="password" id="senha" name="senha" placeholder="No máximo 10 elementos " th:value="${usuario.senha}" class="form-control input-md" maxlength="10 " size="10 " required>
                 </div>
-                <label class="col-md-1 control-label " for="telefone ">Telefone</label>
-                <div class="col-md-3 ">
-                    <input type="text " id="telefone " name="telefone " placeholder="(00) 0000-00000 " class="form-control input-md " th:field="*{telefone} " data-inputmask=" 'mask': '(99)9999-9999' " autocomplete="off ">
+                <label class="col-2 col-md-1 control-label " for="telefone ">Telefone</label>
+                <div class="col-10 col-md-3 ">
+                    <input id="telefone" name="telefone" placeholder="(00) 0000-00000 " class="form-control input-md " th:field="*{telefone} " data-inputmask=" 'mask': '(99)9999-99999' " autocomplete="off ">
                 </div>
             </div>
 
             <!-- Text input DO CNPF -->
             <div class=" form-group row " th:if="${usuario.perfil==T(com.sistema.macroex.model.Perfil).FORNECEDOR or usuario.perfil==T (com.sistema.macroex.model.Perfil).DISTRIBUIDOR} ">
-                <label class="col-md-1 control-label " for="Nome ">CNPJ</label>
-                <div class="col-md-3 ">
-                    <input id="cpf " name="cpf " placeholder="Apenas números " class="form-control input-md " th:field="*{doc} " data-inputmask=" 'mask': '99.999.999/9999-99' " autocomplete="off " required>
+                <label class="col-2 col-md-1 control-label " for="Nome ">CNPJ</label>
+                <div class="col-10 col-md-3 ">
+                    <input id="cnpj " name="cnpj " placeholder="Apenas números " class="form-control input-md " th:field="*{doc} " data-inputmask=" 'mask': '99.999.999/9999-99' " autocomplete="off " required>
                 </div>
-                <label class="col-md-1 control-label " for="senha " th:if="${usuario.perfil !=T (com.sistema.macroex.model.Perfil).DISTRIBUIDOR} ">Senha</label>
-                <div class="col-md-3 " th:if="${usuario.perfil !=T (com.sistema.macroex.model.Perfil).DISTRIBUIDOR} ">
-                    <input type="password " id="senha " name="senha " placeholder="No máximo 10 elementos " class=" form-control input-md " th:field="*{senha} " maxlength="10 " size="10 " required>
+                <label class="col-2 col-md-1 control-label " for="senha " th:if="${usuario.perfil !=T (com.sistema.macroex.model.Perfil).DISTRIBUIDOR} ">Senha</label>
+                <div class="col-10 col-md-3 " th:if="${usuario.perfil !=T (com.sistema.macroex.model.Perfil).DISTRIBUIDOR} ">
+                    <input type="password" id="senha" name="senha" placeholder="No máximo 10 elementos " class=" form-control input-md " th:value="${usuario.senha}" maxlength="10 " size="10 " required>
                 </div>
-                <label class="col-md-1 control-label " for="telefone ">Telefone</label>
-                <div class="col-md-3 ">
-                    <input type="text " id="telefone " name="telefone " placeholder="(00) 0000-00000 " class="form-control input-md " th:field="*{telefone} " data-inputmask=" 'mask': '(99)9999-9999' " autocomplete="off ">
+                <label class="col-2 col-md-1 control-label " for="telefone ">Telefone</label>
+                <div class="col-10 col-md-3 ">
+                    <input id="telefone" name="telefone" placeholder="(00) 0000-00000 " class="form-control input-md " th:field="*{telefone} " data-inputmask=" 'mask': '(99)9999-99999' " autocomplete="off ">
                 </div>
             </div>
 
             <!-- Prepended email e cep-->
             <div class="form-group row " th:if="${usuario.perfil !=null} ">
-                <label class="col-md-1 control-label " for="prependedtext ">Email</label>
-                <div class="col-md-5 ">
+                <label class="col-2 col-md-1 control-label " for="prependedtext ">Email</label>
+                <div class="col-10 col-md-5 ">
                     <div class="input-group ">
                         <span class="input-group-addon "><i class="glyphicon glyphicon-envelope "></i></span>
-                        <input type="email " id="email " name="email " class="form-control " placeholder="email@email.com " th:field="*{email} " required>
+                        <input type="email" id="email" name="email " class="form-control " placeholder="email@email.com " th:field="*{email} " required>
                     </div>
                 </div>
-                <label class="col-md-1 control-label " for="cep ">Cep</label>
-                <div class="col-md-5 ">
-                    <input id="cep " name="cep " placeholder="8 números " size="8 " maxlength="9 " class="form-control input-md " th:field="*{endereco.cep} " data-inputmask=" 'mask': '99999-999' " autocomplete="off " required>
+                <label class="col -2 col-md-1 control-label " for="cep ">Cep</label>
+                <div class="col-10 col-md-5 ">
+                    <input id="cep" name="cep" placeholder="8 números " size="8 " maxlength="9 " class="form-control input-md " th:field="*{endereco.cep} " data-inputmask=" 'mask': '99999-999' " autocomplete="off " required>
                 </div>
 
             </div>
 
             <!-- canpos preenchudos automaticamente por causa do cep-->
             <div class="form-group row " th:if="${usuario.perfil !=null} ">
-                <label class="col-md-1 control-label " for="Rua ">Rua</label>
-                <div class="col-md-6 ">
-                    <input id="rua " name="rua " placeholder="Nome da rua " class="form-control input-md " th:field="*{endereco.rua} " readonly>
+                <label class="col-2 col-md-1 control-label " for="Rua ">Rua</label>
+                <div class="col-10 col-md-6 ">
+                    <input id="rua" name="rua" placeholder="Nome da rua " class="form-control input-md " th:field="*{endereco.rua} " readonly>
                 </div>
-                <label class="col-md-1 control-label " for="bairro ">Bairro</label>
-                <div class="col-md-4 ">
-                    <input id="bairro " name="bairro " placeholder="Bairro " class="form-control input-md " th:field="*{endereco.bairro} " readonly>
+                <label class="col-2 col-md-1 control-label " for="bairro ">Bairro</label>
+                <div class="col-10 col-md-4 ">
+                    <input id="bairro" name="bairro" placeholder="Bairro " class="form-control input-md " th:field="*{endereco.bairro} " readonly>
                 </div>
             </div>
 
             <!-- canpos preenchudos automaticamente por causa do cep CIDADE, ES E COMPLEMENTO-->
             <div class="form-group row " th:if="${usuario.perfil !=null} ">
-                <label class="col-md-1 control-label " for="cidade ">Cidade</label>
-                <div class="col-md-2 ">
-                    <input id="cidade " name="cidade " placeholder="Nome da Cidade " class="form-control input-md " th:field="*{endereco.cidade} " readonly>
+                <label class="col-2 col-md-1 control-label " for="cidade ">Cidade</label>
+                <div class="col-5 col-md-2 ">
+                    <input id="cidade" name="cidade" placeholder="Nome da Cidade " class="form-control input-md " th:field="*{endereco.cidade} " readonly>
                 </div>
-                <label class="col-md-1 control-label " for="estado ">Estado</label>
-                <div class="col-md-2 ">
-                    <input id="uf " name="uf " placeholder="UF " class="form-control input-md " th:field="*{endereco.uf} " readonly>
+                <label class="col-2 col-md-1 control-label " for="estado ">Estado</label>
+                <div class="col-3 col-md-2 ">
+                    <input id="uf" name="uf" placeholder="UF " class="form-control input-md " th:field="*{endereco.uf} " readonly>
                 </div>
-                <div class="col-md-6 ">
-                    <input id="complemento " name="complemento " placeholder="Complemento do endereço " class="form-control input-md " th:field="*{endereco.complemento} ">
+                <div class="col col-md-6">
+                    <input id="complemento" name="complemento " placeholder="Complemento do endereço " class="form-control input-md " th:field="*{endereco.complemento} ">
                 </div>
             </div>
 
             <!-- Linha dos botões para salvar-->
-            <div class="form-group row " th:if="${usuario.perfil !=null} ">
+            <div class="form-group row ">
                 <button type="submit " name="submit " class="btn btn-info btn-md " style="margin-right: 25px;width: 135px; ">Salvar</button>
-                <a th:href="@{/cadastro/tabela/{perfil}(perfil=${usuario.perfil})} " class="btn btn-info btn-md " style="margin-right: 25px;width: 135px; ">Novo</a>
-                <a href="/home "><span>Voltar para Home</span></a>
+                <a th:href="@{/cadastro/tabela/{perfil}(perfil=${usuario.perfil})} " class="btn btn-info btn-md " style="margin-right: 25px;width: 135px; " th:if="${session.user.perfil == T(com.sistema.macroex.model.Perfil).ADMINISTRADOR}">Voltar</a>
+
             </div>
 
 
@@ -141,73 +143,6 @@
         $(":input ").inputmask();
     </script>
 
-    <!-- Adicionando JQuery para CEP -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js " integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin=" anonymous "></script>
-
-    <!-- Adicionando Javascript do CEP -->
-    <script>
-        $(document).ready(function() {
-            function limpa_formulário_cep() {
-                // Limpa valores do formulário de cep.
-                $("#rua ").val(" ");
-                $("#bairro ").val(" ");
-                $("#cidade ").val(" ");
-                $("#uf ").val(" ");
-                $("#ibge ").val(" ");
-            }
-
-            //Quando o campo cep perde o foco.
-            $("#cep ").blur(function() {
-                //Nova variável "cep " somente com dígitos.
-                var cep = $(this).val().replace(/\D/g, " ");
-
-                //Verifica se campo cep possui valor informado.
-                if (cep != " ") {
-                    //Expressão regular para validar o CEP.
-                    var validacep = /^[0-9]{8}$/;
-
-                    //Valida o formato do CEP.
-                    if (validacep.test(cep)) {
-                        //Preenche os campos com "... " enquanto consulta webservice.
-                        $("#rua ").val("... ");
-                        $("#bairro ").val("... ");
-                        $("#cidade ").val("... ");
-                        $("#uf ").val("... ");
-                        $("#ibge ").val("... ");
-
-                        //Consulta o webservice viacep.com.br/
-                        $.getJSON(
-                            "https://viacep.com.br/ws/ " + cep + "/json/?callback=? ",
-                            function(dados) {
-                                if (!("erro " in dados)) {
-                                    //Atualiza os campos com os valores da consulta.
-                                    $("#rua ").val(dados.logradouro);
-                                    $("#bairro ").val(dados.bairro);
-                                    $("#cidade ").val(dados.localidade);
-                                    $("#uf ").val(dados.uf);
-                                    $("#ibge ").val(dados.ibge);
-                                } //end if.
-                                else {
-                                    //CEP pesquisado não foi encontrado.
-                                    limpa_formulário_cep();
-                                    alert("CEP não encontrado. ");
-                                }
-                            }
-                        );
-                    } //end if.
-                    else {
-                        //cep é inválido.
-                        limpa_formulário_cep();
-                        alert("Formato de CEP inválido. ");
-                    }
-                } //end if.
-                else {
-                    //cep sem valor, limpa formulário.
-                    limpa_formulário_cep();
-                }
-            });
-        });
-    </script>
 
     <!-- Mesangem de erro caso email esteja cadastrado -->
     <script>
@@ -215,6 +150,73 @@
             setTimeout(function() {
                 $('#error').hide(); // "error " é o id do elemento que seja manipular.
             }, 4000); // O valor é representado em milisegundos.
+        });
+    </script>
+
+    <!-- Adicionando Javascript -->
+    <script>
+        $(document).ready(function() {
+
+            function limpa_formulário_cep() {
+                // Limpa valores do formulário de cep.
+                $("#rua").val("");
+                $("#bairro").val("");
+                $("#cidade").val("");
+                $("#uf").val("");
+                $("#ibge").val("");
+            }
+
+            //Quando o campo cep perde o foco.
+            $("#cep").blur(function() {
+
+                //Nova variável "cep" somente com dígitos.
+                var cep = $(this).val().replace(/\D/g, '');
+
+                //Verifica se campo cep possui valor informado.
+                if (cep != "") {
+
+                    //Expressão regular para validar o CEP.
+                    var validacep = /^[0-9]{8}$/;
+
+                    //Valida o formato do CEP.
+                    if (validacep.test(cep)) {
+
+                        //Preenche os campos com "..." enquanto consulta webservice.
+                        $("#rua").val("...");
+                        $("#bairro").val("...");
+                        $("#cidade").val("...");
+                        $("#uf").val("...");
+                        $("#ibge").val("...");
+
+                        //Consulta o webservice viacep.com.br/
+                        $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function(dados) {
+
+                            if (!("erro" in dados)) {
+                                //Atualiza os campos com os valores da consulta.
+                                $("#rua").val(dados.logradouro);
+                                $("#bairro").val(dados.bairro);
+                                $("#cidade").val(dados.localidade);
+                                $("#uf").val(dados.uf);
+                                $("#ibge").val(dados.ibge);
+                            } //end if.
+                            else {
+                                //CEP pesquisado não foi encontrado.
+                                limpa_formulário_cep();
+                                alert("CEP não encontrado.");
+                            }
+                        });
+                    } //end if.
+                    else {
+                        //cep é inválido.
+                        limpa_formulário_cep();
+                        alert("Formato de CEP inválido.");
+                    }
+                } //end if.
+                else {
+                    //cep sem valor, limpa formulário.
+                    limpa_formulário_cep();
+                }
+            });
         });
     </script>
 

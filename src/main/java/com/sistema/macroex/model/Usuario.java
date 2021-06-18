@@ -20,14 +20,12 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -44,7 +42,7 @@ public class Usuario {
     @Size(max = 20)
     private String doc;
 
-    @Size(max = 13, message = "No máximo 10 número")
+    @Size(max = 14, message = "No máximo 10 número")
     private String telefone;
 
     @Email(message = "Email em formato errado")

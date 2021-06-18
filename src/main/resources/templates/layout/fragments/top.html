@@ -32,7 +32,7 @@
                     <a class="nav-link" href="/logout">Logout</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="#"><span th:text="${session.user.nome}"></span></a>
+                    <a class="nav-link" th:href="@{/cadastro/editar/{id}(id=${session.user.id})} "><span th:text="${session.user.nome}"></span></a>
                 </li>
             </ul>
         </div>

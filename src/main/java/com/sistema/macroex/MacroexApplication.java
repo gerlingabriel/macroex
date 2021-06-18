@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
-public class MacroexApplication {
+public class MacroexApplication{
 
 	public static void main(String[] args) {
 		SpringApplication.run(MacroexApplication.class, args);
