@@ -15,14 +15,18 @@ import com.sistema.macroex.model.Usuario;
 import com.sistema.macroex.repository.UsuarioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JavaMailApp {
 
-    private String emailProvedor = "email.para.estudos.java@gmail.com";
-    private String senhaprovedor = "Matrix02Gerlin";
+    @Value("${macroex.email}")
+    private String emailProvedor;
+
+    @Value("${macroex.senha}")
+    private String senhaprovedor;
 
     @Autowired
     private UsuarioRepository usuarioRepository;

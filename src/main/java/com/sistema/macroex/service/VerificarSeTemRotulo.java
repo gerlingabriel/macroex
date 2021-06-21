@@ -12,18 +12,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class VerificarSeTemRotulo {
 
-    //metodo para verificar se existe rotulo para cadastrar
+    // metodo para verificar se existe rotulo para cadastrar
     public Boolean verificar(Usuario usuario) {
-    
-    List<ContraRotulo> listaContraRotuloUsuario = usuario.getContrarotulo()
-        .stream()
-        .filter(rot -> rot.getStatus().equals(Status.NOTIFICACAO))
-        .collect(Collectors.toList());
 
-    if (listaContraRotuloUsuario.isEmpty()) {
-        return false;
-    } 
-    return true;
+        List<ContraRotulo> listaContraRotuloUsuario = usuario.getContrarotulo()
+                        .stream()
+                        .filter(rot -> rot.getStatus().equals(Status.NOTIFICACAO))
+                        .collect(Collectors.toList());
+
+        if (listaContraRotuloUsuario.isEmpty()) {
+            return false;
+        }
+        return true;
     }
 
 }

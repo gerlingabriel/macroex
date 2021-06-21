@@ -31,7 +31,7 @@
                 <div class="col-9 col-md-10 col-lg ">
                     <select class="form-control " aria-label=".form-select-lg example " th:field="*{distribuidor}" id="fornecedor" name="fornecedor" required>
                                     <option value="">Selecionar</option>
-                                    <option th:each="usu : ${usuariof} "th:value="${usu.id} " th:text="${usu.getNome} "></option>
+                                    <option th:each="dis : ${distribuidor} "th:value="${dis.id} " th:text="${dis.getNome} "></option>
                                 </select>
                 </div>
             </div>

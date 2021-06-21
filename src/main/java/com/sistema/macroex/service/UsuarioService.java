@@ -96,4 +96,8 @@ public class UsuarioService {
         return repository.findByPerfil(Perfil.FORNECEDOR);
     }
 
+    public List<Usuario> listaTodosDistribuidor() {
+        return repository.findByPerfil(Perfil.DISTRIBUIDOR);
+    }
+
 }

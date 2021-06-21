@@ -8,8 +8,8 @@
     <h2>Cadastro de Usuários</h2>
 
     <!-- Mensagem para Erro-->
-    <div th:if="${error} " id="error " align="center ">
-        <h4 style="font-weight: bold;color: #791901; "><span th:text="${error} "></span></h4>
+    <div th:if="${error}" id="error" align="center ">
+        <h4 style="font-weight: bold;color: #791901; "><span th:text="${error}"></span></h4>
     </div>
 
 
@@ -24,8 +24,8 @@
             <div class="form-group row ">
                 <label class="col-2 col-md-1 control-label " for="perfil ">Perfil</label>
                 <div style="margin-left: 16px; ">
-                    <select class="col form-control" aria-label="form-select-lg example " th:field="*{perfil} " id="perfil " name="perfil " readonly>    
-                        <option th:each="p : ${T(com.sistema.macroex.model.Perfil).values()} " th:value="${p} " th:text="${p} " th:with="teste=${p} "  th:selected="selected " readonly></option>
+                    <select class="col form-control" aria-label="form-select-lg example " th:field="*{perfil} " id="perfil " name="perfil" readonly>    
+                        <option th:value="${usuario.perfil} " th:text="${usuario.perfil} " th:with="teste=${usuario} "  th:selected="selected " readonly></option>
                     </select>
 
                 </div>

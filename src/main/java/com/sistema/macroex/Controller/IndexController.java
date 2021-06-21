@@ -25,9 +25,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class IndexController {
 
-    private JavaMailApp javaMailApp;
-    private VerificarSeTemRotulo seTemRotulo;
-    private ContraRotuloService contraRotuloService;
+    private final JavaMailApp javaMailApp;
+    private final VerificarSeTemRotulo seTemRotulo;
+    private final ContraRotuloService contraRotuloService;
 
     @GetMapping
     public String index() {

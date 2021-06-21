@@ -2,13 +2,15 @@ package com.sistema.macroex.Controller;
 
 import java.time.LocalDate;
 
+import javax.servlet.http.HttpSession;
+
 import com.sistema.macroex.model.ContraRotulo;
-import com.sistema.macroex.model.Perfil;
 import com.sistema.macroex.model.Status;
 import com.sistema.macroex.model.Usuario;
 import com.sistema.macroex.service.ContraRotuloService;
 import com.sistema.macroex.service.JavaMailApp;
 import com.sistema.macroex.service.UsuarioService;
+import com.sistema.macroex.service.VerificarSeTemRotulo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -31,9 +33,8 @@ import lombok.AllArgsConstructor;
 public class RotuloController {
 
     private ContraRotuloService contraRotuloService;
-
+    private final VerificarSeTemRotulo seTemRotulo;
     private UsuarioService usuarioService;
-
     private final JavaMailApp javaMailApp;
 
     @GetMapping
@@ -41,6 +42,7 @@ public class RotuloController {
 
         model.addAttribute("usuariof", usuarioService.listaTodosFornecedoresSelecet());
         model.addAttribute("rotulo", new ContraRotulo());
+        model.addAttribute("distribuidor", usuarioService.listaTodosDistribuidor());
         return "fornecedor/rotulo";
     }
 
@@ -52,22 +54,9 @@ public class RotuloController {
         return "fornecedor/buscarFornecedor";
     }
 
-    @GetMapping(value = "/confirmacao/{id}")
-    public String pesquisaEncotrada(@PathVariable("id") Long id, Model model) {
-
-        ContraRotulo rotulo = new ContraRotulo();
-        rotulo.setUsuario(usuarioService.verificarIdExiste(id));
-
-        model.addAttribute("usuariof", usuarioService.verificarIdExiste(id));
-        model.addAttribute("rotulo", rotulo);
-        model.addAttribute("adm", false);
-
-        return "fornecedor/rotulo";
-    }
-
     /** salvando */
     @PostMapping
-    public String cadastroContraRotuloSalvo(@ModelAttribute ContraRotulo rotulo, Model model) {
+    public String cadastroContraRotuloSalvo(@ModelAttribute ContraRotulo rotulo, Model model, HttpSession session) {
         // Pegar o usuario logado
         var user = contraRotuloService.user();
 
@@ -75,17 +64,18 @@ public class RotuloController {
         if (contraRotuloService.isNotAdm(user)) {
             rotulo.setStatus(Status.FINALIZADO);
             rotulo.setDataCriacao(LocalDate.now());
+            
         } else { // Se não é o ADM cadastrando o item
 
             // Verificar é criação
-            //se for será criado
-            //se não não mudará o Autor da Ccriação e nem data
+            // se for será criado
+            // se não não mudará o Autor da Ccriação e nem data
             if (contraRotuloService.verificarSeRotuloFoiCadastradp(rotulo)) {
                 rotulo.setAdm(user);
                 rotulo.setStatus(Status.CADASTRADO);
                 rotulo.setDataCriacao(LocalDate.now());
             }
-           
+
         }
 
         if (rotulo.getId() != null) {
@@ -98,6 +88,7 @@ public class RotuloController {
             /** Salvando no Usuario vai té rotulo */
             contraRotuloService.salvarRotulo(rotulo);
             // repository.save(auxUsuario);
+            session.setAttribute("cadastrar", seTemRotulo.verificar(user));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -109,13 +100,17 @@ public class RotuloController {
             model.addAttribute("rotulo", new ContraRotulo());
             return "fornecedor/tabelaRotulo";
         }
-        /**se não for um FORNECEDOR */
+        /** se não for um FORNECEDOR */
         model.addAttribute("todos", contraRotuloService.ListarTodosUsuarios());
         model.addAttribute("rotulo", new ContraRotulo());
 
         return "fornecedor/tabelaRotulo";
     }
 
+    /**
+     * Qual tabela irá mostrar para Usuário ADM - todos Rotulos Fornecedor - Somente
+     * Rotulos deldes
+     */
     @GetMapping(value = "/tabelaRotulo")
     public String tabelaRotulo(Model model) {
 
@@ -123,7 +118,7 @@ public class RotuloController {
 
         if (contraRotuloService.isNotAdm(user)) {
             model.addAttribute("todos", contraRotuloService.filtroDaListaExpecificaParaPage(user));
-        } else { //ADM
+        } else { // ADM
             model.addAttribute("todos", contraRotuloService.buscarTodosRotulos());
         }
 
@@ -138,6 +133,7 @@ public class RotuloController {
 
         model.addAttribute("rotulo", rotulo);
         model.addAttribute("usuariof", rotulo.getUsuario());
+        model.addAttribute("distribuidor", usuarioService.listaTodosDistribuidor());
 
         if (contraRotuloService.isNotAdm(contraRotuloService.user())) {
             model.addAttribute("notadm", true);
@@ -167,7 +163,7 @@ public class RotuloController {
         rotulo.setStatus(Status.NOTIFICACAO);
 
         contraRotuloService.salvarRotulo(rotulo);
-        
+
         javaMailApp.enviaremail(rotulo.getUsuario().getEmail(), rotulo.getProduto());
 
         var user = contraRotuloService.user();
@@ -185,23 +181,20 @@ public class RotuloController {
         model.addAttribute("todos", contraRotuloService.buscarTodosRotulos());
         model.addAttribute("rotulo", new ContraRotulo());
         model.addAttribute("salvo", "Item enviado com sucesso");
-        
+
         return "fornecedor/tabelaRotulo";
-        //model.addAttribute("usuariof", rotulo.getUsuario());
 
     }
 
     // Paginação das tabelas Rotulo sem FILTRO do forcenedor
-    // Essa pagição será usado pela paginção do Rotulo e
-    // Pagição para cadastrar um fornecdor no rotulo novo
+    // Essa pagição será usado pela paginção do Rotulo
     @GetMapping(value = "/paginacao")
     public String pagiancaoForncedor(Model model, @PageableDefault(size = 5) Pageable pageable,
-            @RequestParam("nome") String nome, 
-            @RequestParam("param") String tipo) {
+            @RequestParam("nome") String nome) {
 
         // se não for ADM então é paginação de Rotulo do Fornecedor
         var user = contraRotuloService.user();
-        
+
         if (contraRotuloService.isNotAdm(user)) {
 
             // IF -> sem nome ***********************
@@ -213,7 +206,8 @@ public class RotuloController {
 
             } else {// ELSE -> com nome na pesquisa */
 
-                model.addAttribute("todos", contraRotuloService.filtroDaListaExpecificaPorTituloParaPage(user, nome, pageable));
+                model.addAttribute("todos",
+                        contraRotuloService.filtroDaListaExpecificaPorTituloParaPage(user, nome, pageable));
                 var rotulo = new ContraRotulo();
                 rotulo.setTipo(nome);
                 model.addAttribute("rotulo", rotulo);
@@ -223,65 +217,27 @@ public class RotuloController {
 
         } // fim da Condição do usuario FORNECEDOR
 
-        /** Aqui será a PAGINAÇÂO ADMINISTRADOR */
-        /** Se a pagiação for na pesquisa de fornecedor para ADD rotulo */
-        if (tipo.equals("usuario")) {
+        // Esse get paginação é usando por duas pagianção
+        // se não é usuario então e paginao de rotulo
 
-            if (nome.isEmpty()) {
-                
-                model.addAttribute("usuariof", new Usuario());
-                model.addAttribute("todos", contraRotuloService.buscarTodosFornecedores(pageable));
-                return "fornecedor/buscarFornecedor";
-            } else {
+        if (nome.isEmpty()) {
 
-                var usuariof = new Usuario();
-                usuariof.setNome(nome);
-                model.addAttribute("usuariof", usuariof);
-                model.addAttribute("todos", contraRotuloService.buscarFornecedoresFiltradoPorNOme(nome, pageable));
-                return "fornecedor/buscarFornecedor";
-            }
+            model.addAttribute("rotulo", new ContraRotulo());
+            model.addAttribute("todos", contraRotuloService.buscarTodosRotulos(pageable));
+            return "fornecedor/tabelaRotulo";
+        } else {
 
-        } else { 
-            // Esse get paginação é usando por duas pagianção
-            // se não é usuario então e paginao de rotulo
-
-            if (nome.isEmpty()) {
-
-                model.addAttribute("rotulo", new ContraRotulo());
-                model.addAttribute("todos", contraRotuloService.buscarTodosRotulos(pageable));
-                return "fornecedor/tabelaRotulo";
-            } else {
-
-                var rotulo = new ContraRotulo();
-                rotulo.setTitulo(nome);
-                model.addAttribute("rotulo", rotulo);
-                model.addAttribute("todos", contraRotuloService.busscarTodosRotulosFiltroNome(nome, pageable));
-                return "fornecedor/tabelaRotulo";
-            }
+            var rotulo = new ContraRotulo();
+            rotulo.setTitulo(nome);
+            model.addAttribute("rotulo", rotulo);
+            model.addAttribute("todos", contraRotuloService.busscarTodosRotulosFiltroNome(nome, pageable));
+            return "fornecedor/tabelaRotulo";
         }
 
     }
 
-    /** Paginação das tabelas Rotulo sem FILTRO do forcenedor */
-    // @GetMapping(value = "/paginacao/fornecedor")
-    // public String pagiancaoRotuloFornecedor(Model model, @PageableDefault(size = 5) Pageable pageable,
-    //         @RequestParam("nome") String nome) {
-
-    //     var user = contraRotuloService.user();
-
-    //     model.addAttribute("todos",  contraRotuloService.buscarUsuarioFiltroTitulo(user, nome, pageable));
-
-    //     // Se for pagginção com nome o nome deve permanecer
-    //     var rotulo = new ContraRotulo();
-    //     rotulo.setTitulo(nome);
-    //     model.addAttribute("rotulo", rotulo);
-
-    //     return "fornecedor/buscarFornecedor";
-    // }
-
-    // Filtrar a pesquisa pelo nome e sempre no perfil FORNECEDOR
-    // Tem também filtrar na conta Fornecedor onde só ira aparecer itens a
-    // cadastrar (notificar) e os finalizados
+    /** Filtrar a pesquisa pelo nome e sempre no perfil FORNECEDOR
+    // Tem também filtrar na conta Fornecedor onde só ira aparecer itens a cadastrar (notificar) e os finalizados */
     @GetMapping(value = "/buscarRotulo")
     public String pesquisar(@ModelAttribute ContraRotulo rotulo, Model model,
             @PageableDefault(size = 5) Pageable pageable) {
@@ -295,12 +251,13 @@ public class RotuloController {
         if (contraRotuloService.isNotAdm(user)) {
 
             model.addAttribute("rotulo", rotulo);
-            model.addAttribute("todos", contraRotuloService.filtroDaListaExpecificaPorTituloParaPage(user, rotulo.getTitulo(), pageable));
+            model.addAttribute("todos",
+                    contraRotuloService.filtroDaListaExpecificaPorTituloParaPage(user, rotulo.getTitulo(), pageable));
             return "fornecedor/tabelaRotulo";
-        }
+        } // fim
 
         // Abaixo acesso aos ADM (funcionários)
-        // Verificar se nome estiver vazio puxar todos 
+        // Verificar se nome estiver vazio puxar todos
         if (rotulo.getTitulo().isEmpty()) {
             todos = contraRotuloService.buscarTodosRotulos(pageable);
         } else {
@@ -312,45 +269,4 @@ public class RotuloController {
         return "fornecedor/tabelaRotulo";
     }
 
-    @PostMapping(value = "/buscarNomeFornecedor")
-    public String pesquisaPorNomeForncedor(@ModelAttribute Usuario usuariof, Model model,
-            @PageableDefault(size = 5) Pageable pageable) {
-                
-        model.addAttribute("usuariof", usuariof);
-        model.addAttribute("todos", usuarioService.listarUsuariosPorNomeAndPerfil(Perfil.FORNECEDOR, usuariof.getNome(), pageable));
-
-        return "fornecedor/buscarFornecedor";
-
-    }
-
-    // Paginação das tabelas
-    @GetMapping(value = "/paginacao/nome")
-    public String pagiancao(Model model, @PageableDefault(size = 5) Pageable pageable,
-            @RequestParam("nome") String nome) {
-
-        Page<Usuario> todos = null;
-
-        if (nome.isEmpty()) {
-            todos = usuarioService.listarUsuarioPorPerfil(Perfil.FORNECEDOR, pageable);
-        } else {
-            /** Paginação por nome */
-            todos = usuarioService.listarUsuariosPorNomeAndPerfil(Perfil.FORNECEDOR, nome, pageable);
-        }
-
-        /**
-         * Para não perder o nome deixei fixo o perfil Usuario, mas poderia colocarno
-         * campo somente um chave String
-         */
-        var usuario = new Usuario();
-        usuario.setNome(nome);
-        model.addAttribute("todos", todos);
-        model.addAttribute("usuariof", usuario);
-
-        return "cadastro/tabela";
-    }
-
-
-
-
-  
 }

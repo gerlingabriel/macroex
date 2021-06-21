@@ -72,11 +72,18 @@
             <version>1.6.2</version>
         </dependency>
         <!-- LOMBOK PARA GERAR MENOR QUANTIDADE DE LINHAS DE CÓDIGO-->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <!-- CRIAR VALORES NO APPICATION.PROPERTIES-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <version>2.1.6.RELEASE</version>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -84,7 +91,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
             <!-- Configuração para Lombok e mapper (usar futuramente)
             <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -106,8 +112,6 @@
 					</annotationProcessorPaths>
 				</configuration>
 			</plugin> -->
-
         </plugins>
-        
     </build>
 </project>
