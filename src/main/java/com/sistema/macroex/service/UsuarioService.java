@@ -97,7 +97,7 @@ public class UsuarioService {
     }
 
     public List<Usuario> listaTodosDistribuidor() {
-        return repository.findByPerfil(Perfil.DISTRIBUIDOR);
+        return repository.findByPerfilAndEnable(Perfil.DISTRIBUIDOR, true);
     }
 
 }

@@ -30,5 +30,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 
     List<Usuario> findByPerfil(Perfil perfil);
 
+    List<Usuario> findByPerfilAndEnable(Perfil distribuidor, boolean b);
+
     
 }

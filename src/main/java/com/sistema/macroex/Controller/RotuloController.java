@@ -166,18 +166,6 @@ public class RotuloController {
 
         javaMailApp.enviaremail(rotulo.getUsuario().getEmail(), rotulo.getProduto());
 
-        var user = contraRotuloService.user();
-
-        // Se quem estiver acessao não for um ADM a pesuisa limitara somente por seus
-        // rotulos
-        if (contraRotuloService.isNotAdm(user)) {
-
-            model.addAttribute("todos", contraRotuloService.filtroDaListaExpecificaParaPage(user));
-            model.addAttribute("rotulo", new ContraRotulo());
-
-            return "fornecedor/tabelaRotuloFornecedor";
-        }
-        // Lista atributos para usuario ADM
         model.addAttribute("todos", contraRotuloService.buscarTodosRotulos());
         model.addAttribute("rotulo", new ContraRotulo());
         model.addAttribute("salvo", "Item enviado com sucesso");
@@ -247,7 +235,7 @@ public class RotuloController {
 
         Page<ContraRotulo> todos = null;
 
-        // Se for um forncedor deverá ter acesso somente aos Rotulo cadastrados
+        // Se for um forncedor deverá ter acesso somente aos Rotulo NOTIFICADO/FINALIZADOS por ele 
         if (contraRotuloService.isNotAdm(user)) {
 
             model.addAttribute("rotulo", rotulo);

@@ -112,13 +112,14 @@ public class JavaMailApp {
 
             //Mudar a senha do Usuario
             Usuario user = usuarioRepository.findByUsuarioByLogin(email);
-            user.setSenha(gerarSenha());
+            String senhaNova = gerarSenha();
+            user.setSenha(new BCryptPasswordEncoder().encode(senhaNova.toString()));
             usuarioRepository.save(user);
 
             // Remetente
             message.setRecipients(Message.RecipientType.TO, toUser);
             message.setSubject("Email para efeturar cadastro do Contra Rotulo");// Assunto
-            message.setText("Sua nova senha é " +user.getSenha());
+            message.setText("Sua nova senha é: " + senhaNova);
             /** Método para enviar a mensagem criada */
             Transport.send(message);
 
@@ -135,7 +136,9 @@ public class JavaMailApp {
 	    String[] caracteres = { "0", "1", "b", "2", "4", "5", "6", "7", "8",
 	                "9", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
 	                "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w",
-	                "x", "y", "z"};
+	                "x", "y", "z", "A", "B", "C", "D", "E", "F", "G", "H", "I", 
+                    "J", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V",
+                    "X", "Z", "K", "W", "Y"};
 	    
 		StringBuilder senha = new StringBuilder();
 
@@ -143,10 +146,8 @@ public class JavaMailApp {
             int posicao = (int) (Math.random() * caracteres.length);
             senha.append(caracteres[posicao]);
         }
-
-        String senhaCriptografada = new BCryptPasswordEncoder().encode(senha.toString());
-
-        return senhaCriptografada;
+        
+        return senha.toString();
         
 	}
 
