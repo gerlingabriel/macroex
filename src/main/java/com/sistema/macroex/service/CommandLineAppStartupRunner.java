@@ -7,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import lombok.AllArgsConstructor;
-
 @Component
-@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class CommandLineAppStartupRunner implements CommandLineRunner {
 
+    @Autowired
     UsuarioService service;
 
     @Override

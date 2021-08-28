@@ -25,17 +25,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import lombok.AllArgsConstructor;
-
 @Controller
 @RequestMapping("/rotulo")
-@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class RotuloController {
 
+    @Autowired
     private ContraRotuloService contraRotuloService;
-    private final VerificarSeTemRotulo seTemRotulo;
+    @Autowired
+    private VerificarSeTemRotulo seTemRotulo;
+    @Autowired
     private UsuarioService usuarioService;
-    private final JavaMailApp javaMailApp;
+    @Autowired
+    private JavaMailApp javaMailApp;
 
     @GetMapping
     public String cadastroContraRotulo(Model model) {

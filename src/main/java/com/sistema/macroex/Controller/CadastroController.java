@@ -22,15 +22,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import lombok.AllArgsConstructor;
-
 import org.springframework.ui.Model;
 
 @Controller
 @RequestMapping("/cadastro")
-@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class CadastroController {
 
+    @Autowired
     private UsuarioService usuarioService;
 
     /**

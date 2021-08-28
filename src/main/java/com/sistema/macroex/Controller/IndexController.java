@@ -17,17 +17,17 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import lombok.AllArgsConstructor;
-
 
 @Controller
 @RequestMapping("/")
-@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class IndexController {
 
-    private final JavaMailApp javaMailApp;
-    private final VerificarSeTemRotulo seTemRotulo;
-    private final ContraRotuloService contraRotuloService;
+    @Autowired
+    private JavaMailApp javaMailApp;
+    @Autowired
+    private VerificarSeTemRotulo seTemRotulo;
+    @Autowired
+    private ContraRotuloService contraRotuloService;
 
     @GetMapping
     public String index() {

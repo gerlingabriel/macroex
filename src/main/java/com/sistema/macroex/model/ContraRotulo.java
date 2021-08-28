@@ -9,11 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import lombok.Getter;
-import lombok.Setter;
-
-@Setter
-@Getter
 @Entity
 public class ContraRotulo {
 
@@ -79,6 +74,134 @@ public class ContraRotulo {
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getSubTitulo() {
+        return subTitulo;
+    }
+
+    public void setSubTitulo(String subTitulo) {
+        this.subTitulo = subTitulo;
+    }
+
+    public String getLote() {
+        return lote;
+    }
+
+    public void setLote(String lote) {
+        this.lote = lote;
+    }
+
+    public String getSafra() {
+        return safra;
+    }
+
+    public void setSafra(String safra) {
+        this.safra = safra;
+    }
+
+    public Paises getPais() {
+        return pais;
+    }
+
+    public void setPais(Paises pais) {
+        this.pais = pais;
+    }
+
+    public String getIngrediantes() {
+        return ingrediantes;
+    }
+
+    public void setIngrediantes(String ingrediantes) {
+        this.ingrediantes = ingrediantes;
+    }
+
+    public String getAlcoolica() {
+        return alcoolica;
+    }
+
+    public void setAlcoolica(String alcoolica) {
+        this.alcoolica = alcoolica;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Usuario getAdm() {
+        return adm;
+    }
+
+    public void setAdm(Usuario adm) {
+        this.adm = adm;
+    }
+
+    public Usuario getDistribuidor() {
+        return distribuidor;
+    }
+
+    public void setDistribuidor(Usuario distribuidor) {
+        this.distribuidor = distribuidor;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public String getProduto() {
+        return produto;
+    }
+
+    public void setProduto(String produto) {
+        this.produto = produto;
+    }
+
+    public LocalDate getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(LocalDate dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public String getLiquido() {
+        return liquido;
+    }
+
+    public void setLiquido(String liquido) {
+        this.liquido = liquido;
     }
 
     

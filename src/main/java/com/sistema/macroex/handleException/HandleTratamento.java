@@ -6,10 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 @ControllerAdvice
 public class HandleTratamento {
 
@@ -26,14 +22,29 @@ public class HandleTratamento {
     /**
      * InnerHandleTratamento
      */
-    @Setter
-    @Getter
-    @NoArgsConstructor
     public class MsgErro {
 
         private String msg;
         private String error;
         private Integer status;
+        public String getMsg() {
+            return msg;
+        }
+        public void setMsg(String msg) {
+            this.msg = msg;
+        }
+        public String getError() {
+            return error;
+        }
+        public void setError(String error) {
+            this.error = error;
+        }
+        public Integer getStatus() {
+            return status;
+        }
+        public void setStatus(Integer status) {
+            this.status = status;
+        }
     
         
     }
